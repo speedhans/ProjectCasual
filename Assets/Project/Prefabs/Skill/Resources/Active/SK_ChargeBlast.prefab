@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8102650840588404812
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7748706432175023217}
+  - component: {fileID: 8481002503216315525}
+  - component: {fileID: 808295413983230302}
+  m_Layer: 0
+  m_Name: ChargeBlast
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7748706432175023217
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8102650840588404812}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.77537036, y: 5.2745943, z: 8.979046}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8481002503216315525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8102650840588404812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &808295413983230302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8102650840588404812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 059e5adc576294d43beaa8885b6ff42c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SkillName: PoisonBlast
+  m_Image: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_MaxCooldown: 12
+  m_CurrentCooldown: 0
+  m_UseEffect: {fileID: 0}
+  m_EffectLocalPosition: {x: 0, y: 0, z: 0}
+  m_ChargeRibbonEffect: {fileID: 5302348793852318141, guid: c764bc768d0632c479533a967617e515,
+    type: 3}
+  m_ChargeBallEffect: {fileID: 6327446508197019608, guid: b9253d3b45d773f419bbe3818f23bb95,
+    type: 3}
+  m_ChargeEffectLocalLocation: {x: -0.41, y: 3.704, z: 1.38}
+  m_BlastEffect: {fileID: 7865555833751672720, guid: 9f94f3789008f3d4ab0f07d737c8fcc1,
+    type: 3}
+  m_ChargeTime: 4
+  m_DamageMultiply: 5
+  m_DamageType: 1
+  m_DamageAreaRadius: 5

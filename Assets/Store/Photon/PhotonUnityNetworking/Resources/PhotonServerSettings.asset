@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
+  m_Name: PhotonServerSettings
+  m_EditorClassIdentifier: 
+  AppSettings:
+    AppIdRealtime: 6b457b74-6488-47ee-b414-790329b1a384
+    AppIdChat: 
+    AppIdVoice: 
+    AppVersion: 1.0
+    UseNameServer: 1
+    FixedRegion: 
+    Server: 
+    Port: 0
+    Protocol: 0
+    EnableLobbyStatistics: 0
+    NetworkLogging: 1
+  PunLogging: 0
+  EnableSupportLogger: 0
+  RunInBackground: 1
+  StartInOfflineMode: 0
+  RpcList:
+  - Attach_RPC
+  - BuffDataUpdate_RPC
+  - ClickRpc
+  - CreateBuff_RPC
+  - DestroyRpc
+  - DestroySpaceship
+  - Dettach_RPC
+  - Fire
+  - GiveToDamage_RPC
+  - LinkObject_RPC
+  - ObjectBuffDataUpdate_RPC
+  - ObjectDestroy_RPC
+  - PlayAnimation_RPC
+  - ReleaseBuff_RPC
+  - RespawnSpaceship
+  - SetCharacterState_RPC
+  - SetLocalPositionAndRotation_RPC
+  - SetPhysicsMode_RPC
+  - SetVelocity_RPC
+  - SetWorldPositionAndRotation_RPC
+  - UnLinkObject_RPC
+  - UseSkill_RPC
+  - AddBuff_RPC
+  - Skill_Initialize_RPC
+  - SetCharging_RPC
+  - AttachWeapon_RPC
+  DisableAutoOpenWizard: 1
+  ShowSettings: 1

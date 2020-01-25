@@ -12,7 +12,8 @@ public class LobbyCanvasUI : MonoBehaviour
     protected MenuUI m_MenuUI;
     [SerializeField]
     protected QuestUI m_QuestUI;
-
+    [SerializeField]
+    protected ItemDataViewer m_ItemDataViewer;
     [SerializeField]
     protected LobbyDefaultUI m_LobbyDefaultUI;
 
@@ -35,6 +36,9 @@ public class LobbyCanvasUI : MonoBehaviour
         if (!m_LobbyDefaultUI)
             transform.Find("LobbyDefaultUI").GetComponent<LobbyDefaultUI>();
         m_LobbyDefaultUI.Initialize(this);
+        if (!m_ItemDataViewer)
+            transform.Find("ItemDataViewer").GetComponent<ItemDataViewer>();
+        m_ItemDataViewer.Initialize(this);
     }
 
     public StatusUI GetStatusUI() { return m_StatusUI; }
@@ -45,11 +49,14 @@ public class LobbyCanvasUI : MonoBehaviour
 
     public QuestUI GetQuestUI() { return m_QuestUI; }
 
+    public ItemDataViewer GetItemDataViewer() { return m_ItemDataViewer; }
     public void ResetUIDepth() 
     {
-        for (int i = 0; i < m_ListLobbyUIDepth.Count; ++i)
-            m_ListLobbyUIDepth[i].Close();
-        m_ListLobbyUIDepth.Clear(); 
+        LobbyUI[] uis = m_ListLobbyUIDepth.ToArray();
+
+        for (int i = 0; i < uis.Length; ++i)
+            uis[i].Close();
+        m_ListLobbyUIDepth.Clear();
     }
     public void AddUIDepth(LobbyUI _LobbyUI) 
     {

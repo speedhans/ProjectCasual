@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+public enum E_BUFF
+{
+    HASTE,
+    DAMAGEUP,
+    DAMAGEUPMULTI,
+    DEFENCEUP,
+    DEFENCEMULTI,
+}
+
 public abstract class Buff
 {
     protected Object m_ParentObject;
@@ -66,14 +75,18 @@ public abstract class Buff
 
     static public Buff CreateBuff(int _BuffID, Object _Target, object[] _BuffData = null)
     {
-        switch (_BuffID)
+        switch ((E_BUFF)_BuffID)
         {
-            case 0:
+            case E_BUFF.HASTE:
                 return new BuffHaste(_Target, "Haste", _BuffID, (float)_BuffData[0], (float)_BuffData[1]);
-            case 1:
+            case E_BUFF.DAMAGEUP:
                 return new BuffDamageUp(_Target, "DamageUp", _BuffID, (float)_BuffData[0], (float)_BuffData[1], (E_DAMAGETYPE)_BuffData[2], (string)_BuffData[3], (Character.E_ATTACHPOINT)_BuffData[4]);
-            case 2:
+            case E_BUFF.DAMAGEUPMULTI:
                 return new BuffDamageUpMultiply(_Target, "DamageUpMultiply", _BuffID, (float)_BuffData[0], (float)_BuffData[1], (E_DAMAGETYPE)_BuffData[2], (string)_BuffData[3], (Character.E_ATTACHPOINT)_BuffData[4]);
+            case E_BUFF.DEFENCEUP:
+                return new BuffDefenceUp(_Target, "BuffDefenceUp", _BuffID, (float)_BuffData[0], (float)_BuffData[1], (E_DAMAGETYPE)_BuffData[2], (string)_BuffData[3], (Character.E_ATTACHPOINT)_BuffData[4]);
+            case E_BUFF.DEFENCEMULTI:
+                return new BuffDefenceUpMultiply(_Target, "BuffDefenceUpMultiply", _BuffID, (float)_BuffData[0], (float)_BuffData[1], (E_DAMAGETYPE)_BuffData[2], (string)_BuffData[3], (Character.E_ATTACHPOINT)_BuffData[4]);
             default:
                 return null;
         }

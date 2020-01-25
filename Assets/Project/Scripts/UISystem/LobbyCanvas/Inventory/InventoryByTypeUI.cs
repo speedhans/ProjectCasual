@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InventoryByTypeUI : MonoBehaviour
 {
+    LobbyCanvasUI m_LobbyCanvasUI;
+
     [SerializeField]
     Item.E_TYPE m_InventoryType = Item.E_TYPE.NONE;
 
@@ -13,8 +15,10 @@ public class InventoryByTypeUI : MonoBehaviour
     Transform m_Grid;
     List<InventorySlot> m_ListInventorySlot = new List<InventorySlot>();
 
-    public void Initialize()
+    public void Initialize(LobbyCanvasUI _LobbyCanvasUI)
     {
+        m_LobbyCanvasUI = _LobbyCanvasUI;
+
         m_Grid = transform.Find("MaskField/Grid");
     }
 
@@ -44,7 +48,7 @@ public class InventoryByTypeUI : MonoBehaviour
 
         for (int i = 0; i < list.Count; ++i)
         {
-            m_ListInventorySlot[i].Initialize(list[i]);
+            m_ListInventorySlot[i].Initialize(list[i], m_LobbyCanvasUI);
         }
     }
 }

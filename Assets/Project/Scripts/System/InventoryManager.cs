@@ -60,6 +60,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     public EquipmentItem GetEquippedItem(int _Number) { return m_EquipItem[_Number]; }
+    public void SetEquipmentItem(int _Number, EquipmentItem _Item) { m_EquipItem[_Number] = _Item; }
     public int EquipmentSlotCount() { return m_EquipItem.Length; }
     public string GetPlayerModel() { return m_PlayerModel; }
 

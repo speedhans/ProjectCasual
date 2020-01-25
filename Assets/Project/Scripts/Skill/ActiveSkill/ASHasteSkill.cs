@@ -34,7 +34,7 @@ public class ASHasteSkill : ActiveSkill
 
         m_CurrentCooldown = m_MaxCooldown;
 
-        m_Caster.AddBuff(0, new object[] { m_Duration, m_MultiplySpeed });
+        m_Caster.AddBuff(E_BUFF.HASTE, new object[] { m_Duration, m_MultiplySpeed });
     }
 
     public override void AutoPlayLogic()

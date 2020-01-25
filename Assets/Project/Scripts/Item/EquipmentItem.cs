@@ -80,4 +80,5 @@ public class EquipmentItem : Item
     public GameObject GetWeaponModel() { return m_WeaponPrefab; }
     public S_EQUIP GetState() { return m_EquipState; }
     public void SetEquip(bool _Equip, int _SlotNumber) { m_EquipState.IsEquip = _Equip; m_EquipState.SlotNumber = _SlotNumber; }
+    public void SetEquip(bool _Equip) { m_EquipState.IsEquip = _Equip; m_EquipState.SlotNumber = -1; }
 }

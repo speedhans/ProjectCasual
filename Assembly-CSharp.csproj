@@ -89,6 +89,8 @@
     <Compile Include="Assets\Project\Scripts\Buff\BuffBurn.cs" />
     <Compile Include="Assets\Project\Scripts\Buff\BuffDamageUp.cs" />
     <Compile Include="Assets\Project\Scripts\Buff\BuffDamageUpMultiply.cs" />
+    <Compile Include="Assets\Project\Scripts\Buff\BuffDefenceUp.cs" />
+    <Compile Include="Assets\Project\Scripts\Buff\BuffDefenceUpMultiply.cs" />
     <Compile Include="Assets\Project\Scripts\Buff\BuffHaste.cs" />
     <Compile Include="Assets\Project\Scripts\Camera\CameraSystem.cs" />
     <Compile Include="Assets\Project\Scripts\Camera\FollowCamera.cs" />
@@ -141,6 +143,7 @@
     <Compile Include="Assets\Project\Scripts\Skill\ActiveSkill\ASDamageUpMultiply.cs" />
     <Compile Include="Assets\Project\Scripts\Skill\ActiveSkill\ASFlameBlast.cs" />
     <Compile Include="Assets\Project\Scripts\Skill\ActiveSkill\ASHasteSkill.cs" />
+    <Compile Include="Assets\Project\Scripts\Skill\ActiveSkill\ASPhalanx.cs" />
     <Compile Include="Assets\Project\Scripts\Skill\ActiveSkill\ASShockImpact.cs" />
     <Compile Include="Assets\Project\Scripts\Skill\PassiveSkill.cs" />
     <Compile Include="Assets\Project\Scripts\Skill\PassiveSkill\PSHealthHigherDamage.cs" />
@@ -156,6 +159,7 @@
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\Inventory\InventoryByTypeUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\Inventory\InventorySlot.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\Inventory\InventoryUI.cs" />
+    <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\ItemDataViewer\ItemDataViewer.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\LobbyCanvasUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\LobbyDefaultUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\LobbyUI.cs" />
@@ -165,6 +169,7 @@
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\Quest\QuestSlot.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\Quest\QuestUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\StatusUI.cs" />
+    <Compile Include="Assets\Project\Scripts\UISystem\MessageBox.cs" />
     <Compile Include="Assets\Store\48 Particle Effect Pack\ShurikenEffectEditor\csShurikenEffectChanger.cs" />
     <Compile Include="Assets\Store\48 Particle Effect Pack\ShurikenEffectEditor\csShurikenEffectEditor.cs" />
     <Compile Include="Assets\Store\JMO Assets\Cartoon FX\Demo\Assets\CFX_AutoStopLoopedEffect.cs" />
@@ -263,6 +268,7 @@
     <None Include="Assets\Store\RPG Character Animation Pack FREE\Elements\ImageEffects\Shaders\_Antialiasing\SSAA.shader" />
     <None Include="Assets\Store\RPG Character Animation Pack FREE\Elements\ImageEffects\Shaders\SunShaftsComposite.shader" />
     <None Include="Assets\Store\RPG Character Animation Pack FREE\Elements\ImageEffects\Shaders\ConvertDepth.shader" />
+    <None Include="Assets\Project\Font\상용한글2350자.txt" />
     <None Include="Assets\Store\RPG Character Animation Pack FREE\Elements\ImageEffects\Shaders\TwirlEffect.shader" />
     <None Include="Assets\Store\JMO Assets\Cartoon FX Easy Editor\CartoonFX Easy Editor Readme.txt" />
     <None Include="Assets\Store\RPG Character Animation Pack FREE\Elements\ImageEffects\Shaders\_BloomAndFlares\LensFlareCreate.shader" />

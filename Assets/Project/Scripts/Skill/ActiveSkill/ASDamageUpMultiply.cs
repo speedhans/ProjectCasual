@@ -40,7 +40,7 @@ public class ASDamageUpMultiply : ActiveSkill
 
         m_CurrentCooldown = m_MaxCooldown;
 
-        m_Caster.AddBuff(1, new object[] { m_Duration, m_MultiplyDamage, m_DamageType, "Effect/" + m_Effect.name, m_EffectAttachPoint });
+        m_Caster.AddBuff(E_BUFF.DAMAGEUPMULTI, new object[] { m_Duration, m_MultiplyDamage, m_DamageType, "Effect/" + m_Effect.name, m_EffectAttachPoint });
     }
 
     public override void AutoPlayLogic()

@@ -29,6 +29,7 @@ public class Character : Object
         HEAD,
         LEFTHAND,
         RIGHTHAND,
+        ORIGIN,
     }
 
     public E_TEAMTYPE m_Team;
@@ -307,6 +308,8 @@ public class Character : Object
                 return m_LeftHandAxis;
             case E_ATTACHPOINT.RIGHTHAND:
                 return m_RightHandAxis;
+            case E_ATTACHPOINT.ORIGIN:
+                return transform;
             default:
                 break;
         }
@@ -616,6 +619,41 @@ public class Character : Object
         return target;
     }
 
+    static public Character FindTeamShape(Character _Self, E_TEAMTYPE _Team, Vector3 _Location, Vector3 _Forward, float _Radius, float _HalfAngle, bool _CheckLive = true, bool _DeadOnly = false)
+    {
+        Character target = null;
+        Collider[] colls = Physics.OverlapSphere(_Location, _Radius, 1 << Common.CHARACTER_LAYER);
+        if (colls.Length > 0)
+        {
+            float distance = 99999999.9f;
+            for (int i = 0; i < colls.Length; ++i)
+            {
+                if (colls[i] == _Self.m_BodyCollider) continue;
+                Character c = colls[i].GetComponentInParent<Character>();
+                if (c)
+                {
+                    if (c.m_Team == _Team) continue;
+                    if (_CheckLive && c.m_Live == E_LIVE.DEAD) continue;
+                    if (_DeadOnly && c.m_Live != E_LIVE.DEAD) continue;
+
+                    Vector3 dir = colls[i].transform.position - _Location;
+                    float dot = Vector3.Dot(_Forward, dir.normalized);
+                    if (dot > 1.0f - _HalfAngle / 180.0f)
+                    {
+                        float sqrm = dir.sqrMagnitude;
+                        if (sqrm < distance)
+                        {
+                            target = c;
+                            distance = sqrm;
+                        }
+                    }
+                }
+            }
+        }
+
+        return target;
+    }
+
     static public List<Character> FindEnemyAllShape(Character _Self, Vector3 _Location, Vector3 _Forward, float _Radius, float _HalfAngle, bool _CheckLive = true, bool _DeadOnly = false)
     {
         Collider[] colls = Physics.OverlapSphere(_Location, _Radius, 1 << Common.CHARACTER_LAYER);
@@ -629,6 +667,38 @@ public class Character : Object
                 if (c)
                 {
                     if (c.m_Team == _Self.m_Team) continue;
+                    if (_CheckLive && c.m_Live == E_LIVE.DEAD) continue;
+                    if (_DeadOnly && c.m_Live != E_LIVE.DEAD) continue;
+
+                    Vector3 dir = colls[i].transform.position - _Location;
+                    float dot = Vector3.Dot(_Forward, dir.normalized);
+                    if (dot > 1.0f - _HalfAngle / 180.0f)
+                    {
+                        list.Add(c);
+                    }
+                }
+            }
+
+            if (list.Count < 1)
+                return null;
+            return list;
+        }
+        return null;
+    }
+
+    static public List<Character> FindTeamAllShape(Character _Self, E_TEAMTYPE _Team, Vector3 _Location, Vector3 _Forward, float _Radius, float _HalfAngle, bool _CheckLive = true, bool _DeadOnly = false)
+    {
+        Collider[] colls = Physics.OverlapSphere(_Location, _Radius, 1 << Common.CHARACTER_LAYER);
+        if (colls.Length > 0)
+        {
+            List<Character> list = new List<Character>();
+            for (int i = 0; i < colls.Length; ++i)
+            {
+                if (colls[i] == _Self.m_BodyCollider) continue;
+                Character c = colls[i].GetComponentInParent<Character>();
+                if (c)
+                {
+                    if (c.m_Team == _Team) continue;
                     if (_CheckLive && c.m_Live == E_LIVE.DEAD) continue;
                     if (_DeadOnly && c.m_Live != E_LIVE.DEAD) continue;
 
@@ -680,6 +750,38 @@ public class Character : Object
         return target;
     }
 
+    static public Character FindTeamArea(Character _Self, E_TEAMTYPE _Team, Vector3 _Location, float _Radius, bool _CheckLive = true, bool _DeadOnly = false)
+    {
+        Character target = null;
+        Collider[] colls = Physics.OverlapSphere(_Location, _Radius, 1 << Common.CHARACTER_LAYER);
+
+        if (colls.Length > 0)
+        {
+            float distance = 99999999.9f;
+            for (int i = 0; i < colls.Length; ++i)
+            {
+                if (colls[i] == _Self.m_BodyCollider) continue;
+                Character c = colls[i].GetComponentInParent<Character>();
+                if (c)
+                {
+                    if (c.m_Team == _Team) continue;
+                    if (_CheckLive && c.m_Live == E_LIVE.DEAD) continue;
+                    if (_DeadOnly && c.m_Live != E_LIVE.DEAD) continue;
+
+                    Vector3 dir = colls[i].transform.position - _Location;
+                    float sqrm = dir.sqrMagnitude;
+                    if (sqrm < distance)
+                    {
+                        target = c;
+                        distance = sqrm;
+                    }
+                }
+            }
+        }
+
+        return target;
+    }
+
     static public List<Character> FindEnemyAllArea(Character _Self, Vector3 _Location, float _Radius, bool _CheckLive = true, bool _DeadOnly = false)
     {
         Collider[] colls = Physics.OverlapSphere(_Location, _Radius, 1 << Common.CHARACTER_LAYER);
@@ -709,7 +811,61 @@ public class Character : Object
         return null;
     }
 
-    static public int ScopeEnemyCheck(Character _Self, Vector3 _Location, float _Radius, bool _CheckLive = true, bool _DeadOnly = false)
+    static public List<Character> FindTeamAllArea(Character _Self, E_TEAMTYPE _Team, Vector3 _Location, float _Radius, bool _OthersOnly = true ,bool _CheckLive = true, bool _DeadOnly = false)
+    {
+        Collider[] colls = Physics.OverlapSphere(_Location, _Radius, 1 << Common.CHARACTER_LAYER);
+
+        if (colls.Length > 0)
+        {
+            List<Character> list = new List<Character>();
+
+            for (int i = 0; i < colls.Length; ++i)
+            {
+                if (_OthersOnly && colls[i] == _Self.m_BodyCollider) continue;
+                Character c = colls[i].GetComponentInParent<Character>();
+                if (c)
+                {
+                    if (c.m_Team == _Team) continue;
+                    if (_CheckLive && c.m_Live == E_LIVE.DEAD) continue;
+                    if (_DeadOnly && c.m_Live != E_LIVE.DEAD) continue;
+
+                    list.Add(c);
+                }
+            }
+
+            if (list.Count < 1)
+                return null;
+            return list;
+        }
+        return null;
+    }
+
+    static public int ScopeEnemyCheck(Character _Self, Vector3 _Location, float _Radius, bool _OthersOnly = true, bool _CheckLive = true, bool _DeadOnly = false)
+    {
+        Collider[] colls = Physics.OverlapSphere(_Location, _Radius, 1 << Common.CHARACTER_LAYER);
+
+        int count = 0;
+        if (colls.Length > 0)
+        {
+            for (int i = 0; i < colls.Length; ++i)
+            {
+                if (_OthersOnly && colls[i] == _Self.m_BodyCollider) continue;
+                Character c = colls[i].GetComponentInParent<Character>();
+                if (c)
+                {
+                    if (c.m_Team == _Self.m_Team) continue;
+                    if (_CheckLive && c.m_Live == E_LIVE.DEAD) continue;
+                    if (_DeadOnly && c.m_Live != E_LIVE.DEAD) continue;
+
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    static public int ScopeTeamCheck(Character _Self, E_TEAMTYPE _Team, Vector3 _Location, float _Radius, bool _CheckLive = true, bool _DeadOnly = false)
     {
         Collider[] colls = Physics.OverlapSphere(_Location, _Radius, 1 << Common.CHARACTER_LAYER);
 
@@ -722,7 +878,7 @@ public class Character : Object
                 Character c = colls[i].GetComponentInParent<Character>();
                 if (c)
                 {
-                    if (c.m_Team == _Self.m_Team) continue;
+                    if (c.m_Team == _Team) continue;
                     if (_CheckLive && c.m_Live == E_LIVE.DEAD) continue;
                     if (_DeadOnly && c.m_Live != E_LIVE.DEAD) continue;
 

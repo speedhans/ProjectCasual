@@ -30,6 +30,11 @@ public class Item : MonoBehaviour
     public int m_UsageCount = 1;
     public int m_MaxUsageCount = 1;
 
+    [TextArea]
+    public string m_DefaultManual;
+    [TextArea]
+    public string m_EffectManual;
+
     System.Action m_UseAction;
 
     public Item(int _ItemID, int _UniqueID, string _ItemName, Sprite _ItemImage, bool _IsStockable, int _UsageCount, int _MaxUsageCount) 

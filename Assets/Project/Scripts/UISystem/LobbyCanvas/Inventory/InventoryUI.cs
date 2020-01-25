@@ -11,7 +11,7 @@ public class InventoryUI : LobbyUI
     {
         base.Initialize(_LobbyCanvasUI);
 
-        m_ItemInventory.Initialize();
+        m_ItemInventory.Initialize(_LobbyCanvasUI);
     }
 
     public override void Open()

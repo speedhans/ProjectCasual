@@ -50,6 +50,7 @@ public class LobbyCanvasUI : MonoBehaviour
     public QuestUI GetQuestUI() { return m_QuestUI; }
 
     public ItemDataViewer GetItemDataViewer() { return m_ItemDataViewer; }
+    public LobbyDefaultUI GetLobbyDefaultUI() { return m_LobbyDefaultUI; }
     public void ResetUIDepth() 
     {
         LobbyUI[] uis = m_ListLobbyUIDepth.ToArray();
@@ -72,4 +73,5 @@ public class LobbyCanvasUI : MonoBehaviour
         if (m_ListLobbyUIDepth.Count < 1) return;
         m_ListLobbyUIDepth[m_ListLobbyUIDepth.Count - 1].Close();
     }
+    public int GetCurrentUIDepth() { return m_ListLobbyUIDepth.Count; }
 }

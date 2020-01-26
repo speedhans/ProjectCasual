@@ -26,12 +26,7 @@ public class GameManager : MonoBehaviour
     void Initialize()
     {
         DontDestroyOnLoad(gameObject);
-
-        m_TextText = GameObject.Find("TestText/Canvas/Text").GetComponent<TMPro.TMP_Text>();
     }
-
-    [HideInInspector]
-    public TMPro.TMP_Text m_TextText;
 
     public Main m_Main;
     public PlayerCharacter m_MyCharacter;
@@ -39,7 +34,17 @@ public class GameManager : MonoBehaviour
 
     public bool m_GameStop = false;
 
-    #region WorldTimer
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
+
+#region WorldTimer
     public enum E_TIMETYPE
     {
         MINUTE,
@@ -65,26 +70,32 @@ public class GameManager : MonoBehaviour
 
         return 0;
     }
-    #endregion WorldTimer
-    private void Update()
+
+    IEnumerator C_WorldTimerUpdate()
     {
-        m_PerSecondTimer += Time.deltaTime;
-        if (m_PerSecondTimer >= 1.0f)
+        while(true)
         {
-            m_PerSecondTimer = 0.0f;
-            m_WorldTimeMinute++;
-            if (m_WorldTimeMinute >= 60)
+            m_PerSecondTimer += Time.deltaTime;
+            if (m_PerSecondTimer >= 1.0f)
             {
-                m_WorldTimeMinute = 0;
-                m_WorldTimeHour++;
-                if (m_WorldTimeHour >= 24)
+                m_PerSecondTimer = 0.0f;
+                m_WorldTimeMinute++;
+                if (m_WorldTimeMinute >= 60)
                 {
-                    m_WorldTimeHour = 0;
-                    m_WorldTimeDay++;
+                    m_WorldTimeMinute = 0;
+                    m_WorldTimeHour++;
+                    if (m_WorldTimeHour >= 24)
+                    {
+                        m_WorldTimeHour = 0;
+                        m_WorldTimeDay++;
+                    }
                 }
             }
+            yield return null;
         }
     }
+
+#endregion WorldTimer
 
     public void AddSkyEnvironmentEvent(System.Action<Object> _Event) { m_SkyEnvironmentEvent += _Event; }
     public void SubSkyEnvironmentEvent(System.Action<Object> _Event) { m_SkyEnvironmentEvent -= _Event; }

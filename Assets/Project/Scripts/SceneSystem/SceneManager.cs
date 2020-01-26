@@ -48,7 +48,7 @@ public class SceneManager : MonoBehaviour
             if (Op.progress >= 0.9f)
             {
                 m_LoadingManager.SetValue(1.0f);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(1.0f);
                 Op.allowSceneActivation = true;
             }
         }

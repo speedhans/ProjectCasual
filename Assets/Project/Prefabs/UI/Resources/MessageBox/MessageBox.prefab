@@ -65,8 +65,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Message
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3ded6c830cab2d446b34d1411ca43e7e, type: 2}
+  m_sharedMaterial: {fileID: -549846137418414413, guid: 3ded6c830cab2d446b34d1411ca43e7e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -244,7 +245,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ButtonAction:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7586340246803758157}
+        m_MethodName: ButtonEvent2
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3338330089165594150
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,8 +322,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button2
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3ded6c830cab2d446b34d1411ca43e7e, type: 2}
+  m_sharedMaterial: {fileID: -549846137418414413, guid: 3ded6c830cab2d446b34d1411ca43e7e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -787,7 +800,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ButtonAction:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7586340246803758157}
+        m_MethodName: ButtonEvent1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8207912682228476423
 GameObject:
   m_ObjectHideFlags: 0
@@ -853,8 +877,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3ded6c830cab2d446b34d1411ca43e7e, type: 2}
+  m_sharedMaterial: {fileID: -549846137418414413, guid: 3ded6c830cab2d446b34d1411ca43e7e,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

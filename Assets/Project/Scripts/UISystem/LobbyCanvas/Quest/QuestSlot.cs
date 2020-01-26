@@ -11,6 +11,7 @@ public class QuestSlot : MonoBehaviour
         VERYHARD,
     }
 
+    QuestData m_QuestData;
     UnityEngine.UI.Image m_Icon;
     TMPro.TMP_Text m_NameText;
     TMPro.TMP_Text m_LevelText;
@@ -23,6 +24,7 @@ public class QuestSlot : MonoBehaviour
 
         gameObject.SetActive(true);
 
+        m_QuestData = _Data;
         m_Icon.sprite = _Data.m_Icon;
         m_NameText.text = _Data.m_Name;
         m_LevelText.text = _Data.m_Level.ToString();
@@ -31,10 +33,16 @@ public class QuestSlot : MonoBehaviour
     public void QuestSelect()
     {
         Debug.Log(m_NameText.text);
+        MessageBox.CreateTwoButtonType(m_QuestData.m_Name + "미션을 도전하시겠습니까?", "YES", QuestStart);
     }
 
     public void QuestDropItemView()
     {
         Debug.Log(m_NameText.text + " : itemlist" );
+    }
+
+    public void QuestStart()
+    {
+        SceneManager.Instance.LoadScene(m_QuestData.m_SceneName);
     }
 }

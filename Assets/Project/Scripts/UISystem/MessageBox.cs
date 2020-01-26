@@ -21,7 +21,7 @@ public class MessageBox : DefaultUI
     System.Action m_ButtonEvent1;
     System.Action m_ButtonEvent2;
 
-    static public void CreateTwoButtonType (string _MainText, string _ButtonText1, System.Action _ButtonEvent1, string _ButtonText2 = "Close", System.Action _ButtonEvent2 = null)
+    static public void CreateTwoButtonType(string _MainText, string _ButtonText1, System.Action _ButtonEvent1, string _ButtonText2 = "Close", System.Action _ButtonEvent2 = null)
     {
         GameObject box = null;
 
@@ -31,7 +31,7 @@ public class MessageBox : DefaultUI
         }
         else
         {
-            box = Instantiate(Resources.Load<GameObject>("MessageBox/MessageBoxCanvas"));
+            box = Instantiate(Resources.Load<GameObject>("MessageBox/MessageBox"));
         }
 
         if (box)
@@ -39,7 +39,7 @@ public class MessageBox : DefaultUI
             MessageBox mb = box.GetComponent<MessageBox>();
             if (mb)
             {
-                mb.Initialzie(_MainText, _ButtonText1, _ButtonEvent1, _ButtonText2, mb.PushToPool);
+                mb.Initialzie(_MainText, _ButtonText1, _ButtonEvent1, _ButtonText2, _ButtonEvent2 == null ? mb.PushToPool : _ButtonEvent2);
             }
         }
     }
@@ -62,7 +62,7 @@ public class MessageBox : DefaultUI
             MessageBox mb = box.GetComponent<MessageBox>();
             if (mb)
             {
-                mb.Initialzie(_MainText, _ButtonText1, mb.PushToPool, null, null);
+                mb.Initialzie(_MainText, _ButtonText1, _ButtonEvent1 == null ? mb.PushToPool : _ButtonEvent1, null, null);
             }
         }
     }
@@ -75,20 +75,20 @@ public class MessageBox : DefaultUI
         m_ButtonText1.text = _ButtonText1;
         m_ButtonEvent1 = _ButtonEvent1;
 
-        if (m_ButtonEvent2 == null)
+        if (_ButtonEvent2 == null)
         {
-            Vector3 pos = m_Button1.transform.position;
+            Vector3 pos = m_Button1.transform.localPosition;
             pos.x = 0.0f;
-            m_Button1.transform.position = pos;
+            m_Button1.transform.localPosition = pos;
             m_Button2.SetActive(false);
         }
         else
         {
             m_ButtonText2.text = _ButtonText2;
 
-            Vector3 pos = m_Button1.transform.position;
+            Vector3 pos = m_Button1.transform.localPosition;
             pos.x = -180.0f;
-            m_Button1.transform.position = pos;
+            m_Button1.transform.localPosition = pos;
             m_ButtonEvent2 = _ButtonEvent2;
             m_Button2.SetActive(true);
         }
@@ -103,5 +103,15 @@ public class MessageBox : DefaultUI
 
         transform.SetParent(m_MessageBoxPoolObject.transform);
         gameObject.SetActive(false);
+    }
+
+    public void ButtonEvent1()
+    {
+        m_ButtonEvent1?.Invoke();
+    }
+
+    public void ButtonEvent2()
+    {
+        m_ButtonEvent2?.Invoke();
     }
 }

@@ -15,4 +15,5 @@ public class QuestData
     public string m_Name;
     public E_QUESTLEVEL m_Level;
     public string m_SceneName;
+    public bool m_Multiplay;
 }

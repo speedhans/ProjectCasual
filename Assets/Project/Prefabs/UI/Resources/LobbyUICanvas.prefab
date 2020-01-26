@@ -6947,6 +6947,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f5b5e3b9fcbac4d8859a077efcfc41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_LevelText: {fileID: 8604709146701213941}
+  m_StaminLeftText: {fileID: 1052149310645599687}
+  m_StaminRightText: {fileID: 1052149311299786149}
+  m_StaminaSlider: {fileID: 1052149310305504847}
+  m_MoneyText: {fileID: 1052149310975604662}
+  m_JewelText: {fileID: 1052149311607725183}
 --- !u!1 &8807802287104511013
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,8 +7,8 @@ public class BuffHaste : Buff
     float m_IncreaseMoveSpeed = 0.0f;
     float m_IncreaseAttackSpeed = 0.0f;
     float m_MultiplySpeed;
-    public BuffHaste(Object _Self, string _BuffName, int _BuffID, float _LifeTime, float _MultiplySpeed) :
-    base(_Self, _BuffName, _BuffID, _LifeTime)
+    public BuffHaste(Object _Self, string _BuffName, int _BuffID, Sprite _BuffIcon, float _LifeTime, float _MultiplySpeed) :
+    base(_Self, _BuffName, _BuffID, _BuffIcon, _LifeTime)
     {
         AddDataUpdateAction(DataUpdateEvent);
         m_MultiplySpeed = _MultiplySpeed;

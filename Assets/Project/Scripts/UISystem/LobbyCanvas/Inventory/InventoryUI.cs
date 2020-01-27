@@ -27,4 +27,14 @@ public class InventoryUI : LobbyUI
         base.Close();
         gameObject.SetActive(false);
     }
+
+    public void RefreshInventoryAllData()
+    {
+        m_ItemInventory.Refresh();
+    }
+
+    public void RefreshInventorySlotData()
+    {
+        m_ItemInventory.RefreshSlots();
+    }
 }

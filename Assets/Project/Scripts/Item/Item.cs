@@ -32,21 +32,8 @@ public class Item : MonoBehaviour
 
     [TextArea]
     public string m_DefaultManual;
-    [TextArea]
-    public string m_EffectManual;
 
     System.Action m_UseAction;
-
-    public Item(int _ItemID, int _UniqueID, string _ItemName, Sprite _ItemImage, bool _IsStockable, int _UsageCount, int _MaxUsageCount) 
-    {
-        m_ItemID = _ItemID;
-        m_UniqueID = _UniqueID;
-        m_ItemName = _ItemName;
-        m_ItemImage = _ItemImage;
-        m_IsStockable = _IsStockable;
-        m_UsageCount = _UsageCount;
-        m_MaxUsageCount = _MaxUsageCount;
-    }
 
     protected virtual void Awake()
     {

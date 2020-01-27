@@ -191,8 +191,16 @@ public class Object : RootComponent
         {
             if (_Damage[i] > 0.0f)
             {
-                damages.Add(_Damage[i]);
-                types.Add(i);
+                if ((E_DAMAGETYPE)i == _Self.m_AttackType)
+                {
+                    damages.Insert(0, _Damage[i]);
+                    types.Insert(0, i);
+                }
+                else
+                {
+                    damages.Add(_Damage[i]);
+                    types.Add(i);
+                }
             }
         }
 
@@ -349,6 +357,8 @@ public class Object : RootComponent
 
         return null;
     }
+
+    public List<Buff> GetBuffList() { return m_ListBuff; }
 
     public void BuffDataUpdate(int _BuffID, object[] _Value)
     {

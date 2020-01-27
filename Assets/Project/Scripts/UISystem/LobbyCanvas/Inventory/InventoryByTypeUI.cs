@@ -14,6 +14,7 @@ public class InventoryByTypeUI : MonoBehaviour
 
     Transform m_Grid;
     List<InventorySlot> m_ListInventorySlot = new List<InventorySlot>();
+    int m_CurrentInventoryCount;
 
     public void Initialize(LobbyCanvasUI _LobbyCanvasUI)
     {
@@ -24,13 +25,19 @@ public class InventoryByTypeUI : MonoBehaviour
 
     public void InventoryOpen()
     {
+        Refresh();
+    }
+
+    public void Refresh()
+    {
         if (m_Grid == null) m_Grid = transform.Find("MaskField/Grid");
 
         List<Item> list = m_InventoryType == Item.E_TYPE.NONE ? InventoryManager.Instance.GetItemList() : InventoryManager.Instance.GetTypeItemList(m_InventoryType);
+        m_CurrentInventoryCount = list.Count;
 
-        if (list.Count > m_Grid.childCount)
+        if (m_CurrentInventoryCount > m_Grid.childCount)
         {
-            int interval = list.Count - m_Grid.childCount;
+            int interval = m_CurrentInventoryCount - m_Grid.childCount;
 
             for (int i = 0; i < interval; ++i)
             {
@@ -38,17 +45,25 @@ public class InventoryByTypeUI : MonoBehaviour
                 m_ListInventorySlot.Add(g.GetComponent<InventorySlot>());
             }
         }
-        else if (list.Count < m_Grid.childCount)
+        else if (m_CurrentInventoryCount < m_Grid.childCount)
         {
-            for (int i = list.Count - 1; i < m_Grid.childCount; ++i)
+            for (int i = m_CurrentInventoryCount - 1; i < m_Grid.childCount; ++i)
             {
                 m_Grid.GetChild(i).gameObject.SetActive(false);
             }
         }
 
-        for (int i = 0; i < list.Count; ++i)
+        for (int i = 0; i < m_CurrentInventoryCount; ++i)
         {
             m_ListInventorySlot[i].Initialize(list[i], m_LobbyCanvasUI);
+        }
+    }
+
+    public void RefreshSlots()
+    {
+        for (int i = 0; i < m_CurrentInventoryCount; ++i)
+        {
+            m_ListInventorySlot[i].Refresh();
         }
     }
 }

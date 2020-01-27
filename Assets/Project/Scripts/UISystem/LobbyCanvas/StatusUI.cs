@@ -41,6 +41,8 @@ public class StatusUI : LobbyUI
 
     public void RefreshSlotDatas()
     {
+        if (!gameObject.activeSelf) return;
+
         for (int i = 0; i < m_EquipmentSlotUI.Length; ++i)
         {
             EquipmentItem item = InventoryManager.Instance.GetEquippedItem(i);

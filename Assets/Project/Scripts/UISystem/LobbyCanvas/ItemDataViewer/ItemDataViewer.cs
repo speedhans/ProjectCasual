@@ -38,15 +38,13 @@ public class ItemDataViewer : LobbyUI
         {
             m_StockText.gameObject.SetActive(false);
         }
-        m_DefaultManualText.text = m_Item.m_DefaultManual;
-        m_EffectManualText.text = m_Item.m_EffectManual;
 
         if (m_Item.GetItemType() == Item.E_TYPE.EQUIPMENT)
         {
-            EquipmentItem equip = m_Item as EquipmentItem;
-            if (equip)
+            EquipmentItem eitem = m_Item as EquipmentItem;
+            if (eitem)
             {
-                if (equip.GetState().IsEquip)
+                if (eitem.GetState().IsEquip)
                 {
                     m_EquipmentButton.SetActive(false);
                     m_EquipmentOffButton.SetActive(true);
@@ -56,7 +54,35 @@ public class ItemDataViewer : LobbyUI
                     m_EquipmentButton.SetActive(true);
                     m_EquipmentOffButton.SetActive(false);
                 }
+
+                string defualtmanual = m_Item.m_DefaultManual;
+
+                for (int i = 0; i < (int)EquipmentItem.E_ITEMSTATE.MAX; ++i)
+                {
+                    defualtmanual = defualtmanual.Replace("&" + i.ToString() + "&", ((int)(eitem.GetEquipmentItemState((EquipmentItem.E_ITEMSTATE)i))).ToString());
+                }
+                m_DefaultManualText.text = defualtmanual;
+                m_EffectManualText.text = eitem.GetActiveSkillManualText();
+
+                string[] strAry = eitem.GetPassiveSkillManualText();
+                if (strAry != null && strAry.Length > 0)
+                {
+                    for (int i = 0; i < strAry.Length; ++i)
+                    {
+                        m_EffectManualText.text += "\n" + strAry[i];
+                    }
+                }
             }
+            else
+            {
+                m_DefaultManualText.text = m_Item.m_DefaultManual;
+                m_EffectManualText.text = "";
+            }
+        }
+        else
+        {
+            m_DefaultManualText.text = m_Item.m_DefaultManual;
+            m_EffectManualText.text = "";
         }
     }
 
@@ -75,31 +101,31 @@ public class ItemDataViewer : LobbyUI
     public void EquipmentButton()
     {
         EquipmentItem equip = m_Item as EquipmentItem;
-        if (equip)
-        {
-            for (int i = 0; i < InventoryManager.Instance.EquipmentSlotCount(); ++i)
-            {
-                if (!InventoryManager.Instance.GetEquippedItem(i))
-                {
-                    InventoryManager.Instance.SetEquipmentItem(i, equip);
-                    m_EquipmentButton.SetActive(false);
-                    m_EquipmentOffButton.SetActive(true);
-                    return;
-                }
-            }
+        if (!equip) return;
 
-            EquipmentItem item = InventoryManager.Instance.GetEquippedItem(InventoryManager.Instance.EquipmentSlotCount() - 1);
-            if (item)
+        bool complete = false;
+        for (int i = 0; i < InventoryManager.Instance.EquipmentSlotCount(); ++i)
+        {
+            if (!InventoryManager.Instance.GetEquippedItem(i))
             {
-                InventoryManager.Instance.SetEquipmentItem(item.GetState().SlotNumber, null);
-                item.SetEquip(false);
+                InventoryManager.Instance.SetEquipmentItem(i, equip);
+                m_EquipmentButton.SetActive(false);
+                m_EquipmentOffButton.SetActive(true);
+                complete = true;
+                break;
             }
+        }
+
+        if (!complete)
+        {
+            InventoryManager.Instance.EquipmentOff(InventoryManager.Instance.EquipmentSlotCount() - 1);
             InventoryManager.Instance.SetEquipmentItem(InventoryManager.Instance.EquipmentSlotCount() - 1, equip);
             m_EquipmentButton.SetActive(false);
             m_EquipmentOffButton.SetActive(true);
         }
 
         m_LobbyCanvasUI.GetStatusUI().RefreshSlotDatas();
+        m_LobbyCanvasUI.GetInventoryUI().RefreshInventorySlotData();
     }
 
     public void EquipmentOffButton()
@@ -107,13 +133,12 @@ public class ItemDataViewer : LobbyUI
         EquipmentItem equip = m_Item as EquipmentItem;
         if (equip)
         {
-            InventoryManager.Instance.SetEquipmentItem(equip.GetState().SlotNumber, null);
-            equip.SetEquip(false);
-
+            InventoryManager.Instance.EquipmentOff(equip.GetState().SlotNumber);
             m_EquipmentButton.SetActive(true);
             m_EquipmentOffButton.SetActive(false);
         }
 
         m_LobbyCanvasUI.GetStatusUI().RefreshSlotDatas();
+        m_LobbyCanvasUI.GetInventoryUI().RefreshInventorySlotData();
     }
 }

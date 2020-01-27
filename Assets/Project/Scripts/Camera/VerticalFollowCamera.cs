@@ -64,6 +64,8 @@ public class VerticalFollowCamera : CameraSystem
         Instance.VerticalCameraWave(_Duration);
     }
 
+    static public Transform GetTransform() { return Instance.transform; }
+
     protected void VerticalCameraWave(float _Duration)
     {
         m_CameraWave = true;

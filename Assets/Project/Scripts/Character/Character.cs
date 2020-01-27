@@ -32,8 +32,17 @@ public class Character : Object
         ORIGIN,
     }
 
+    public enum E_CHARACTERTYPE
+    {
+        PLAYER,
+        NORMALNPC,
+        BOSSNPC,
+    }
+
     public E_TEAMTYPE m_Team;
     public E_STATE m_State;
+
+    protected E_CHARACTERTYPE m_CharacterType;
 
     public Animator m_Animator { get; private set; }
     protected NavMeshController m_NavMeshController = new NavMeshController();
@@ -150,6 +159,19 @@ public class Character : Object
     protected override void Start()
     {
         base.Start();
+
+        if (m_CharacterType == E_CHARACTERTYPE.BOSSNPC)
+        {
+
+        }
+        else
+        {
+            CharacterUI ui = Instantiate(Resources.Load<GameObject>("CharacterUI")).GetComponent<CharacterUI>();
+            if (ui)
+            {
+                ui.Initialize(this);
+            }
+        }
     }
 
     protected override void Update()
@@ -282,6 +304,8 @@ public class Character : Object
     public virtual void AttackMomentEvent()
     {
     }
+
+    public E_CHARACTERTYPE GetCharacterType() { return m_CharacterType; }
 
     public void SetFreeze(float _Time)
     {

@@ -10,13 +10,11 @@ public class IntroManager : MonoBehaviourPunCallbacks
         Application.targetFrameRate = 60;
 
         InventoryManager.Instance.LoadItemList();
-        NetworkManager.Instance.ServerConnet();
+        
     }
 
-    public override void OnJoinedLobby()
+    public void StartGame()
     {
-        base.OnJoinedLobby();
-
-        SceneManager.Instance.LoadScene("Scene_01");
+        SceneManager.Instance.LoadScene("LobbyScene");
     }
 }

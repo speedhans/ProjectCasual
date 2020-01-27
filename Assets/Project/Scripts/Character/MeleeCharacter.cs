@@ -8,6 +8,7 @@ public class MeleeCharacter : Character
     protected override void Awake()
     {
         base.Awake();
+        m_CharacterType = E_CHARACTERTYPE.NORMALNPC;
 
         SetAutoPlayLogic(AutoPlayLogic);
     }
@@ -16,18 +17,18 @@ public class MeleeCharacter : Character
     {
         if (m_AttackTarget != null)
         {
+            if (m_AttackTarget.m_Character.m_Live == E_LIVE.DEAD)
+            {
+                m_AttackTarget.m_Hate = 0.0f;
+                m_AttackTarget = null;
+                return;
+            }
+
             float distance = (m_AttackTarget.m_Character.transform.position - transform.position).magnitude;
             if (m_AttackRange >= distance) // 공격
             {
                 if (m_NavMeshController.IsUpdate())
                     m_NavMeshController.ClearPath();
-
-                if (m_AttackTarget.m_Character.m_Live == E_LIVE.DEAD)
-                {
-                    m_AttackTarget.m_Hate = 0.0f;
-                    m_AttackTarget = null;
-                    return;
-                }
 
                 transform.forward = m_AttackTarget.m_Character.transform.position - transform.position;
 

@@ -47,6 +47,14 @@ public enum E_TEAMTYPE
     YELLOW
 }
 
+public enum E_WEAPONTYPE
+{
+    NONE,
+    PUNCH,
+    ONEHANDSWORD,
+    TWOHANDSWORD,
+}
+
 public class Common
 {
     static public Color[] m_DamageColor = new Color[(int)E_DAMAGETYPE.MAX] {

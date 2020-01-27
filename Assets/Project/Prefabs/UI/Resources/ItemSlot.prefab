@@ -150,6 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0733eaeb6e08445a0e0645f196d1f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_OutlineBlack: {fileID: 21300000, guid: 425db0b5bc8c3de4e8f9f4a1a7056692, type: 3}
+  m_OutlineYellow: {fileID: 21300000, guid: ca5e17e434f7f5140a9ee9cc85f687b6, type: 3}
 --- !u!1 &7254399088372555892
 GameObject:
   m_ObjectHideFlags: 0

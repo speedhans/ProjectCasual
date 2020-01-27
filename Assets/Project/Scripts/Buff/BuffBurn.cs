@@ -6,8 +6,8 @@ using Photon.Pun;
 public class BuffBurn : Buff
 {
     public List<Fire> m_ListFire = new List<Fire>();
-    public BuffBurn(Object _Self, string _BuffName, int _BuffID, float _LifeTime) : 
-        base(_Self, _BuffName, _BuffID, _LifeTime)
+    public BuffBurn(Object _Self, string _BuffName, int _BuffID, Sprite _BuffIcon, float _LifeTime) : 
+        base(_Self, _BuffName, _BuffID, _BuffIcon, _LifeTime)
     {
         AddDataUpdateAction(DataUpdateEvent);
     }

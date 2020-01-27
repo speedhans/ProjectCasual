@@ -97,6 +97,13 @@ MonoBehaviour:
     Cut: 0
     Blunt: 0
     Pierce: 0
+  m_AddResistance:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   m_MaxCarbonization: 100
   m_HealthZeroIsDestroy: 0
   m_DestroyDelay: 0
@@ -105,7 +112,7 @@ MonoBehaviour:
   m_WeekPoint: []
   m_Team: 0
   m_State: 0
-  m_MovePerSpeed: 4
+  m_MovePerSpeed: 2
   m_RotatePerSpeed: 1000
   m_AttackDamage: 10
   m_AddAttackDamage:
@@ -115,7 +122,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  m_AttackSpeed: 5
+  m_AttackSpeed: 1
   m_AttackRange: 0.75
   m_CriticalChance: 10
   m_CriticalMuliply: 1.5
@@ -129,6 +136,10 @@ MonoBehaviour:
   m_ListPassiveSkill: []
   m_IsAutoPlay: 0
   m_AutoSearchRadius: 0
+  m_AnimatorControllers:
+  - {fileID: 9100000, guid: 0155b8d503e284843bb81417c2af2afa, type: 2}
+  - {fileID: 9100000, guid: 924df7d8113d2274f8e33fd64be2663d, type: 2}
+  - {fileID: 9100000, guid: 930b81670385e6b4b85b3953514cb8d4, type: 2}
 --- !u!114 &1540889292265552902
 MonoBehaviour:
   m_ObjectHideFlags: 0

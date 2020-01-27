@@ -48,20 +48,37 @@ MonoBehaviour:
   m_IsStockable: 0
   m_UsageCount: 0
   m_MaxUsageCount: 0
+  m_DefaultManual: "\uCCB4\uB825 &10&\uC99D\uAC00"
+  m_EffectManual: "\uACF5\uACA9\uC18D\uB3C4\uC640 \uC774\uB3D9\uC18D\uB3C4\uAC00
+    7\uCD08\uB3D9\uC548 2\uBC30 \uC99D\uAC00 : \uCFE8\uB2E4\uC6B4 14\uCD08"
+  m_ReinforceCount: 0
   m_ActiveSkillPrefab: {fileID: 1284206927837619394, guid: af14dcc3fdbc286439df7c728e55bd09,
     type: 3}
   m_PassiveSkillPrefabs: []
   m_WeaponPrefab: {fileID: 0}
+  m_WeaponType: 0
   m_ItemElement: 4
   m_FireDamage: 0
+  m_FireDamageReinforceBonus: 0
   m_IceDamage: 0
+  m_IceDamageReinforceBonus: 0
   m_ElectricDamage: 0
+  m_ElectricDamageReinforceBonus: 0
   m_CutDamage: 0
+  m_CutDamageReinforceBonus: 0
   m_BluntDamage: 0
+  m_BluntDamageReinforceBonus: 0
   m_PierceDamage: 0
+  m_PierceDamageReinforceBonus: 0
   m_AttackSpeed: 1
+  m_AttackSpeedReinforceBonus: 0
   m_AttackRange: 0
+  m_AttackRangeReinforceBonus: 0
   m_CriticalChance: 0
+  m_CriticalChanceReinforceBonus: 0
   m_CriticalMuliply: 0
+  m_CriticalMuliplyReinforceBonus: 0
   m_Health: 50
+  m_HealthReinforceBonus: 0
   m_HealthRegeneration: 0
+  m_HealthRegenerationReinforceBonus: 0

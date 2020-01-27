@@ -12,8 +12,8 @@ public class BuffDamageUp : Buff
 
     GameObject m_Effect;
 
-    public BuffDamageUp(Object _Self, string _BuffName, int _BuffID, float _LifeTime, float _AddDamage, E_DAMAGETYPE _Type, string _EffectPath, Character.E_ATTACHPOINT _Point) : 
-        base(_Self, _BuffName, _BuffID, _LifeTime)
+    public BuffDamageUp(Object _Self, string _BuffName, int _BuffID, Sprite _BuffIcon, float _LifeTime, float _AddDamage, E_DAMAGETYPE _Type, string _EffectPath, Character.E_ATTACHPOINT _Point) : 
+        base(_Self, _BuffName, _BuffID, _BuffIcon, _LifeTime)
     {
         m_AddDamage = _AddDamage;
         m_Type = _Type;
@@ -46,6 +46,12 @@ public class BuffDamageUp : Buff
 
     public override void DataUpdateEvent(object[] _Value)
     {
+        Character c = m_ParentObject as Character;
+        if (c)
+        {
+            c.m_AddAttackDamage[(int)m_Type] -= m_IncreaseDamage;
+            m_IncreaseDamage = 0;
+        }
         m_AddDamage = (float)_Value[1];
         m_Type = (E_DAMAGETYPE)_Value[2];
         m_EffectPath = (string)_Value[3];
@@ -72,11 +78,8 @@ public class BuffDamageUp : Buff
         }
 
         c.m_AddAttackDamage[(int)m_Type] -= m_IncreaseDamage;
-
         float fixeddmg = c.m_AddAttackDamage[(int)m_Type] + m_AddDamage;
-
         m_IncreaseDamage = fixeddmg - c.m_AddAttackDamage[(int)m_Type];
-
         c.m_AddAttackDamage[(int)m_Type] = fixeddmg;
     }
 }

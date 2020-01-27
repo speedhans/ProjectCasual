@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8481002503216315525}
   - component: {fileID: 808295413983230302}
   m_Layer: 0
-  m_Name: ChargeBlast
+  m_Name: SK_ChargeBlast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkillName: PoisonBlast
-  m_Image: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Image: {fileID: 21300000, guid: e78f28cecac641a4c85a22ebe9d4afbe, type: 3}
   m_MaxCooldown: 12
   m_CurrentCooldown: 0
   m_UseEffect: {fileID: 0}

@@ -25,6 +25,9 @@ public class Skill : MonoBehaviour
     protected GameObject m_UseEffect;
     [SerializeField]
     protected Vector3 m_EffectLocalPosition;
+    [SerializeField]
+    [TextArea]
+    protected string m_SkillManual;
 
     protected virtual void Awake()
     {
@@ -106,4 +109,6 @@ public class Skill : MonoBehaviour
         else
             return (_Caster.m_AttackDamage + _Caster.m_AddAttackDamage[(int)_Caster.m_AttackType] + _Caster.m_AddAttackDamage[(int)_DamageType]) * _SkillDamageMultiply; // 타입이 다른 공격일때 공식
     }
+
+    public string GetManualText() { return m_SkillManual; }
 }

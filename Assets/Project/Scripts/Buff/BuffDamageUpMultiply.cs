@@ -12,8 +12,8 @@ public class BuffDamageUpMultiply : Buff
 
     GameObject m_Effect;
 
-    public BuffDamageUpMultiply(Object _Self, string _BuffName, int _BuffID, float _LifeTime, float _AddDamage, E_DAMAGETYPE _Type, string _EffectPath, Character.E_ATTACHPOINT _Point) :
-        base(_Self, _BuffName, _BuffID, _LifeTime)
+    public BuffDamageUpMultiply(Object _Self, string _BuffName, int _BuffID, Sprite _BuffIcon, float _LifeTime, float _AddDamage, E_DAMAGETYPE _Type, string _EffectPath, Character.E_ATTACHPOINT _Point) :
+        base(_Self, _BuffName, _BuffID, _BuffIcon, _LifeTime)
     {
         m_MultiplyDamage = _AddDamage;
         m_Type = _Type;
@@ -46,6 +46,13 @@ public class BuffDamageUpMultiply : Buff
 
     public override void DataUpdateEvent(object[] _Value)
     {
+        Character c = m_ParentObject as Character;
+        if (c)
+        {
+            c.m_AddAttackDamage[(int)m_Type] -= m_IncreaseDamage;
+            m_IncreaseDamage = 0;
+        }
+
         m_MultiplyDamage = (float)_Value[1];
         m_Type = (E_DAMAGETYPE)_Value[2];
         m_EffectPath = (string)_Value[3];
@@ -72,13 +79,9 @@ public class BuffDamageUpMultiply : Buff
         }
 
         c.m_AttackDamage -= m_IncreaseDamage;
-
         float typedamage = c.m_AttackDamage + c.m_AddAttackDamage[(int)m_Type];
-
         float fixeddmg = typedamage * m_MultiplyDamage;
-
         m_IncreaseDamage = fixeddmg - typedamage;
-
         c.m_AttackDamage = fixeddmg;
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6827787788263485706}
   - component: {fileID: 878969141257762535}
   m_Layer: 0
-  m_Name: SK_PhalanxFireAdd
+  m_Name: SK_PhalanxFireA30
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,11 +67,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkillName: PhalanxA
-  m_Image: {fileID: 21300000, guid: 1815ea71c4e799e45b0db8899c240c4a, type: 3}
+  m_Image: {fileID: 21300000, guid: e7b3aa8e8d9db0b4892d8ad9d0230144, type: 3}
   m_MaxCooldown: 30
   m_CurrentCooldown: 0
   m_UseEffect: {fileID: 0}
   m_EffectLocalPosition: {x: 0, y: 0, z: 0}
+  m_SkillManual: "\uC8FC\uBCC0 \uC544\uAD70\uC758 \uBD88\uC18D\uC131 \uBC29\uC5B4\uB825\uC744
+    10\uCD08\uB3D9\uC548 30\uB9CC\uD07C \uC99D\uAC00 : \uCFE8\uB2E4\uC6B4 30\uCD08"
   m_Radius: 5
   m_Type: 0
   m_Duration: 10

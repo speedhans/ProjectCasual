@@ -5,11 +5,14 @@ using Photon.Pun;
 
 public class PlayerCharacter : HumanoidCharacter
 {
+    [SerializeField]
+    RuntimeAnimatorController[] m_AnimatorControllers;
+
     public bool m_IsPlayerCharacterInitializeComplete { get; protected set; }
     protected override void Awake()
     {
         base.Awake();
-
+        m_CharacterType = E_CHARACTERTYPE.PLAYER;
         if (true)
             GameManager.Instance.m_MyCharacter = this;
 
@@ -41,7 +44,7 @@ public class PlayerCharacter : HumanoidCharacter
             if (weapon)
             {
                 m_AttackType = item.m_ItemElement;
-                AttachWeapon(weapon.name);
+                AttachWeapon(weapon.name, item.GetWeaponType());
                 break;
             }
         }
@@ -77,15 +80,15 @@ public class PlayerCharacter : HumanoidCharacter
         base.Update();
     }
 
-    public void AttachWeapon(string _WeaponPath)
+    public void AttachWeapon(string _WeaponPath, E_WEAPONTYPE _WeaponType)
     {
         if (m_RightHandAxis == null) return;
 
-        m_PhotonView.RPC("AttachWeapon_RPC", Photon.Pun.RpcTarget.AllBuffered, _WeaponPath);
+        m_PhotonView.RPC("AttachWeapon_RPC", Photon.Pun.RpcTarget.AllBuffered, _WeaponPath, (int)_WeaponType);
     }
 
     [PunRPC]
-    protected void AttachWeapon_RPC(string _WeaponPath)
+    protected void AttachWeapon_RPC(string _WeaponPath, int _WeaponType)
     {
         if (m_RightHandAxis == null) return;
 
@@ -95,7 +98,28 @@ public class PlayerCharacter : HumanoidCharacter
             weapon.transform.SetParent(m_RightHandAxis);
             weapon.transform.localPosition = Vector3.zero;
             weapon.transform.localRotation = Quaternion.identity;
+            SwitchAnimator((E_WEAPONTYPE)_WeaponType);
         }
+    }
+
+    void SwitchAnimator(E_WEAPONTYPE _Type)
+    {
+        RuntimeAnimatorController anim = FindAnimator(_Type.ToString());
+        if (anim)
+            m_Animator.runtimeAnimatorController = anim;
+    }
+
+    RuntimeAnimatorController FindAnimator(string _Name)
+    {
+        for (int i = 0; i < m_AnimatorControllers.Length; ++i)
+        {
+            if (m_AnimatorControllers[i].name.Contains(_Name))
+            {
+                return m_AnimatorControllers[i];
+            }
+        }
+
+        return null;
     }
 
     public void MoveDirection2D(Vector2 _Direction)
@@ -143,7 +167,6 @@ public class PlayerCharacter : HumanoidCharacter
             SetStateAndAnimation(E_ANIMATION.ATTACK, 0.25f, 1.0f, 0.0f);
 
             StartCoroutine(C_AttackStep(_Forward, m_AttackSpeed));
-            VerticalFollowCamera.CameraWave(1.0f / m_AttackSpeed);
 
             return true;
         }
@@ -165,6 +188,7 @@ public class PlayerCharacter : HumanoidCharacter
 
         if (m_AttackTarget == null) return;
 
+        VerticalFollowCamera.CameraWave(Mathf.Clamp(1.0f / m_AttackSpeed * 0.5f, 0.0f, 0.3f));
         m_AttackTarget.m_Character.GiveToDamage(GetDamages(), this);
     }
 

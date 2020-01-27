@@ -67,11 +67,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SkillName: FlameBlast
-  m_Image: {fileID: 21300000, guid: e32b8056f5f2eb741bec42f791c7f1b5, type: 3}
+  m_Image: {fileID: 21300000, guid: 021c370bf24bd26479f3474c5de9833b, type: 3}
   m_MaxCooldown: 7
   m_CurrentCooldown: 0
   m_UseEffect: {fileID: 0}
   m_EffectLocalPosition: {x: 0, y: 0, z: 0}
+  m_SkillManual: "\uACF5\uACA9\uB825\uC758 5\uBC30\uC758 \uD53C\uD574\uB97C \uC785\uD788\uB294
+    \uD654\uC5FC\uAD6C\uB97C \uC804\uBC29\uC73C\uB85C \uBC29\uCD9C : \uCFE8\uB2E4\uC6B4
+    7\uCD08"
   m_DamageMultiply: 5
   m_SubPrefab: {fileID: 1064600686122875318, guid: 7e2258bfbdb1ed04b92fd017551c8fe7,
     type: 3}

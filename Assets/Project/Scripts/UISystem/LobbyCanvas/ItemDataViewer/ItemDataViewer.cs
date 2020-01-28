@@ -21,7 +21,28 @@ public class ItemDataViewer : LobbyUI
     [SerializeField]
     GameObject m_EquipmentOffButton;
 
+    [SerializeField]
+    Sprite m_StarBlack;
+    [SerializeField]
+    Sprite m_StarGold;
+    UnityEngine.UI.Image[] m_Stars;
+    [SerializeField]
+    InventoryViewer m_InventoryViewer;
+
     Item m_Item;
+
+    public override void Initialize(LobbyCanvasUI _LobbyCanvasUI)
+    {
+        base.Initialize(_LobbyCanvasUI);
+
+        m_Stars = new UnityEngine.UI.Image[Common.MAXREINFORECEVALUE];
+        for (int i = 0; i < Common.MAXREINFORECEVALUE; ++i)
+        {
+            m_Stars[i] = transform.Find("Background/Star " + (i + 1).ToString()).GetComponent<UnityEngine.UI.Image>();
+        }
+
+        m_InventoryViewer.Initialize(_LobbyCanvasUI);
+    }
 
     public void SetData(Item _Item)
     {
@@ -32,7 +53,7 @@ public class ItemDataViewer : LobbyUI
         if (m_Item.m_IsStockable)
         {
             m_StockText.gameObject.SetActive(true);
-            m_StockText.text = "보유수: " + m_Item.m_UsageCount.ToString();
+            m_StockText.text = "보유수: " + m_Item.m_StockCount.ToString();
         }
         else
         {
@@ -44,6 +65,14 @@ public class ItemDataViewer : LobbyUI
             EquipmentItem eitem = m_Item as EquipmentItem;
             if (eitem)
             {
+                for (int i = 0; i < Common.MAXREINFORECEVALUE; ++i)
+                {
+                    if (eitem.GetReinforceCount() > i)
+                        m_Stars[i].sprite = m_StarGold;
+                    else
+                        m_Stars[i].sprite = m_StarBlack;
+                }
+
                 if (eitem.GetState().IsEquip)
                 {
                     m_EquipmentButton.SetActive(false);
@@ -81,6 +110,9 @@ public class ItemDataViewer : LobbyUI
         }
         else
         {
+            m_EquipmentButton.SetActive(false);
+            m_EquipmentOffButton.SetActive(false);
+
             m_DefaultManualText.text = m_Item.m_DefaultManual;
             m_EffectManualText.text = "";
         }
@@ -140,5 +172,10 @@ public class ItemDataViewer : LobbyUI
 
         m_LobbyCanvasUI.GetStatusUI().RefreshSlotDatas();
         m_LobbyCanvasUI.GetInventoryUI().RefreshInventorySlotData();
+    }
+
+    public void ReinforceMenuButton()
+    {
+        m_InventoryViewer.InventoryOpenTheTypeToID(m_Item.m_ItemID, new int[] { m_Item.m_UniqueID });
     }
 }

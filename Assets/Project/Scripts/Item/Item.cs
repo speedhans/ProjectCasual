@@ -21,14 +21,14 @@ public class Item : MonoBehaviour
 
     public S_EQUIP m_EquipState;
 
-    public int m_ItemID { get; private set; }
-    public int m_UniqueID { get; private set; }
+    public int m_ItemID;
+    public int m_UniqueID;
     public string m_ItemName;
     public Sprite m_ItemImage;
 
     public bool m_IsStockable = false;
-    public int m_UsageCount = 1;
-    public int m_MaxUsageCount = 1;
+    public int m_StockCount = 1;
+    public int m_MaxStockCount = 1;
 
     [TextArea]
     public string m_DefaultManual;

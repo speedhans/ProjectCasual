@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class InventoryUI : LobbyUI
 {
-    [SerializeField]
-    InventoryByTypeUI m_ItemInventory;
-
     public override void Initialize(LobbyCanvasUI _LobbyCanvasUI)
     {
         base.Initialize(_LobbyCanvasUI);
-
-        m_ItemInventory.Initialize(_LobbyCanvasUI);
     }
 
     public override void Open()
@@ -19,7 +14,7 @@ public class InventoryUI : LobbyUI
         base.Open();
         gameObject.SetActive(true);
 
-        m_ItemInventory.InventoryOpen();
+        m_LobbyCanvasUI.GetInventoryViewer().InventoryOpen();
     }
 
     public override void Close()
@@ -30,11 +25,11 @@ public class InventoryUI : LobbyUI
 
     public void RefreshInventoryAllData()
     {
-        m_ItemInventory.Refresh();
+        m_LobbyCanvasUI.GetInventoryViewer().Refresh();
     }
 
     public void RefreshInventorySlotData()
     {
-        m_ItemInventory.RefreshSlots();
+        m_LobbyCanvasUI.GetInventoryViewer().RefreshSlots();
     }
 }

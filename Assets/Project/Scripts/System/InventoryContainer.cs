@@ -15,15 +15,15 @@ public class InventoryContainer : MonoBehaviour
             {
                 for (int i = 0; i < list.Count; ++i)
                 {
-                    if (_Item.m_UsageCount < 1) return;
+                    if (_Item.m_StockCount < 1) return;
 
-                    if (list[i].m_UsageCount < list[i].m_MaxUsageCount)
+                    if (list[i].m_StockCount < list[i].m_MaxStockCount)
                     {
-                        list[i].m_UsageCount += _Item.m_UsageCount;
-                        if (list[i].m_UsageCount > list[i].m_MaxUsageCount)
+                        list[i].m_StockCount += _Item.m_StockCount;
+                        if (list[i].m_StockCount > list[i].m_MaxStockCount)
                         {
-                            _Item.m_UsageCount = list[i].m_MaxUsageCount - list[i].m_UsageCount;
-                            list[i].m_UsageCount = list[i].m_MaxUsageCount;
+                            _Item.m_StockCount = list[i].m_MaxStockCount - list[i].m_StockCount;
+                            list[i].m_StockCount = list[i].m_MaxStockCount;
                         }
                         else
                         {
@@ -80,7 +80,7 @@ public class InventoryContainer : MonoBehaviour
         return null;
     }
 
-    public List<Item> FindItem(int _ItemID)
+    public List<Item> FindItemsToID(int _ItemID)
     {
         List<Item> list;
         if (m_DicItemData.TryGetValue(_ItemID, out list))

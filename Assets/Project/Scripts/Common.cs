@@ -70,6 +70,8 @@ public class Common
 
     static public int OBJECTLAYERMASK = 1 << STATIC_LAYER | 1 << DYNAMIC_LAYER | 1 << ATTACHED_LAYER | 1 << CHARACTER_LAYER;
 
+    public const int MAXREINFORECEVALUE = 4;
+
     static public Texture2D CreateNewTextureAtlas(Texture2D[] _Source, int _SizeXY)
     {
         Texture2D texture = new Texture2D(_SizeXY, _SizeXY, TextureFormat.ARGB32, true);

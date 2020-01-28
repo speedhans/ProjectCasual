@@ -5,6 +5,12 @@ using UnityEngine.EventSystems;
 
 public class EquipmentSlotUI : CustomTouchEvent
 {
+    [SerializeField]
+    Sprite m_StarBlack;
+    [SerializeField]
+    Sprite m_StarGold;
+    UnityEngine.UI.Image[] m_Stars;
+
     LobbyCanvasUI m_LobbyCanvasUI;
 
     EquipmentItem m_Item;
@@ -14,6 +20,12 @@ public class EquipmentSlotUI : CustomTouchEvent
     {
         m_LobbyCanvasUI = _LobbyCanvasUI;
         m_ItemImage = transform.Find("ItemImage").GetComponent<UnityEngine.UI.Image>();
+
+        m_Stars = new UnityEngine.UI.Image[Common.MAXREINFORECEVALUE];
+        for (int i = 0; i < Common.MAXREINFORECEVALUE; ++i)
+        {
+            m_Stars[i] = transform.Find("Star " + (i + 1).ToString()).GetComponent<UnityEngine.UI.Image>();
+        }
     }
 
     public override void OnPointerDown(PointerEventData eventData) // 장비 목록 보는 작업 필요
@@ -34,5 +46,13 @@ public class EquipmentSlotUI : CustomTouchEvent
             m_ItemImage.sprite = m_Item.m_ItemImage;
         else
             m_ItemImage.sprite = null;
+
+        for (int i = 0; i < Common.MAXREINFORECEVALUE; ++i)
+        {
+            if (m_Item.GetReinforceCount() > i)
+                m_Stars[i].sprite = m_StarGold;
+            else
+                m_Stars[i].sprite = m_StarBlack;
+        }
     }
 }

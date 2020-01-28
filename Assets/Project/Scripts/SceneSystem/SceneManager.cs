@@ -60,7 +60,6 @@ public class SceneManager : MonoBehaviour
             {
                 if (Photon.Pun.PhotonNetwork.IsConnectedAndReady && Photon.Pun.PhotonNetwork.InLobby)
                 {
-                    Debug.Log("check!!");
                     networkconnet = true;
                     progress += 0.4f;
                 }

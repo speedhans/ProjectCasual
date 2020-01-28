@@ -6,8 +6,6 @@ public class StatusUI : LobbyUI
 {
     [SerializeField]
     CharacterPreviewUI m_CharacterPreviewUI;
-    [SerializeField]
-    InventoryByTypeUI m_EquipmentItemInventory;
 
     EquipmentSlotUI[] m_EquipmentSlotUI = new EquipmentSlotUI[3];
 
@@ -16,7 +14,6 @@ public class StatusUI : LobbyUI
         base.Initialize(_LobbyCanvasUI);
 
         m_CharacterPreviewUI.Initialize();
-        m_EquipmentItemInventory.Initialize(_LobbyCanvasUI);
 
         for (int i = 0; i < 3; ++i)
         {

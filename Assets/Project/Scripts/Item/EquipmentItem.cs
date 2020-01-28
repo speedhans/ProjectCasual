@@ -139,6 +139,8 @@ public class EquipmentItem : Item
             {
                 strAry[i] = m_PassiveSkillPrefabs[i].GetComponent<Skill>().GetManualText();
             }
+
+            return strAry;
         }
         return null;
     }

@@ -86,6 +86,10 @@ public class InventoryManager : MonoBehaviour
     {
         return m_InventoryContainer.GetTypeItemList(_Type);
     }
+    public List<Item> GetTypeItemList(int _ItemID)
+    {
+        return m_InventoryContainer.FindItemsToID(_ItemID);
+    }
 
     public void InserItem(Item _Item)
     {

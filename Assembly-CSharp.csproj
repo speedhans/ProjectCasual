@@ -157,9 +157,9 @@
     <Compile Include="Assets\Project\Scripts\UISystem\DefaultUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\CharacterPreviewUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\EquipmentSlotUI.cs" />
-    <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\Inventory\InventoryByTypeUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\Inventory\InventorySlot.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\Inventory\InventoryUI.cs" />
+    <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\Inventory\InventoryViewer.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\ItemDataViewer\ItemDataViewer.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\LobbyCanvasUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\LobbyDefaultUI.cs" />

@@ -17,6 +17,9 @@ public class LobbyCanvasUI : MonoBehaviour
     [SerializeField]
     protected LobbyDefaultUI m_LobbyDefaultUI;
 
+    [SerializeField]
+    protected InventoryViewer m_InventoryViewer;
+
     List<LobbyUI> m_ListLobbyUIDepth = new List<LobbyUI>();
 
     private void Awake()
@@ -39,6 +42,9 @@ public class LobbyCanvasUI : MonoBehaviour
         if (!m_ItemDataViewer)
             transform.Find("ItemDataViewer").GetComponent<ItemDataViewer>();
         m_ItemDataViewer.Initialize(this);
+        if (!m_InventoryViewer)
+            transform.Find("InventoryViewer").GetComponent<InventoryViewer>();
+        m_InventoryViewer.Initialize(this);
     }
 
     public StatusUI GetStatusUI() { return m_StatusUI; }
@@ -51,6 +57,7 @@ public class LobbyCanvasUI : MonoBehaviour
 
     public ItemDataViewer GetItemDataViewer() { return m_ItemDataViewer; }
     public LobbyDefaultUI GetLobbyDefaultUI() { return m_LobbyDefaultUI; }
+    public InventoryViewer GetInventoryViewer() { return m_InventoryViewer; }
     public void ResetUIDepth() 
     {
         LobbyUI[] uis = m_ListLobbyUIDepth.ToArray();

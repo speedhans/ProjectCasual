@@ -24,4 +24,9 @@ public class LobbyUI : DefaultUI
 
         m_LobbyCanvasUI.SubUIDepth(this);
     }
+
+    public virtual void Refresh()
+    {
+
+    }
 }

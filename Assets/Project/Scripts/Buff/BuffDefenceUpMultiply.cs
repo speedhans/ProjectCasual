@@ -30,8 +30,10 @@ public class BuffDefenceUpMultiply : Buff
         DefenceUp();
     }
 
-    public override void DataUpdateEvent(object[] _Value)
+    public override void DataUpdate(object[] _Value)
     {
+        base.DataUpdate(_Value);
+
         Character c = m_ParentObject as Character;
         if (c)
         {
@@ -53,10 +55,6 @@ public class BuffDefenceUpMultiply : Buff
         }
 
         DefenceUp();
-    }
-
-    protected override void Action(float _DeltaTime)
-    {
     }
 
     public override void Destroy()

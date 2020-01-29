@@ -5,6 +5,8 @@ using TMPro;
 
 public class ItemDataViewer : LobbyUI
 {
+    static public ItemDataViewer DefaultInstance;
+
     [SerializeField]
     TMP_Text m_NameText;
     [SerializeField]
@@ -35,6 +37,8 @@ public class ItemDataViewer : LobbyUI
     {
         base.Initialize(_LobbyCanvasUI);
 
+        DefaultInstance = this;
+
         m_Stars = new UnityEngine.UI.Image[Common.MAXREINFORECEVALUE];
         for (int i = 0; i < Common.MAXREINFORECEVALUE; ++i)
         {
@@ -42,6 +46,15 @@ public class ItemDataViewer : LobbyUI
         }
 
         m_InventoryViewer.Initialize(_LobbyCanvasUI);
+    }
+
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        if (!m_Item) return;
+
+        SetData(m_Item);
     }
 
     public void SetData(Item _Item)
@@ -156,7 +169,7 @@ public class ItemDataViewer : LobbyUI
             m_EquipmentOffButton.SetActive(true);
         }
 
-        m_LobbyCanvasUI.GetStatusUI().RefreshSlotDatas();
+        m_LobbyCanvasUI.GetStatusUI().Refresh();
         m_LobbyCanvasUI.GetInventoryUI().RefreshInventorySlotData();
     }
 
@@ -170,7 +183,7 @@ public class ItemDataViewer : LobbyUI
             m_EquipmentOffButton.SetActive(false);
         }
 
-        m_LobbyCanvasUI.GetStatusUI().RefreshSlotDatas();
+        m_LobbyCanvasUI.GetStatusUI().Refresh();
         m_LobbyCanvasUI.GetInventoryUI().RefreshInventorySlotData();
     }
 
@@ -178,4 +191,6 @@ public class ItemDataViewer : LobbyUI
     {
         m_InventoryViewer.InventoryOpenTheTypeToID(m_Item.m_ItemID, new int[] { m_Item.m_UniqueID });
     }
+
+    public Item GetCurrentTargetItem() { return m_Item; }
 }

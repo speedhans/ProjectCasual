@@ -42,13 +42,20 @@ public class EquipmentSlotUI : CustomTouchEvent
     public void SetData(EquipmentItem _Item)
     {
         m_Item = _Item;
-        if (m_Item != null)
-            m_ItemImage.sprite = m_Item.m_ItemImage;
-        else
+        if (!m_Item)
+        {
             m_ItemImage.sprite = null;
+            for (int i = 0; i < Common.MAXREINFORECEVALUE; ++i)
+            {
+                m_Stars[i].gameObject.SetActive(false);
+            }
+            return;
+        }
 
+        m_ItemImage.sprite = m_Item.m_ItemImage;
         for (int i = 0; i < Common.MAXREINFORECEVALUE; ++i)
         {
+            m_Stars[i].gameObject.SetActive(true);
             if (m_Item.GetReinforceCount() > i)
                 m_Stars[i].sprite = m_StarGold;
             else

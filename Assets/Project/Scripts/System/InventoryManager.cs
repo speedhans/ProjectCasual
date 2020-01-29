@@ -56,6 +56,16 @@ public class InventoryManager : MonoBehaviour
         }
 
         o = Instantiate(Resources.Load<GameObject>("Boots"));
+        o.GetComponent<Item>().m_UniqueID = Random.Range(0, 10000);
+        InserItem(o.GetComponent<Item>());
+        o = Instantiate(Resources.Load<GameObject>("Boots"));
+        o.GetComponent<Item>().m_UniqueID = Random.Range(0, 10000);
+        InserItem(o.GetComponent<Item>());
+        o = Instantiate(Resources.Load<GameObject>("Boots"));
+        o.GetComponent<Item>().m_UniqueID = Random.Range(0, 10000);
+        InserItem(o.GetComponent<Item>());
+        o = Instantiate(Resources.Load<GameObject>("Boots"));
+        o.GetComponent<Item>().m_UniqueID = Random.Range(0, 10000);
         InserItem(o.GetComponent<Item>());
     }
 
@@ -94,5 +104,15 @@ public class InventoryManager : MonoBehaviour
     public void InserItem(Item _Item)
     {
         m_InventoryContainer.InsertItem(_Item);
+    }
+
+    public void DestroyItem(Item _Item)
+    {
+        m_InventoryContainer.DeleteItem(_Item);
+    }
+
+    public void DestroyItem(int _ItemID, int _UniqueID)
+    {
+        m_InventoryContainer.DeleteItem(_ItemID, _UniqueID);
     }
 }

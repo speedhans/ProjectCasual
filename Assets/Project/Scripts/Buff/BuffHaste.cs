@@ -10,16 +10,11 @@ public class BuffHaste : Buff
     public BuffHaste(Object _Self, string _BuffName, int _BuffID, Sprite _BuffIcon, float _LifeTime, float _MultiplySpeed) :
     base(_Self, _BuffName, _BuffID, _BuffIcon, _LifeTime)
     {
-        AddDataUpdateAction(DataUpdateEvent);
         m_MultiplySpeed = _MultiplySpeed;
 
         Haste();
     }
 
-    protected override void Action(float _DeltaTime)
-    {
-        
-    }
 
     public override void Destroy()
     {
@@ -31,8 +26,10 @@ public class BuffHaste : Buff
         c.m_MovePerSpeed -= m_IncreaseMoveSpeed;
     }
 
-    public override void DataUpdateEvent(object[] _Value)
+    public override void DataUpdate(object[] _Value)
     {
+        base.DataUpdate(_Value);
+
         m_MultiplySpeed = (float)_Value[1];
         Haste();
     }

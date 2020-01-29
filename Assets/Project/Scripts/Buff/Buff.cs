@@ -5,11 +5,16 @@ using Photon.Pun;
 
 public enum E_BUFF
 {
+    NONE = -1,
     HASTE,
     DAMAGEUP,
     DAMAGEUPMULTI,
     DEFENCEUP,
     DEFENCEMULTI,
+    DAMAGEDOWN,
+    DAMAGEDOWNMULTI,
+    DEFENCEDOWN,
+    DEFENCEDOWNMULTI,
 }
 
 public abstract class Buff
@@ -21,8 +26,6 @@ public abstract class Buff
     public float m_LifeTime;
     float m_MaxLifeTime;
     public Sprite m_BuffIcon { get; protected set; }
-    System.Action<float> m_BuffAction;
-    System.Action<object[]> m_DataUpdateEvent;
 
     public Buff(Object _Self, string _BuffName, int _BuffID, Sprite _BuffIcon, float _LifeTime)
     {
@@ -34,30 +37,17 @@ public abstract class Buff
         m_BuffIcon = _BuffIcon;
     }
 
-    public void Update(float _DeltaTime)
+    public virtual void Update(float _DeltaTime)
     {
         m_LifeTime -= _DeltaTime;
-        m_BuffAction?.Invoke(_DeltaTime);
-    }
-
-    /// <param name="_Action"> input value is deltatime </param>
-    protected void AddAction(System.Action<float> _Action)
-    {
-        m_BuffAction += _Action;
     }
 
     public void ResetLifeTime() { m_LifeTime = m_MaxLifeTime; }
 
-    protected abstract void Action(float _DeltaTime);
-    protected void AddDataUpdateAction(System.Action<object[]> _Function) { m_DataUpdateEvent += _Function; }
-
-    public void DataUpdate(object[] _Value)
+    public virtual void DataUpdate(object[] _Value)
     {
         m_LifeTime = (float)_Value[0];
-        m_DataUpdateEvent?.Invoke(_Value);
     }
-
-    public abstract void DataUpdateEvent(object[] _Value);
 
     public virtual void Destroy()
     {

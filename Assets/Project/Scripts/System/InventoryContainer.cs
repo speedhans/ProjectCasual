@@ -56,7 +56,29 @@ public class InventoryContainer : MonoBehaviour
             {
                 if (list[i].m_UniqueID == _UniqueID)
                 {
+                    Item item = list[i];
                     list.RemoveAt(i);
+                    item.IsDestoryed = true;
+                    Destroy(item.gameObject);
+                    return;
+                }
+            }
+        }
+    }
+
+    public void DeleteItem(Item _Item)
+    {
+        List<Item> list;
+        if (m_DicItemData.TryGetValue(_Item.m_ItemID, out list))
+        {
+            for (int i = 0; i < list.Count; ++i)
+            {
+                if (list[i].m_UniqueID == _Item.m_UniqueID)
+                {
+                    Item item = list[i];
+                    list.RemoveAt(i);
+                    item.IsDestoryed = true;
+                    Destroy(item.gameObject);
                     return;
                 }
             }
@@ -85,7 +107,12 @@ public class InventoryContainer : MonoBehaviour
         List<Item> list;
         if (m_DicItemData.TryGetValue(_ItemID, out list))
         {
-            return list;
+            List<Item> req = new List<Item>();
+            for (int i = 0; i < list.Count; ++i)
+            {
+                req.Add(list[i]);
+            }
+            return req;
         }
 
         return null;
@@ -122,5 +149,16 @@ public class InventoryContainer : MonoBehaviour
         }
 
         return list;
+    }
+
+    public int GetAllItemCount()
+    {
+        int count = 0;
+        foreach(List<Item> l in m_DicItemData.Values)
+        {
+            count += l.Count;
+        }
+
+        return count;
     }
 }

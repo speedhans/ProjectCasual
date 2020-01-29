@@ -43,14 +43,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 916326f5e0a43b04c974bd207d5ef154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_ItemID: 0
+  m_UniqueID: 0
   m_ItemName: Boots
   m_ItemImage: {fileID: 21300000, guid: e420c5bc93cb2604695a893500c897e3, type: 3}
   m_IsStockable: 0
-  m_UsageCount: 0
-  m_MaxUsageCount: 0
+  m_StockCount: 1
+  m_MaxStockCount: 1
   m_DefaultManual: "\uCCB4\uB825 &10&\uC99D\uAC00"
-  m_EffectManual: "\uACF5\uACA9\uC18D\uB3C4\uC640 \uC774\uB3D9\uC18D\uB3C4\uAC00
-    7\uCD08\uB3D9\uC548 2\uBC30 \uC99D\uAC00 : \uCFE8\uB2E4\uC6B4 14\uCD08"
+  IsDestoryed: 0
   m_ReinforceCount: 0
   m_ActiveSkillPrefab: {fileID: 1284206927837619394, guid: af14dcc3fdbc286439df7c728e55bd09,
     type: 3}
@@ -79,6 +80,6 @@ MonoBehaviour:
   m_CriticalMuliply: 0
   m_CriticalMuliplyReinforceBonus: 0
   m_Health: 50
-  m_HealthReinforceBonus: 0
+  m_HealthReinforceBonus: 20
   m_HealthRegeneration: 0
   m_HealthRegenerationReinforceBonus: 0

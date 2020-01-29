@@ -32,6 +32,8 @@ public class Item : MonoBehaviour
 
     [TextArea]
     public string m_DefaultManual;
+    [HideInInspector]
+    public bool IsDestoryed = false;
 
     System.Action m_UseAction;
 

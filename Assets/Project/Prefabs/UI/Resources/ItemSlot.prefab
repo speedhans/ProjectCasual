@@ -236,7 +236,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: -41026938601492177}
-        m_MethodName: ItemDataView
+        m_MethodName: SlotClickEvent
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -460,11 +460,6 @@ MonoBehaviour:
   m_OutlineYellow: {fileID: 21300000, guid: ca5e17e434f7f5140a9ee9cc85f687b6, type: 3}
   m_StarBlack: {fileID: 21300000, guid: 9429491826f68ac4eb34ebd1b0d79606, type: 3}
   m_StarGold: {fileID: 21300000, guid: ee4f747ffd61384448ecbf58bf640523, type: 3}
-  m_Stars:
-  - {fileID: 5087169802953713476}
-  - {fileID: 3387731370620172603}
-  - {fileID: 7901021259104445334}
-  - {fileID: 1266842644185124281}
   m_StockCount: {fileID: 89627941942633769}
 --- !u!1 &7254399088372555892
 GameObject:

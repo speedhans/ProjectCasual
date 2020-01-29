@@ -47,11 +47,6 @@ public class Object : RootComponent
     [Header("Added Resistance Values")]
     public float[] m_AddResistance = new float[(int)E_DAMAGETYPE.MAX];
 
-    [SerializeField]
-    protected float m_MaxCarbonization = 100.0f;
-    protected float m_Carbonization;
-    bool m_CarbonizationRegeneration = false;
-
     List<Buff> m_ListBuff = new List<Buff>();
     List<Object> m_ListLinkedObject = new List<Object>();
     System.Action m_LinkAction;
@@ -203,6 +198,7 @@ public class Object : RootComponent
                 }
             }
         }
+        if (types.Count < 1) return;
 
         if (PhotonNetwork.IsConnectedAndReady && _Self != null)
         {
@@ -390,36 +386,11 @@ public class Object : RootComponent
 
     void RegenerationResistance(float _DeltaTime)
     {
-        if (m_CarbonizationRegeneration && m_Carbonization > 0.0f)
-        {
-            m_Carbonization -= _DeltaTime * (0.2f * m_MaxCarbonization);
-            if (m_Carbonization <= 0.0f)
-            {
-                m_Carbonization = 0.0f;
-                m_CarbonizationRegeneration = false;
-            }
-        }
-
         if (m_MaxHealth > m_Health)
         {
             m_Health += m_PerSecondHealthRegeneration * _DeltaTime;
             if (m_MaxHealth < m_Health)
                 m_Health = m_MaxHealth;
-        }
-    }
-
-    public void CarbonizationProgress(float _Value)
-    {
-        m_Carbonization += _Value;
-        if (m_Carbonization >= m_MaxCarbonization)
-        {
-            m_Carbonization = m_MaxCarbonization;
-            m_CarbonizationRegeneration = true;
-            BuffBurn b = FindBuff(0) as BuffBurn;
-            if (b != null)
-            {
-                b.m_LifeTime = 0.0f;
-            }
         }
     }
 

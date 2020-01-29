@@ -10,7 +10,6 @@ public class IntroManager : MonoBehaviourPunCallbacks
         Application.targetFrameRate = 60;
 
         InventoryManager.Instance.LoadItemList();
-        
     }
 
     public void StartGame()

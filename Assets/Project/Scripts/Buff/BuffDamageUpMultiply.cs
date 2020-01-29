@@ -29,11 +29,6 @@ public class BuffDamageUpMultiply : Buff
         DamageUp();
     }
 
-    protected override void Action(float _DeltaTime)
-    {
-
-    }
-
     public override void Destroy()
     {
         base.Destroy();
@@ -44,8 +39,10 @@ public class BuffDamageUpMultiply : Buff
         UnityEngine.Object.Destroy(m_Effect);
     }
 
-    public override void DataUpdateEvent(object[] _Value)
+    public override void DataUpdate(object[] _Value)
     {
+        base.DataUpdate(_Value);
+
         Character c = m_ParentObject as Character;
         if (c)
         {

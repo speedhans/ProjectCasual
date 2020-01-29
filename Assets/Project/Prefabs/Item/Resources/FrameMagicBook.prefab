@@ -51,6 +51,7 @@ MonoBehaviour:
   m_StockCount: 1
   m_MaxStockCount: 1
   m_DefaultManual: "\uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960 &8&%\uC99D\uAC00"
+  IsDestoryed: 0
   m_ReinforceCount: 0
   m_ActiveSkillPrefab: {fileID: 1284206927837619394, guid: 661ed36ae662a9f4e8b2404fa646a1c3,
     type: 3}
@@ -75,7 +76,7 @@ MonoBehaviour:
   m_AttackRange: 0
   m_AttackRangeReinforceBonus: 0
   m_CriticalChance: 5
-  m_CriticalChanceReinforceBonus: 0
+  m_CriticalChanceReinforceBonus: 2
   m_CriticalMuliply: 0
   m_CriticalMuliplyReinforceBonus: 0
   m_Health: 0

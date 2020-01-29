@@ -153,7 +153,11 @@ public class EquipmentItem : Item
     public E_WEAPONTYPE GetWeaponType() { return m_WeaponType; }
 
     public int GetReinforceCount() { return m_ReinforceCount; }
-
+    public void IncreaseReinforceCount(int _Added = 1) 
+    {
+        m_ReinforceCount += _Added;
+        m_ReinforceCount = Mathf.Clamp(m_ReinforceCount, 0, Common.MAXREINFORECEVALUE);
+    }
     public float GetEquipmentItemState(E_ITEMSTATE _State)
     {
         switch (_State)

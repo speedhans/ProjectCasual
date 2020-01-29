@@ -27,7 +27,7 @@ public class StatusUI : LobbyUI
         base.Open();
         gameObject.SetActive(true);
 
-        RefreshSlotDatas();
+        Refresh();
     }
 
     public override void Close()
@@ -36,8 +36,10 @@ public class StatusUI : LobbyUI
         gameObject.SetActive(false);
     }
 
-    public void RefreshSlotDatas()
+    public override void Refresh()
     {
+        base.Refresh();
+
         if (!gameObject.activeSelf) return;
 
         for (int i = 0; i < m_EquipmentSlotUI.Length; ++i)

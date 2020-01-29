@@ -52,6 +52,7 @@ MonoBehaviour:
   m_MaxStockCount: 1
   m_DefaultManual: "\uBD88\uC18D\uC131 \uACF5\uACA9\uB825 &0& \uC99D\uAC00\n\uD06C\uB9AC\uD2F0\uCEEC
     \uD655\uB960 &8&% \uC99D\uAC00"
+  IsDestoryed: 0
   m_ReinforceCount: 0
   m_ActiveSkillPrefab: {fileID: 8623164894554973870, guid: 1c95baceb3242e944bee1c3cccd01d2b,
     type: 3}
@@ -61,8 +62,8 @@ MonoBehaviour:
     type: 3}
   m_WeaponType: 2
   m_ItemElement: 0
-  m_FireDamage: 25
-  m_FireDamageReinforceBonus: 0
+  m_FireDamage: 15
+  m_FireDamageReinforceBonus: 5
   m_IceDamage: 0
   m_IceDamageReinforceBonus: 0
   m_ElectricDamage: 0
@@ -78,7 +79,7 @@ MonoBehaviour:
   m_AttackRange: 0
   m_AttackRangeReinforceBonus: 0
   m_CriticalChance: 5
-  m_CriticalChanceReinforceBonus: 0
+  m_CriticalChanceReinforceBonus: 1
   m_CriticalMuliply: 0
   m_CriticalMuliplyReinforceBonus: 0
   m_Health: 0

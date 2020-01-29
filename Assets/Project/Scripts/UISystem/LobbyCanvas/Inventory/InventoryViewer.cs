@@ -47,7 +47,7 @@ public class InventoryViewer : LobbyUI
     {
         Open();
         m_CurrentTargetType = _FindType;
-        Refresh();
+        DefaultRefresh();
     }
 
     public void InventoryOpenTheTypeToID(int _ItemID, int[] _ExclusionNumber = null)
@@ -57,7 +57,7 @@ public class InventoryViewer : LobbyUI
         SortItemRefresh(_ItemID, _ExclusionNumber);
     }
 
-    public void Refresh()
+    public void DefaultRefresh()
     {
         if (m_Grid == null) m_Grid = transform.Find("MaskField/Grid");
 
@@ -93,11 +93,11 @@ public class InventoryViewer : LobbyUI
 
         for (int i = 0; i < m_CurrentInventoryCount; ++i)
         {
-            m_ListInventorySlot[i].Initialize(list[i],InventorySlot.E_USETYPE.DEFAULT,  m_LobbyCanvasUI);
+            m_ListInventorySlot[i].Initialize(list[i], InventorySlot.E_USETYPE.DEFAULT, m_LobbyCanvasUI);
         }
     }
 
-    public void SortItemRefresh(int _ItemID, int[] _ExclusionNumber)
+    public void SortItemRefresh(int _ItemID, int[] _ExclusionUniqueID)
     {
         if (m_Grid == null) m_Grid = transform.Find("MaskField/Grid");
 
@@ -112,21 +112,22 @@ public class InventoryViewer : LobbyUI
         }
         else
         {
-            if (_ExclusionNumber != null)
+            if (_ExclusionUniqueID != null)
             {
-                int count = _ExclusionNumber.Length;
+                int count = _ExclusionUniqueID.Length;
+                int number = 0;
                 while (count > 0)
                 {
-                    int number = 0;
-                    for (int i = 0; i < list.Count - number; ++i)
+                    for (int i = 0; i < list.Count; ++i)
                     {
-                        if (list[i].m_UniqueID == _ExclusionNumber[number])
+                        if (list[i].m_UniqueID == _ExclusionUniqueID[number])
                         {
                             list.RemoveAt(i);
-                            --count;
-                            ++number;
+                            break;
                         }
                     }
+                    --count;
+                    ++number;
                 }
             }
         }

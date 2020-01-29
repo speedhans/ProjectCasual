@@ -11,8 +11,8 @@ public class InventoryUI : LobbyUI
 
     public override void Open()
     {
-        base.Open();
-        gameObject.SetActive(true);
+        //base.Open();
+        //gameObject.SetActive(true);
 
         m_LobbyCanvasUI.GetInventoryViewer().InventoryOpen();
     }
@@ -25,7 +25,7 @@ public class InventoryUI : LobbyUI
 
     public void RefreshInventoryAllData()
     {
-        m_LobbyCanvasUI.GetInventoryViewer().Refresh();
+        m_LobbyCanvasUI.GetInventoryViewer().DefaultRefresh();
     }
 
     public void RefreshInventorySlotData()

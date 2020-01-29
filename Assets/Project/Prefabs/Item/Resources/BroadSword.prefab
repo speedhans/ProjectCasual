@@ -51,6 +51,7 @@ MonoBehaviour:
   m_StockCount: 1
   m_MaxStockCount: 1
   m_DefaultManual: "\uBCA0\uAE30 \uACF5\uACA9\uB825 &3&\uC99D\uAC00"
+  IsDestoryed: 0
   m_ReinforceCount: 0
   m_ActiveSkillPrefab: {fileID: 1284206927837619394, guid: 1116612a8506f994c97dae2a58f2cd20,
     type: 3}
@@ -66,7 +67,7 @@ MonoBehaviour:
   m_ElectricDamage: 0
   m_ElectricDamageReinforceBonus: 0
   m_CutDamage: 10
-  m_CutDamageReinforceBonus: 0
+  m_CutDamageReinforceBonus: 5
   m_BluntDamage: 0
   m_BluntDamageReinforceBonus: 0
   m_PierceDamage: 0

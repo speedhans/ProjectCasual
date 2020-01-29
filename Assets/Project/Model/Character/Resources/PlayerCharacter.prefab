@@ -104,7 +104,6 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  m_MaxCarbonization: 100
   m_HealthZeroIsDestroy: 0
   m_DestroyDelay: 0
   m_DefaultDamageEffect: {fileID: 0}

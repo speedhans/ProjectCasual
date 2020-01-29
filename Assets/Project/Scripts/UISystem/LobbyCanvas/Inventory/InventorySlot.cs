@@ -81,14 +81,23 @@ public class InventorySlot : MonoBehaviour
         }
     }
 
-    public void ItemDataView()
+    public void SlotClickEvent()
     {
-        m_LobbyCanvasUI.GetItemDataViewer().SetData(m_Item);
-        m_LobbyCanvasUI.GetItemDataViewer().Open();
+        if (m_UseType == E_USETYPE.REINFORCE)
+        {
+            MessageBox.CreateTwoButtonType("강화 하시겠습니까?", "YES", ReinforceItem, "NO");
+        }
+        else
+        {
+            m_LobbyCanvasUI.GetItemDataViewer().SetData(m_Item);
+            m_LobbyCanvasUI.GetItemDataViewer().Open();
+        }
     }
 
     public void Refresh()
     {
+        if (m_Item == null || m_Item.IsDestoryed) gameObject.SetActive(false);
+
         if (m_Item.GetItemType() == Item.E_TYPE.EQUIPMENT)
         {
             EquipmentItem equip = m_Item as EquipmentItem;
@@ -110,5 +119,34 @@ public class InventorySlot : MonoBehaviour
         {
             m_StockCount.text = m_Item.m_StockCount.ToString();
         }
+    }
+
+    void ReinforceItem()
+    {
+        EquipmentItem item = m_Item as EquipmentItem;
+        EquipmentItem titem = ItemDataViewer.DefaultInstance.GetCurrentTargetItem() as EquipmentItem;
+
+        if (!item || !titem) return;
+
+        if (item.GetReinforceCount() > 0)
+        {
+            MessageBox.CreateTwoButtonType("이 아이템은 강화가 되어있습니다. 정말로 재료로 사용하시겠습니까?", "YES", ReinforceItemSuccess, "NO");
+            return;
+        }
+
+        ReinforceItemSuccess();
+    }
+
+    void ReinforceItemSuccess()
+    {
+        EquipmentItem item = m_Item as EquipmentItem;
+        EquipmentItem titem = ItemDataViewer.DefaultInstance.GetCurrentTargetItem() as EquipmentItem;
+
+        if (!item || !titem) return;
+
+        titem.IncreaseReinforceCount(item.GetReinforceCount() + 1);
+        InventoryManager.Instance.DestroyItem(m_Item);
+        InventoryViewer.RefreshAllSlots();
+        ItemDataViewer.DefaultInstance.Refresh();
     }
 }

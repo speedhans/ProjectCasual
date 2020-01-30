@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 7ed1ac55f4b7ddf448da17fd8d22f06b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_Camera: {instanceID: 0}
+  - m_DissolveShader: {fileID: -6465566751694194690, guid: a5470e641e572134784b975920adce86,
+      type: 3}
+  - m_StageDefaultCamera: {fileID: 3967622247133941813, guid: d91ee4eb4ea75d147949152abb7a3f42,
+      type: 3}
+  - m_VerticalCamera: {fileID: 548840614249836159, guid: 32b3105e0df0c3749954f1f7737ca33b,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

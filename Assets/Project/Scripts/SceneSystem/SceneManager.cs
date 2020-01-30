@@ -47,6 +47,8 @@ public class SceneManager : MonoBehaviour
 
     IEnumerator C_Loading(string _NextSceneName)
     {
+        yield return new WaitForSeconds(3.0f);
+
         while (m_LoadingManager == null) yield return null;
 
         AsyncOperation Op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(_NextSceneName);
@@ -58,13 +60,13 @@ public class SceneManager : MonoBehaviour
         {
             if (!networkconnet)
             {
-                if (Photon.Pun.PhotonNetwork.IsConnectedAndReady && Photon.Pun.PhotonNetwork.InLobby)
+                if (Photon.Pun.PhotonNetwork.IsConnectedAndReady && (Photon.Pun.PhotonNetwork.InLobby || Photon.Pun.PhotonNetwork.InRoom))
                 {
                     networkconnet = true;
                     progress += 0.4f;
                 }
             }
-
+            
             float fullprogress = ((Op.progress / 0.9f) * 0.6f) + progress;
             m_LoadingManager.SetValue(fullprogress);
             if (fullprogress >= 1.0f)

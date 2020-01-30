@@ -546,7 +546,7 @@ public class Character : Object
 
     void DeadEvent()
     {
-        Main_Stage01 main = GameManager.Instance.m_Main as Main_Stage01;
+        Main_Stage main = GameManager.Instance.m_Main as Main_Stage;
         if (main == null) return;
         if (main.m_DissolveShader == null)
         {

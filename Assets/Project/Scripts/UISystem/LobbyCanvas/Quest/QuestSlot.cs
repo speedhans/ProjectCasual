@@ -43,6 +43,7 @@ public class QuestSlot : MonoBehaviour
 
     public void QuestStart()
     {
+        NetworkManager.Instance.CreateRoom("TESTROOM01"); // 임시 방 생성 코드
         SceneManager.Instance.LoadScene(m_QuestData.m_SceneName);
     }
 }

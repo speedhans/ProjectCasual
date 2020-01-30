@@ -85,6 +85,7 @@ public class Object : RootComponent
         m_PhotonView = GetComponent<PhotonView>();
 
         m_ChangePhysicsType = m_PhysicsType;
+
         if (m_PhotonView.IsMine)
             SetPhotonInstantiationData(new int[] { 0, 1, 2, 3, 4 }, new object[] { m_ChangePhysicsType, -1, "", -1, -1 });
     }
@@ -212,7 +213,7 @@ public class Object : RootComponent
     [PunRPC]
     public void GiveToDamage_RPC(float[] _Damage, int[] _DamageType, int _AttackerID)
     {
-        Character attacker = NetworkManager.Instance.FindObjectWithPhotonViewID(_AttackerID) as Character;
+        Character attacker = NetworkManager.Instance.RoomController.FindObjectWithPhotonViewID(_AttackerID) as Character;
 
         GiveToDamage_Local(_Damage, _DamageType, attacker);
     }
@@ -436,7 +437,7 @@ public class Object : RootComponent
     [PunRPC]
     public void LinkObject_RPC(int _TargetPhotonViewID)
     {
-        Object o = NetworkManager.Instance.FindObjectWithPhotonViewID(_TargetPhotonViewID);
+        Object o = NetworkManager.Instance.RoomController.FindObjectWithPhotonViewID(_TargetPhotonViewID);
         if (o)
         {
             if (m_PhotonView.IsMine)
@@ -454,7 +455,7 @@ public class Object : RootComponent
     [PunRPC]
     public void UnLinkObject_RPC(int _TargetPhotonViewID)
     {
-        Object o = NetworkManager.Instance.FindObjectWithPhotonViewID(_TargetPhotonViewID);
+        Object o = NetworkManager.Instance.RoomController.FindObjectWithPhotonViewID(_TargetPhotonViewID);
         if (o)
         {
             if (m_PhotonView.IsMine)
@@ -538,7 +539,7 @@ public class Object : RootComponent
     [PunRPC]
     public void Attach_RPC(int _TargetPhotonViewID, string _Path, Vector3 _LocalPosition, Quaternion _LocalRotation)
     {
-        Object o = NetworkManager.Instance.FindObjectWithPhotonViewID(_TargetPhotonViewID);
+        Object o = NetworkManager.Instance.RoomController.FindObjectWithPhotonViewID(_TargetPhotonViewID);
         if (o)
         {
             m_AttachTarget = o;
@@ -739,6 +740,9 @@ public class Object : RootComponent
     void SetPhotonInstantiationData(int[] _Number, object[] _Value)
     {
         object[] data = m_PhotonView.InstantiationData;
+
+        if (data == null)
+            data = new object[5];
 
         for (int i = 0; i < _Number.Length; ++i)
         {

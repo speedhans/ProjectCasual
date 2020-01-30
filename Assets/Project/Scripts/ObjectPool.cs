@@ -99,6 +99,9 @@ public class ObjectPool : MonoBehaviour
         {
             m_ListObjectStatic = m_ListObject;
         }
+
+        GameObject[] list = Resources.LoadAll<GameObject>("SkillEffect");
+        m_ListObjectStatic.AddRange(list);
     }
 
     private void OnDestroy()

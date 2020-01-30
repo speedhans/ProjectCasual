@@ -120,7 +120,7 @@ public class Common
     static public Object FindObject(int _ID)
     {
         if (PhotonNetwork.IsConnectedAndReady)
-            return NetworkManager.Instance.FindObjectWithPhotonViewID(_ID);
+            return NetworkManager.Instance.RoomController.FindObjectWithPhotonViewID(_ID);
         else
         {
             //GameObject.Find();

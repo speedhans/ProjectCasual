@@ -47,7 +47,7 @@ public class Skill : MonoBehaviour
     [PunRPC]
     public void Skill_Initialize_RPC(int _PhotonViewID, bool _Insert)
     {
-        Character c = NetworkManager.Instance.FindObjectWithPhotonViewID<Character>(_PhotonViewID);
+        Character c = NetworkManager.Instance.RoomController.FindObjectWithPhotonViewID<Character>(_PhotonViewID);
         if (c)
         {
             SetSkill(c, _Insert);

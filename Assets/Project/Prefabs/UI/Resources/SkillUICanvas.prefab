@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 338243792052214877}
   - component: {fileID: 338243792052214876}
   - component: {fileID: 338243792052214867}
+  - component: {fileID: 4743087510536084237}
   m_Layer: 5
   m_Name: SkillUICanvas
   m_TagString: Untagged
@@ -101,6 +102,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4743087510536084237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338243792052214866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa95980d5e5ca8c48ba300de8bf87c1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &338243792691086420
 GameObject:
   m_ObjectHideFlags: 0

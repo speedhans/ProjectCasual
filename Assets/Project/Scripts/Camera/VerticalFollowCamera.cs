@@ -21,29 +21,17 @@ public class VerticalFollowCamera : CameraSystem
     {
         Instance = this;
         base.Awake();
-        StartCoroutine(C_Initialize());
     }
 
-    IEnumerator C_Initialize()
+    public void Initialize(Main _Main, Object _CameraTarget)
     {
-        Main main = null;
-        while (!main)
-        {
-            main = GameManager.Instance.m_Main;
-            yield return null;
-        }
-        main.m_Camera = this;
-
-        while (m_Target == null)
-        {
-            m_Target = GameManager.Instance.m_MyCharacter;
-            yield return null;
-        }
+        _Main.m_Camera = this;
+        m_Target = _CameraTarget;
 
         m_LocalPositionX = m_Target.transform.position.x;
         Vector3 tpos = m_Target.transform.position;
         Vector3 pos = m_Camera.transform.position;
-        Vector3 fixedpos = new Vector3(pos.x, tpos.y + m_LocalPositionY, tpos.z + m_LocalPositionZ);
+        Vector3 fixedpos = new Vector3(tpos.x, tpos.y + m_LocalPositionY, tpos.z + m_LocalPositionZ);
         m_Camera.transform.position = fixedpos;
         m_Camera.transform.forward = m_Target.transform.position - fixedpos;
     }
@@ -55,6 +43,7 @@ public class VerticalFollowCamera : CameraSystem
 
         Vector3 tpos = m_Target.transform.position;
         Vector3 pos = m_Camera.transform.position;
+
         Vector3 fixedpos = new Vector3(pos.x, tpos.y + m_LocalPositionY, tpos.z + m_LocalPositionZ);
         m_Camera.transform.position = fixedpos;
     }

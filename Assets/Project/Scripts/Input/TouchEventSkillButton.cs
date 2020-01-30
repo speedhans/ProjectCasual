@@ -19,34 +19,29 @@ public class TouchEventSkillButton : CustomTouchEvent
         m_CooldownVisualize = transform.Find("CooldownVisualize").GetComponent<UnityEngine.UI.Image>();
         m_CooldownVisualize.fillAmount = 0.0f;
     }
-
-    IEnumerator Start()
+    void FindSkill()
     {
-        while(!m_TargetSkill)
+        PlayerCharacter c = GameManager.Instance.m_MyCharacter;
+        if (c)
         {
-            PlayerCharacter c = GameManager.Instance.m_MyCharacter;
-            if (c)
-            {
-                while (!c.m_IsPlayerCharacterInitializeComplete) yield return null;
+            if (!c.m_IsPlayerCharacterInitializeComplete) return;
 
-                if (c.m_ListActiveSkill.Count < m_ButtonNumber + 1)
-                {
-                    gameObject.SetActive(false);
-                }
-                else if (c.m_ListActiveSkill[m_ButtonNumber] != null)
-                {
-                    m_TargetSkill = c.m_ListActiveSkill[m_ButtonNumber];
-                    m_SkillIamge.sprite = m_TargetSkill.m_Image;
-                    m_CooldownVisualize.sprite = m_TargetSkill.m_Image;
-                }
+            if (c.m_ListActiveSkill[m_ButtonNumber] != null)
+            {
+                m_TargetSkill = c.m_ListActiveSkill[m_ButtonNumber];
+                m_SkillIamge.sprite = m_TargetSkill.m_Image;
+                m_CooldownVisualize.sprite = m_TargetSkill.m_Image;
             }
-            yield return null;
         }
     }
 
     private void Update()
     {
-        if (!m_TargetSkill) return;
+        if (!m_TargetSkill)
+        {
+            FindSkill();
+            return;
+        }
 
         m_CooldownVisualize.fillAmount = (m_TargetSkill.m_CurrentCooldown / m_TargetSkill.m_MaxCooldown);
     }

@@ -27,6 +27,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         DontDestroyOnLoad(gameObject);
     }
 
+    RoomControl m_RoomControl;
+    public RoomControl RoomController
+    {
+        get
+        {
+            if (m_RoomControl == null)
+            {
+                m_RoomControl = new RoomControl();
+            }
+            return m_RoomControl;
+        }
+        private set { }
+    }
+
     string m_CreateRoomName;
 
     public void ServerConnet()
@@ -58,75 +72,96 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         return false;
     }
 
-    public void SetRoomProperties(string[] _Keys, object[] _Values)
+    public class RoomControl
     {
-        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
-        for (int i = 0; i < _Keys.Length; ++i)
+        public int PlayerCount { get { return PhotonNetwork.CurrentRoom.PlayerCount; } }
+
+        public void SetRoomProperties(string _Keys, object _Values)
         {
-            hash[_Keys[i]] = _Values[i];
+            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+            hash[_Keys] = _Values;
+
+            PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
         }
 
-        PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
-    }
-
-    public object GetRoomPropertie(string _Key)
-    {
-        object find = -1;
-        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(_Key, out find);
-        return find;
-    }
-
-    public void SetLocalPlayerProperties(string[] _Keys, object[] _Values)
-    {
-        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
-        for (int i = 0; i < _Keys.Length; ++i)
+        public void SetRoomProperties(string[] _Keys, object[] _Values)
         {
-            hash[_Keys[i]] = _Values[i];
-        }
-
-        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-    }
-
-    public object GetLocalPlayerPropertie(string _Key)
-    {
-        object find = -1;
-        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(_Key, out find);
-        return find;
-    }
-
-    public object GetOtherPlayerPropertie(Player _Player ,string _Key)
-    {
-        object find = -1;
-        _Player.CustomProperties.TryGetValue(_Key, out find);
-        return find;
-    }
-
-    public Object FindObjectWithPhotonViewID(int _ViewID)
-    {
-        PhotonView view = PhotonView.Find(_ViewID);
-        if (view)
-        {
-            Object o = view.GetComponentInParent<Object>();
-            if (o)
+            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+            for (int i = 0; i < _Keys.Length; ++i)
             {
-                return o;
+                hash[_Keys[i]] = _Values[i];
             }
-        }
-        return null;
-    }
 
-    public T FindObjectWithPhotonViewID<T>(int _ViewID) where T : Object
-    {
-        PhotonView view = PhotonView.Find(_ViewID);
-        if (view)
-        {
-            Object o = view.GetComponentInParent<Object>();
-            if (o)
-            {
-                return o as T;
-            }
+            PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
         }
-        return null;
+
+        public T GetRoomPropertie<T>(string _Key)
+        {
+            object find = -1;
+            PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(_Key, out find);
+            return (T)find;
+        }
+
+        public void SetLocalPlayerProperties(string _Keys, object _Values)
+        {
+            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+            hash[_Keys] = _Values;
+
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        }
+
+        public void SetLocalPlayerProperties(string[] _Keys, object[] _Values)
+        {
+            ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+            for (int i = 0; i < _Keys.Length; ++i)
+            {
+                hash[_Keys[i]] = _Values[i];
+            }
+
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        }
+
+        public T GetLocalPlayerPropertie<T>(string _Key)
+        {
+            object find = -1;
+            PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(_Key, out find);
+            return (T)find;
+        }
+
+        public T GetOtherPlayerPropertie<T>(Player _Player, string _Key)
+        {
+            object find = -1;
+            _Player.CustomProperties.TryGetValue(_Key, out find);
+            return (T)find;
+        }
+
+        public Object FindObjectWithPhotonViewID(int _ViewID)
+        {
+            PhotonView view = PhotonView.Find(_ViewID);
+            if (view)
+            {
+                Object o = view.GetComponentInParent<Object>();
+                if (o)
+                {
+                    return o;
+                }
+            }
+            return null;
+        }
+
+        public T FindObjectWithPhotonViewID<T>(int _ViewID) where T : Object
+        {
+            PhotonView view = PhotonView.Find(_ViewID);
+            if (view)
+            {
+                Object o = view.GetComponentInParent<Object>();
+                if (o)
+                {
+                    return o as T;
+                }
+            }
+            return null;
+        }
     }
 
     // DefaultMessageCallback

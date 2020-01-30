@@ -96,6 +96,7 @@
     <Compile Include="Assets\Project\Scripts\Buff\BuffHaste.cs" />
     <Compile Include="Assets\Project\Scripts\Camera\CameraSystem.cs" />
     <Compile Include="Assets\Project\Scripts\Camera\FollowCamera.cs" />
+    <Compile Include="Assets\Project\Scripts\Camera\StageDefaultCamera.cs" />
     <Compile Include="Assets\Project\Scripts\Camera\VerticalFollowCamera.cs" />
     <Compile Include="Assets\Project\Scripts\Character\AnimationEventCall.cs" />
     <Compile Include="Assets\Project\Scripts\Character\Character.cs" />
@@ -124,7 +125,7 @@
     <Compile Include="Assets\Project\Scripts\Item\EquipmentItem.cs" />
     <Compile Include="Assets\Project\Scripts\Item\Item.cs" />
     <Compile Include="Assets\Project\Scripts\Main\Main.cs" />
-    <Compile Include="Assets\Project\Scripts\Main\Main_Stage01.cs" />
+    <Compile Include="Assets\Project\Scripts\Main\Main_Stage.cs" />
     <Compile Include="Assets\Project\Scripts\Network\DataBaseManager.cs" />
     <Compile Include="Assets\Project\Scripts\Network\NetworkManager.cs" />
     <Compile Include="Assets\Project\Scripts\Network\StreamComponent.cs" />
@@ -157,6 +158,9 @@
     <Compile Include="Assets\Project\Scripts\System\InventoryManager.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\CharacterUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\DefaultUI.cs" />
+    <Compile Include="Assets\Project\Scripts\UISystem\GameUICanvas\GameUI.cs" />
+    <Compile Include="Assets\Project\Scripts\UISystem\GameUICanvas\GameUICanvas.cs" />
+    <Compile Include="Assets\Project\Scripts\UISystem\GameUICanvas\SkillUICanvas.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\CharacterPreviewUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\EquipmentSlotUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\LobbyCanvas\Inventory\InventorySlot.cs" />

@@ -37,6 +37,10 @@ public class EquipmentSlotUI : CustomTouchEvent
             m_LobbyCanvasUI.GetItemDataViewer().SetData(m_Item);
             m_LobbyCanvasUI.GetItemDataViewer().Open();
         }
+        else
+        {
+            m_LobbyCanvasUI.GetInventoryViewer().InventoryOpen(Item.E_TYPE.EQUIPMENT);
+        }
     }
 
     public void SetData(EquipmentItem _Item)

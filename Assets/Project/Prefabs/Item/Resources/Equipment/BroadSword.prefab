@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5769660588549905070
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1188934040885985091}
+  - component: {fileID: 6895961972118602322}
+  m_Layer: 15
+  m_Name: BroadSword
+  m_TagString: Item
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1188934040885985091
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5769660588549905070}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6895961972118602322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5769660588549905070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 916326f5e0a43b04c974bd207d5ef154, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ItemID: 1
+  m_UniqueID: 0
+  m_ItemName: BroadSword
+  m_ItemImage: {fileID: 21300000, guid: 5b027ff6d36e33c40a69e197f3563dfb, type: 3}
+  m_IsStockable: 0
+  m_StockCount: 1
+  m_MaxStockCount: 1
+  m_DefaultManual: "\uBCA0\uAE30 \uACF5\uACA9\uB825 &3&\uC99D\uAC00"
+  IsDestoryed: 0
+  m_ReinforceCount: 0
+  m_ActiveSkillPrefab: {fileID: 1284206927837619394, guid: 1116612a8506f994c97dae2a58f2cd20,
+    type: 3}
+  m_PassiveSkillPrefabs: []
+  m_WeaponPrefab: {fileID: 8084668466499484371, guid: 2fea578f7838b0948bf8bd71712f3f3c,
+    type: 3}
+  m_WeaponType: 2
+  m_ItemElement: 3
+  m_FireDamage: 0
+  m_FireDamageReinforceBonus: 0
+  m_IceDamage: 0
+  m_IceDamageReinforceBonus: 0
+  m_ElectricDamage: 0
+  m_ElectricDamageReinforceBonus: 0
+  m_CutDamage: 10
+  m_CutDamageReinforceBonus: 5
+  m_BluntDamage: 0
+  m_BluntDamageReinforceBonus: 0
+  m_PierceDamage: 0
+  m_PierceDamageReinforceBonus: 0
+  m_AttackSpeed: 1
+  m_AttackSpeedReinforceBonus: 0
+  m_MovementSpeed: 1
+  m_MovementSpeedReinforceBonus: 0
+  m_AttackRange: 0
+  m_AttackRangeReinforceBonus: 0
+  m_CriticalChance: 0
+  m_CriticalChanceReinforceBonus: 0
+  m_CriticalMuliply: 0
+  m_CriticalMuliplyReinforceBonus: 0
+  m_Health: 0
+  m_HealthReinforceBonus: 0
+  m_HealthRegeneration: 0
+  m_HealthRegenerationReinforceBonus: 0

@@ -7,7 +7,7 @@ public class PassiveSkill : Skill
     protected override void Awake()
     {
         base.Awake();
-        m_SkillType = E_TYPE.PASSIVE;
+        m_ActuationType = E_ACTUATIONTYPE.PASSIVE;
     }
 
     protected virtual void FixedUpdate()

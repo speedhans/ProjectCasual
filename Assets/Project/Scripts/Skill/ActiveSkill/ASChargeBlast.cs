@@ -17,10 +17,6 @@ public class ASChargeBlast : ActiveSkill
     [SerializeField]
     float m_ChargeTime;
 
-    public float m_DamageMultiply;
-    public E_DAMAGETYPE m_DamageType;
-    public float m_DamageAreaRadius;
-
     protected override void Awake()
     {
         base.Awake();
@@ -88,7 +84,7 @@ public class ASChargeBlast : ActiveSkill
             blast.gameObject.SetActive(true);
         }
 
-        List<Character> list = Character.FindEnemyAllArea(m_Caster, m_Caster.transform.position, m_DamageAreaRadius);
+        List<Character> list = Character.FindEnemyAllArea(m_Caster, m_Caster.transform.position, m_Radius);
         if (list != null)
         {
             float[] damage = new float[] { CalculrateSkillDamage(m_Caster, m_DamageType, m_DamageMultiply) };
@@ -105,7 +101,7 @@ public class ASChargeBlast : ActiveSkill
     {
         if (m_CurrentCooldown > 0.0f) return;
         
-        if (Character.ScopeEnemyCheck(m_Caster, m_Caster.transform.position, m_DamageAreaRadius * 0.75f) > 0)
+        if (Character.ScopeEnemyCheck(m_Caster, m_Caster.transform.position, m_Radius * 0.75f) > 0)
         {
             UseSkill();
         }

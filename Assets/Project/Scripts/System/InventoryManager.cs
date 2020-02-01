@@ -40,33 +40,6 @@ public class InventoryManager : MonoBehaviour
 
     public void LoadItemList()
     {
-        GameObject o = Instantiate(Resources.Load<GameObject>("BroadSword"));
-        m_EquipItem[0] = o.GetComponent<EquipmentItem>();
-
-        o = Instantiate(Resources.Load<GameObject>("FireBlade"));
-        m_EquipItem[1] = o.GetComponent<EquipmentItem>();
-
-        o = Instantiate(Resources.Load<GameObject>("FrameMagicBook"));
-        m_EquipItem[2] = o.GetComponent<EquipmentItem>();
-
-        for (int i = 0; i < m_EquipItem.Length; ++i)
-        {
-            m_EquipItem[i].SetEquip(true, i);
-            InserItem(m_EquipItem[i]);
-        }
-
-        o = Instantiate(Resources.Load<GameObject>("Boots"));
-        o.GetComponent<Item>().m_UniqueID = Random.Range(0, 10000);
-        InserItem(o.GetComponent<Item>());
-        o = Instantiate(Resources.Load<GameObject>("Boots"));
-        o.GetComponent<Item>().m_UniqueID = Random.Range(0, 10000);
-        InserItem(o.GetComponent<Item>());
-        o = Instantiate(Resources.Load<GameObject>("Boots"));
-        o.GetComponent<Item>().m_UniqueID = Random.Range(0, 10000);
-        InserItem(o.GetComponent<Item>());
-        o = Instantiate(Resources.Load<GameObject>("Boots"));
-        o.GetComponent<Item>().m_UniqueID = Random.Range(0, 10000);
-        InserItem(o.GetComponent<Item>());
     }
 
     public EquipmentItem GetEquippedItem(int _Number) { return m_EquipItem[_Number]; }
@@ -86,7 +59,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     public int EquipmentSlotCount() { return m_EquipItem.Length; }
-    public string GetPlayerModel() { return m_PlayerModel; }
+    public string GetPlayerModelName() { return m_PlayerModel; }
 
     public List<Item> GetItemList()
     {

@@ -6,13 +6,13 @@ using Photon.Pun;
 [RequireComponent(typeof(PhotonView))]
 public class Skill : MonoBehaviour
 {
-    public enum E_TYPE
+    public enum E_ACTUATIONTYPE
     {
         ACTIVE,
         PASSIVE,
     }
 
-    protected E_TYPE m_SkillType;
+    protected E_ACTUATIONTYPE m_ActuationType;
 
     public string m_SkillName;
     public Sprite m_Image;
@@ -26,6 +26,10 @@ public class Skill : MonoBehaviour
     [SerializeField]
     protected Vector3 m_EffectLocalPosition;
     [SerializeField]
+    [Tooltip("&D& = Damage &DM& = DamageMultiply, &T& = Duration, " +
+        "&R& = Radius, &F& = Defence, &FM& = DefenceMultiply" +
+        "&AS& = AttackSpeed, &MS& = MovementSpeed, &DT& = DamageType" +
+        "&CD& = Cooldown, &MCD& = MaxCooldown")]
     [TextArea]
     protected string m_SkillManual;
 
@@ -60,7 +64,7 @@ public class Skill : MonoBehaviour
         transform.SetParent(m_Caster.transform);
         transform.localPosition = Vector3.zero;
 
-        if (_Insert && m_SkillType == E_TYPE.ACTIVE)
+        if (_Insert && m_ActuationType == E_ACTUATIONTYPE.ACTIVE)
             m_Caster.m_ListActiveSkill.Add(this as ActiveSkill);
     }
 
@@ -101,7 +105,7 @@ public class Skill : MonoBehaviour
     }
 
     public virtual void AutoPlayLogic() { }
-    public E_TYPE GetSkillType() { return m_SkillType; }
+    public E_ACTUATIONTYPE GetSkillActuationType() { return m_ActuationType; }
     static protected float CalculrateSkillDamage(Character _Caster, E_DAMAGETYPE _DamageType, float _SkillDamageMultiply)
     {
         if (_Caster.m_AttackType == _DamageType)
@@ -110,5 +114,11 @@ public class Skill : MonoBehaviour
             return (_Caster.m_AttackDamage + _Caster.m_AddAttackDamage[(int)_Caster.m_AttackType] + _Caster.m_AddAttackDamage[(int)_DamageType]) * _SkillDamageMultiply; // 타입이 다른 공격일때 공식
     }
 
-    public string GetManualText() { return m_SkillManual; }
+    public virtual string GetManualText()
+    {
+        string manual = m_SkillManual;
+        manual = manual.Replace("&CD&", ((int)m_CurrentCooldown).ToString());
+        manual = manual.Replace("&MCD&", ((int)m_MaxCooldown).ToString());
+        return manual; 
+    }
 }

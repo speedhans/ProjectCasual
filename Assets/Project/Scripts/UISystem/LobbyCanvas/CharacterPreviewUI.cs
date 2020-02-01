@@ -8,7 +8,11 @@ public class CharacterPreviewUI : MonoBehaviour
     RectTransform m_CharacterPosition;
 
     GameObject m_Model;
+    Animator m_Animator;
     Transform m_AttachRightHandPoint;
+
+    [SerializeField]
+    RuntimeAnimatorController[] m_ListAnimator;
 
     public void Initialize()
     {
@@ -30,6 +34,7 @@ public class CharacterPreviewUI : MonoBehaviour
         }
 
         m_Model = _Model;
+        m_Animator = m_Model.GetComponentInChildren<Animator>();
 
         Transform t = Character.FindBone(m_Model.transform, "Character1_RightHandMiddle1");
         if (t)
@@ -44,5 +49,45 @@ public class CharacterPreviewUI : MonoBehaviour
         m_Model.transform.SetParent(m_CharacterPosition);
         m_Model.transform.localPosition = Vector3.zero;
         m_Model.transform.localRotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
+    }
+
+    public void SetPerviewWeapon(string _WeaponPath, E_WEAPONTYPE _WeaponType)
+    {
+        if (m_AttachRightHandPoint.childCount > 0)
+        {
+            for (int i = 0; i < m_AttachRightHandPoint.childCount; ++i)
+            {
+                Destroy(m_AttachRightHandPoint.GetChild(i).gameObject);
+            }
+        }
+
+        GameObject weapon = Instantiate(Resources.Load<GameObject>(_WeaponPath));
+        if (weapon)
+        {
+            weapon.transform.SetParent(m_AttachRightHandPoint);
+            weapon.transform.localPosition = Vector3.zero;
+            weapon.transform.localRotation = Quaternion.identity;
+            SwitchAnimator((E_WEAPONTYPE)_WeaponType);
+        }
+    }
+
+    void SwitchAnimator(E_WEAPONTYPE _Type)
+    {
+        RuntimeAnimatorController anim = FindAnimator(_Type.ToString());
+        if (anim)
+            m_Animator.runtimeAnimatorController = anim;
+    }
+
+    RuntimeAnimatorController FindAnimator(string _Name)
+    {
+        for (int i = 0; i < m_ListAnimator.Length; ++i)
+        {
+            if (m_ListAnimator[i].name.Contains(_Name))
+            {
+                return m_ListAnimator[i];
+            }
+        }
+
+        return null;
     }
 }

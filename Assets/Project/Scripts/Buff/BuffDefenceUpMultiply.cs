@@ -79,6 +79,6 @@ public class BuffDefenceUpMultiply : Buff
         c.m_AddResistance[(int)m_Type] -= m_IncreaseDefence;
         float fixeddefence = c.m_AddResistance[(int)m_Type] * m_MultiplyDefence;
         m_IncreaseDefence = fixeddefence - c.m_AddResistance[(int)m_Type];
-        c.m_AddAttackDamage[(int)m_Type] = fixeddefence;
+        c.m_AddResistance[(int)m_Type] = fixeddefence;
     }
 }

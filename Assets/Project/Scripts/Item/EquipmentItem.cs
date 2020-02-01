@@ -13,9 +13,10 @@ public class EquipmentItem : Item
         BLUNTDAMAGE,
         PIERCEDAMAGE,
         ATTACKSPEED,
+        MOVEMENTSPEED,
         ATTACKRANGE,
         CRITICALCHANCE,
-        CRITICALMULTIPLY,
+        CRITICALDAMAGE,
         HEALTH,
         HEALTHREGENERATION,
         MAX
@@ -58,20 +59,24 @@ public class EquipmentItem : Item
     [Tooltip("&6&")]
     public float m_AttackSpeed; // &6&
     public float m_AttackSpeedReinforceBonus;
+    [Range(1.0f, 10.0f)]
     [Tooltip("&7&")]
+    public float m_MovementSpeed;
+    public float m_MovementSpeedReinforceBonus;
+    [Tooltip("&8&")]
     public float m_AttackRange; // &7&
     public float m_AttackRangeReinforceBonus;
-    [Tooltip("&8&")]
-    public float m_CriticalChance; // &8&
-    public float m_CriticalChanceReinforceBonus;
     [Tooltip("&9&")]
-    public float m_CriticalMuliply; // &9&
-    public float m_CriticalMuliplyReinforceBonus;
+    public float m_CriticalChance; // &9&
+    public float m_CriticalChanceReinforceBonus;
     [Tooltip("&10&")]
-    public float m_Health; // &10&
-    public float m_HealthReinforceBonus;
+    public float m_CriticalDamage; // &10&
+    public float m_CriticalDamageReinforceBonus;
     [Tooltip("&11&")]
-    public float m_HealthRegeneration; // &11&
+    public float m_Health; // &11&
+    public float m_HealthReinforceBonus;
+    [Tooltip("&12&")]
+    public float m_HealthRegeneration; // &12&
     public float m_HealthRegenerationReinforceBonus;
 
     protected override void Awake()
@@ -91,9 +96,10 @@ public class EquipmentItem : Item
         _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.PIERCE] += m_PierceDamage + (m_ReinforceCount * m_PierceDamageReinforceBonus);
 
         _Character.m_AttackSpeed *= m_AttackSpeed + (m_ReinforceCount * m_AttackSpeedReinforceBonus);
+        _Character.m_MovePerSpeed *= m_MovementSpeed + (m_ReinforceCount * m_MovementSpeedReinforceBonus);
         _Character.m_AttackRange += m_AttackRange + (m_ReinforceCount * m_AttackRangeReinforceBonus);
         _Character.m_CriticalChance += m_CriticalChance + (m_ReinforceCount * m_CriticalChanceReinforceBonus);
-        _Character.m_CriticalMuliply += m_CriticalMuliply + (m_ReinforceCount * m_CriticalMuliplyReinforceBonus);
+        _Character.m_CriticalMuliply += (m_CriticalDamage + (m_ReinforceCount * m_CriticalDamageReinforceBonus)) * 0.01f;
         _Character.m_MaxHealth += m_Health + (m_ReinforceCount * m_HealthReinforceBonus);
         _Character.m_Health += m_Health + (m_ReinforceCount * m_HealthReinforceBonus);
         _Character.m_PerSecondHealthRegeneration += m_HealthRegeneration + (m_ReinforceCount * m_HealthRegenerationReinforceBonus);
@@ -158,6 +164,7 @@ public class EquipmentItem : Item
         m_ReinforceCount += _Added;
         m_ReinforceCount = Mathf.Clamp(m_ReinforceCount, 0, Common.MAXREINFORECEVALUE);
     }
+
     public float GetEquipmentItemState(E_ITEMSTATE _State)
     {
         switch (_State)
@@ -175,13 +182,15 @@ public class EquipmentItem : Item
             case E_ITEMSTATE.PIERCEDAMAGE:
                 return m_PierceDamage + (m_ReinforceCount * m_PierceDamageReinforceBonus);
             case E_ITEMSTATE.ATTACKSPEED:
-                return m_AttackSpeed + (m_ReinforceCount * m_AttackSpeedReinforceBonus);
+                return (m_AttackSpeed + (m_ReinforceCount * m_AttackSpeedReinforceBonus)) * 100.0f - 100.0f;
+            case E_ITEMSTATE.MOVEMENTSPEED:
+                return (m_MovementSpeed + (m_ReinforceCount * m_MovementSpeedReinforceBonus)) * 100.0f - 100.0f;
             case E_ITEMSTATE.ATTACKRANGE:
                 return m_AttackRange + (m_ReinforceCount * m_AttackRangeReinforceBonus);
             case E_ITEMSTATE.CRITICALCHANCE:
                 return m_CriticalChance + (m_ReinforceCount * m_CriticalChanceReinforceBonus);
-            case E_ITEMSTATE.CRITICALMULTIPLY:
-                return m_CriticalMuliply + (m_ReinforceCount * m_CriticalMuliplyReinforceBonus);
+            case E_ITEMSTATE.CRITICALDAMAGE:
+                return m_CriticalDamage + (m_ReinforceCount * m_CriticalDamageReinforceBonus);
             case E_ITEMSTATE.HEALTH:
                 return m_Health + (m_ReinforceCount * m_HealthReinforceBonus);
             case E_ITEMSTATE.HEALTHREGENERATION:

@@ -5,11 +5,6 @@ using Photon.Pun;
 
 public class ASHasteSkill : ActiveSkill
 {
-    [SerializeField]
-    float m_Duration;
-    [SerializeField]
-    float m_MultiplySpeed;
-
     protected override void Awake()
     {
         base.Awake();
@@ -27,14 +22,14 @@ public class ASHasteSkill : ActiveSkill
         StartCoroutine(C_SkillPlay(1.0f));
     }
 
-    IEnumerator C_SkillPlay(float _Wait) // 지속시간, 공,이속증분
+    IEnumerator C_SkillPlay(float _Wait)
     {
         m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL1, 0.25f, 1.0f, _Wait, false, true);
         yield return new WaitForSeconds(_Wait);
 
         m_CurrentCooldown = m_MaxCooldown;
 
-        m_Caster.AddBuff(E_BUFF.HASTE, new object[] { m_Duration, m_MultiplySpeed });
+        m_Caster.AddBuff(E_BUFF.HASTE, new object[] { m_Duration, m_AttackSpeedMultiply, m_MovementSpeedMultiply });
     }
 
     public override void AutoPlayLogic()

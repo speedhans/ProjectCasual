@@ -85,13 +85,13 @@ public class Object : RootComponent
         m_PhotonView = GetComponent<PhotonView>();
 
         m_ChangePhysicsType = m_PhysicsType;
-
-        if (m_PhotonView.IsMine)
-            SetPhotonInstantiationData(new int[] { 0, 1, 2, 3, 4 }, new object[] { m_ChangePhysicsType, -1, "", -1, -1 });
     }
 
     protected virtual void Start()
     {
+        if (m_PhotonView.IsMine)
+            InitializePhotonInstantiationData();
+
         ResetPhysicsMode(false);
 
         if (!m_PhotonView.IsMine)
@@ -747,6 +747,24 @@ public class Object : RootComponent
         for (int i = 0; i < _Number.Length; ++i)
         {
             data[_Number[i]] = _Value[i];
+        }
+        m_PhotonView.InstantiationData = data;
+    }
+
+    void InitializePhotonInstantiationData()
+    {
+        int[] keys = new int[] { 0, 1, 2, 3, 4 };
+        object[] values = new object[] { m_ChangePhysicsType, -1, "", -1, -1 };
+
+        object[] data = m_PhotonView.InstantiationData;
+
+        if (data == null)
+            data = new object[6] { -1, -1, -1, -1, -1, -1 };
+
+        for (int i = 0; i < keys.Length; ++i)
+        {
+            if (data[i] == values[i]) continue;
+            data[keys[i]] = values[i];
         }
         m_PhotonView.InstantiationData = data;
     }

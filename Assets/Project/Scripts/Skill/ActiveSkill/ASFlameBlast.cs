@@ -5,7 +5,6 @@ using Photon.Pun;
 
 public class ASFlameBlast : ActiveSkill
 {
-    public float m_DamageMultiply = 3.0f;
     [SerializeField]
     GameObject m_SubPrefab;
     protected override void Awake()

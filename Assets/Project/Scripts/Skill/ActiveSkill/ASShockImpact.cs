@@ -5,8 +5,6 @@ using Photon.Pun;
 
 public class ASShockImpact : ActiveSkill
 {
-    public float m_DamageMultiply = 2.0f;
-    
     protected override void Awake()
     {
         base.Awake();
@@ -23,12 +21,12 @@ public class ASShockImpact : ActiveSkill
     {
         m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL2, 0.25f, 2.5f, 0.5f, false, true);
 
-        List<Character> list = Character.FindEnemyAllArea(m_Caster, m_Caster.transform.position, 4.5f);
+        List<Character> list = Character.FindEnemyAllArea(m_Caster, m_Caster.transform.position, m_Radius);
         if (list != null)
         {
             
-            float[] damage = new float[] { CalculrateSkillDamage(m_Caster, m_Caster.m_AttackType, m_DamageMultiply) };
-            int[] type = new int[] { (int)m_Caster.m_AttackType };
+            float[] damage = new float[] { CalculrateSkillDamage(m_Caster, m_DamageType, m_DamageMultiply) };
+            int[] type = new int[] { (int)m_DamageType };
             foreach (Character c in list)
             {
                 c.GiveToDamage(damage, type, m_Caster);

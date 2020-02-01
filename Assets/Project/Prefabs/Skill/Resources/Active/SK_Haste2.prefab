@@ -73,7 +73,15 @@ MonoBehaviour:
   m_UseEffect: {fileID: 5884931925719867726, guid: d66c53d1699914840a976530c1708f55,
     type: 3}
   m_EffectLocalPosition: {x: 0, y: 0.1, z: 0}
-  m_SkillManual: "\uACF5\uACA9\uC18D\uB3C4\uC640 \uC774\uB3D9\uC18D\uB3C4\uAC00 7\uCD08\uB3D9\uC548
-    2\uBC30 \uC99D\uAC00 : \uCFE8\uB2E4\uC6B4 14\uCD08"
+  m_SkillManual: "&T&\uCD08\uB3D9\uC548 \uACF5\uACA9\uC18D\uB3C4\uAC00 &AS&%, \uC774\uB3D9\uC18D\uB3C4\uAC00
+    &MS&% \uC99D\uAC00 : \uCFE8\uB2E4\uC6B4 &MCD&\uCD08"
+  m_SkillType: 1
+  m_DamageType: 0
+  m_Damage: 0
+  m_DamageMultiply: 0
+  m_DefenceBonus: 0
+  m_DefenceBonusMultiply: 0
+  m_Radius: 0
+  m_AttackSpeedMultiply: 2
+  m_MovementSpeedMultiply: 1.5
   m_Duration: 7
-  m_MultiplySpeed: 2

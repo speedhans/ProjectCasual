@@ -656,7 +656,7 @@ public class Character : Object
                 Character c = colls[i].GetComponentInParent<Character>();
                 if (c)
                 {
-                    if (c.m_Team == _Team) continue;
+                    if (c.m_Team != _Team) continue;
                     if (_CheckLive && c.m_Live == E_LIVE.DEAD) continue;
                     if (_DeadOnly && c.m_Live != E_LIVE.DEAD) continue;
 
@@ -722,7 +722,7 @@ public class Character : Object
                 Character c = colls[i].GetComponentInParent<Character>();
                 if (c)
                 {
-                    if (c.m_Team == _Team) continue;
+                    if (c.m_Team != _Team) continue;
                     if (_CheckLive && c.m_Live == E_LIVE.DEAD) continue;
                     if (_DeadOnly && c.m_Live != E_LIVE.DEAD) continue;
 
@@ -788,7 +788,7 @@ public class Character : Object
                 Character c = colls[i].GetComponentInParent<Character>();
                 if (c)
                 {
-                    if (c.m_Team == _Team) continue;
+                    if (c.m_Team != _Team) continue;
                     if (_CheckLive && c.m_Live == E_LIVE.DEAD) continue;
                     if (_DeadOnly && c.m_Live != E_LIVE.DEAD) continue;
 
@@ -849,7 +849,7 @@ public class Character : Object
                 Character c = colls[i].GetComponentInParent<Character>();
                 if (c)
                 {
-                    if (c.m_Team == _Team) continue;
+                    if (c.m_Team != _Team) continue;
                     if (_CheckLive && c.m_Live == E_LIVE.DEAD) continue;
                     if (_DeadOnly && c.m_Live != E_LIVE.DEAD) continue;
 
@@ -902,7 +902,7 @@ public class Character : Object
                 Character c = colls[i].GetComponentInParent<Character>();
                 if (c)
                 {
-                    if (c.m_Team == _Team) continue;
+                    if (c.m_Team != _Team) continue;
                     if (_CheckLive && c.m_Live == E_LIVE.DEAD) continue;
                     if (_DeadOnly && c.m_Live != E_LIVE.DEAD) continue;
 

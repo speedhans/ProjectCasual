@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class ASDamageUpMultiply : ActiveSkill
 {
-    [SerializeField]
-    float m_Duration;
-    [Header("계산식: (기본 공격력 + 해당 속성 공격력) * 스킬변수")]
-    [SerializeField]
-    float m_MultiplyDamage;
-    [SerializeField]
-    E_DAMAGETYPE m_DamageType;
+    [Tooltip("계산식: (기본 공격력 + 해당 속성 공격력) * 스킬변수")]
     [SerializeField]
     GameObject m_Effect;
     [SerializeField]
@@ -33,14 +27,14 @@ public class ASDamageUpMultiply : ActiveSkill
         StartCoroutine(C_SkillPlay(1.0f));
     }
 
-    IEnumerator C_SkillPlay(float _Wait) // 지속시간, 공격력 증분
+    IEnumerator C_SkillPlay(float _Wait)
     {
         m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL1, 0.25f, 1.0f, _Wait, false, true);
         yield return new WaitForSeconds(_Wait);
 
         m_CurrentCooldown = m_MaxCooldown;
 
-        m_Caster.AddBuff(E_BUFF.DAMAGEUPMULTI, new object[] { m_Duration, m_MultiplyDamage, m_DamageType, "Effect/" + m_Effect.name, m_EffectAttachPoint });
+        m_Caster.AddBuff(E_BUFF.DAMAGEUPMULTI, new object[] { m_Duration, m_DamageMultiply, m_DamageType, "Effect/" + m_Effect.name, m_EffectAttachPoint });
     }
 
     public override void AutoPlayLogic()

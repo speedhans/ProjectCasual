@@ -11,16 +11,7 @@ public class ASPhalanx : ActiveSkill
     }
 
     [SerializeField]
-    float m_Radius;
-    [SerializeField]
     E_PHALANXTYPE m_Type;
-    [SerializeField]
-    float m_Duration;
-    [SerializeField]
-    [Range(0, 100)]
-    float m_DefenceBonus;
-    [SerializeField]
-    E_DAMAGETYPE m_DefenceType;
     [SerializeField]
     GameObject m_Effect;
     [SerializeField]
@@ -43,7 +34,7 @@ public class ASPhalanx : ActiveSkill
         StartCoroutine(C_SkillPlay(1.0f));
     }
 
-    IEnumerator C_SkillPlay(float _Wait) // 지속시간, 방어력 증분
+    IEnumerator C_SkillPlay(float _Wait)
     {
         m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL1, 0.25f, 1.0f, _Wait, false, true);
         yield return new WaitForSeconds(_Wait);
@@ -54,9 +45,16 @@ public class ASPhalanx : ActiveSkill
 
         if (list != null)
         {
+            E_BUFF buff = m_Type == E_PHALANXTYPE.ADDTYPE ? E_BUFF.DEFENCEUP : E_BUFF.DEFENCEMULTI;
+            object[] datas = null;
+            if (m_Type == E_PHALANXTYPE.ADDTYPE)
+                datas = new object[] { m_Duration, m_DefenceBonus, m_DamageType, "Effect/" + m_Effect.name, m_EffectAttachPoint };
+            else
+                datas = new object[] { m_Duration, m_DefenceBonusMultiply, m_DamageType, "Effect/" + m_Effect.name, m_EffectAttachPoint };
+
             for (int i = 0; i < list.Count; ++i)
             {
-                list[i].AddBuff(m_Type == E_PHALANXTYPE.ADDTYPE ? E_BUFF.DEFENCEUP : E_BUFF.DEFENCEMULTI, new object[] { m_Duration, m_DefenceBonus, m_DefenceType, "Effect/" + m_Effect.name, m_EffectAttachPoint });
+                list[i].AddBuff(buff, datas);
             }
         }
     }

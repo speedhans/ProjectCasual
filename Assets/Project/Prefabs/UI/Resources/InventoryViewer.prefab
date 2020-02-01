@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1190859970090011326}
   - component: {fileID: 1970802389250235608}
   m_Layer: 5
-  m_Name: InventoryByTypeAll
+  m_Name: InventoryViewer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +50,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f936321e1c4fb3e4f93d77b029fd87b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_InventoryType: 0
   m_SlotPrefab: {fileID: 5255102102450426948, guid: c2204b8401ab3804bb3ce0f6515deba9,
     type: 3}
 --- !u!1 &4716293662591832452
@@ -248,7 +247,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1200, y: 2000}
+  m_SizeDelta: {x: 1000, y: 2000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3563908180731628752
 MonoBehaviour:

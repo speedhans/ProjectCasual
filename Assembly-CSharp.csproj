@@ -129,6 +129,7 @@
     <Compile Include="Assets\Project\Scripts\Network\DataBaseManager.cs" />
     <Compile Include="Assets\Project\Scripts\Network\NetworkManager.cs" />
     <Compile Include="Assets\Project\Scripts\Network\StreamComponent.cs" />
+    <Compile Include="Assets\Project\Scripts\Network\TimerNet.cs" />
     <Compile Include="Assets\Project\Scripts\Network\TransformNet.cs" />
     <Compile Include="Assets\Project\Scripts\Object.cs" />
     <Compile Include="Assets\Project\Scripts\Object\Thing.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Assets\Project\Scripts\System\FrameChecker.cs" />
     <Compile Include="Assets\Project\Scripts\System\InventoryContainer.cs" />
     <Compile Include="Assets\Project\Scripts\System\InventoryManager.cs" />
+    <Compile Include="Assets\Project\Scripts\System\TestModeDefaultItemSetting.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\CharacterUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\DefaultUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\GameUICanvas\GameUI.cs" />

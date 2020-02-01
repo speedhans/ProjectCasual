@@ -9,6 +9,10 @@ public class IntroManager : MonoBehaviourPunCallbacks
     {
         Application.targetFrameRate = 60;
 
+#if !UNITY_EDITOR
+        Debug.unityLogger.logEnabled = false;
+#endif
+
         InventoryManager.Instance.LoadItemList();
     }
 

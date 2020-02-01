@@ -72,11 +72,19 @@ MonoBehaviour:
   m_CurrentCooldown: 0
   m_UseEffect: {fileID: 0}
   m_EffectLocalPosition: {x: 0, y: 0, z: 0}
-  m_SkillManual: "\uBD88\uC18D\uC131 \uACF5\uACA9\uB825 \uBC84\uD504\uB97C 10\uCD08\uB3D9\uC548
-    \uC790\uC2E0\uC5D0\uAC8C \uC801\uC6A9 : \uCFE8\uB2E4\uC6B4 20\uCD08"
-  m_Duration: 10
-  m_MultiplyDamage: 2
+  m_SkillManual: "\uC790\uC2E0\uC758 \uBD88\uC18D\uC131 \uACF5\uACA9\uB825\uC744
+    &DM&% \uB9CC\uD07C &T&\uCD08\uB3D9\uC548 \uC99D\uAC00\uC2DC\uD0B4 : \uCFE8\uB2E4\uC6B4
+    &MCD&\uCD08"
+  m_SkillType: 1
   m_DamageType: 0
+  m_Damage: 0
+  m_DamageMultiply: 1.15
+  m_DefenceBonus: 0
+  m_DefenceBonusMultiply: 0
+  m_Radius: 0
+  m_AttackSpeedMultiply: 0
+  m_MovementSpeedMultiply: 0
+  m_Duration: 10
   m_Effect: {fileID: 2726289197295271908, guid: bfe22163d3f5a0d4a9efc432a1814f22,
     type: 3}
   m_EffectAttachPoint: 2

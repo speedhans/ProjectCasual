@@ -39,7 +39,7 @@ public class Main_Stage : Main
         m_SkillUICanvas = Instantiate(Resources.Load<GameObject>("SkillUICanvas"), Vector3.zero, Quaternion.identity);
         m_SkillUICanvas.SetActive(false);
 
-        GameObject g = PhotonNetwork.Instantiate("PlayerCharacter", Vector3.zero, Quaternion.identity, 0, new object[] { 0, 0, 0, 0, 0, InventoryManager.Instance.GetPlayerModel() });
+        GameObject g = PhotonNetwork.Instantiate("PlayerCharacter", Vector3.zero, Quaternion.identity, 0, new object[] { -1, -1, -1, -1, -1, InventoryManager.Instance.GetPlayerModelName() });
         m_MyCharacter = g.GetComponent<PlayerCharacter>();
 
         GameObject vcamera = Instantiate(m_VerticalCamera, Vector3.zero, Quaternion.identity);

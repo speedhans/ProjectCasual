@@ -55,5 +55,6 @@ MonoBehaviour:
   - Skill_Initialize_RPC
   - SetCharging_RPC
   - AttachWeapon_RPC
+  - InsertTimer_RPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1

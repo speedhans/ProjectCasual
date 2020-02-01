@@ -69,7 +69,7 @@ public abstract class Buff
         switch ((E_BUFF)_BuffID)
         {
             case E_BUFF.HASTE:
-                return new BuffHaste(_Target, "Haste", _BuffID, Resources.Load<Sprite>("IconSprite/T_18_next2_"),  (float)_BuffData[0], (float)_BuffData[1]);
+                return new BuffHaste(_Target, "Haste", _BuffID, Resources.Load<Sprite>("IconSprite/T_18_next2_"),  (float)_BuffData[0], (float)_BuffData[1], (float)_BuffData[2]);
             case E_BUFF.DAMAGEUP:
                 return new BuffDamageUp(_Target, "DamageUp", _BuffID, Resources.Load<Sprite>("IconSprite/T_2_sword45_"), (float)_BuffData[0], (float)_BuffData[1], (E_DAMAGETYPE)_BuffData[2], (string)_BuffData[3], (Character.E_ATTACHPOINT)_BuffData[4]);
             case E_BUFF.DAMAGEUPMULTI:

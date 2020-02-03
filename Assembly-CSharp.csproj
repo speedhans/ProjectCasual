@@ -158,6 +158,7 @@
     <Compile Include="Assets\Project\Scripts\System\InventoryContainer.cs" />
     <Compile Include="Assets\Project\Scripts\System\InventoryManager.cs" />
     <Compile Include="Assets\Project\Scripts\System\TestModeDefaultItemSetting.cs" />
+    <Compile Include="Assets\Project\Scripts\UISystem\BossCharacterUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\CharacterUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\DefaultUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\GameUICanvas\GameUI.cs" />

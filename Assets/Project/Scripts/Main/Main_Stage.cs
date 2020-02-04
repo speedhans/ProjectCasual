@@ -18,6 +18,8 @@ public class Main_Stage : Main
     GameObject m_StageDefaultCamera;
     [SerializeField]
     GameObject m_VerticalCamera;
+    [SerializeField]
+    Item[] m_ResultItemlist;
 
     protected override void Awake()
     {
@@ -87,7 +89,15 @@ public class Main_Stage : Main
         m_BossUICanvas.gameObject.SetActive(true);
 
         IsLoadingComplete = true;
+
+        // test code
+        GameObject clearui = Instantiate(Resources.Load<GameObject>("GameClearUICanvas"));
+        GameClearUICanvas canvas = clearui.GetComponent<GameClearUICanvas>();
+        canvas.Initialize(this);
+        canvas.StartClearTextAnimation();
     }
+
+    public Item[] GetResultItemlist() { return m_ResultItemlist; }
 
     public override void OnJoinedRoom()
     {

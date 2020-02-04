@@ -45,8 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ItemID: 3
   m_UniqueID: 0
-  m_ItemName: FrameMagicBook
-  m_ItemImage: {fileID: 21300000, guid: ae496f5dad56ea645b72d374a0376368, type: 3}
+  m_ItemName: Torchlight
+  m_ItemImage: {fileID: 21300000, guid: 249183dc72f9e27468af3f8d08788028, type: 3}
   m_IsStockable: 0
   m_StockCount: 1
   m_MaxStockCount: 1
@@ -65,12 +65,12 @@ MonoBehaviour:
   m_IceDamageReinforceBonus: 0
   m_ElectricDamage: 0
   m_ElectricDamageReinforceBonus: 0
-  m_CutDamage: 0
-  m_CutDamageReinforceBonus: 0
-  m_BluntDamage: 0
-  m_BluntDamageReinforceBonus: 0
-  m_PierceDamage: 0
-  m_PierceDamageReinforceBonus: 0
+  m_WindDamage: 0
+  m_WindDamageReinforceBonus: 0
+  m_LightDamage: 0
+  m_LightDamageReinforceBonus: 0
+  m_DarkDamage: 0
+  m_DarkDamageReinforceBonus: 0
   m_AttackSpeed: 1
   m_AttackSpeedReinforceBonus: 0
   m_MovementSpeed: 1
@@ -79,8 +79,8 @@ MonoBehaviour:
   m_AttackRangeReinforceBonus: 0
   m_CriticalChance: 5
   m_CriticalChanceReinforceBonus: 2
-  m_CriticalMuliply: 0
-  m_CriticalMuliplyReinforceBonus: 0
+  m_CriticalDamage: 0
+  m_CriticalDamageReinforceBonus: 0
   m_Health: 0
   m_HealthReinforceBonus: 0
   m_HealthRegeneration: 0

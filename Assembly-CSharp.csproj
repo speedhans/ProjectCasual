@@ -161,6 +161,9 @@
     <Compile Include="Assets\Project\Scripts\UISystem\BossCharacterUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\CharacterUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\DefaultUI.cs" />
+    <Compile Include="Assets\Project\Scripts\UISystem\GameClearUI\GameClearUICanvas.cs" />
+    <Compile Include="Assets\Project\Scripts\UISystem\GameClearUI\ResultItemSlot.cs" />
+    <Compile Include="Assets\Project\Scripts\UISystem\GameClearUI\ResultUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\GameUICanvas\GameUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\GameUICanvas\GameUICanvas.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\GameUICanvas\SkillUICanvas.cs" />

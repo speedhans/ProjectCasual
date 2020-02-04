@@ -9,9 +9,9 @@ public struct S_RESISTANCE
     public float Fire;
     public float Ice;
     public float Electric;
-    public float Cut;
-    public float Blunt;
-    public float Pierce;
+    public float Wind;
+    public float Light;
+    public float Dark;
 }
 
 public enum E_DAMAGETYPE
@@ -19,9 +19,9 @@ public enum E_DAMAGETYPE
     FIRE,       // 화염
     ICE,        // 얼음
     ELECTRIC,   // 전기
-    CUT,        // 베기
-    BLUNT,      // 때리기
-    PIERCE,     // 찌르기
+    WIND,        // 바람
+    LIGHT,      // 때리기
+    DARK,     // 찌르기
     MAX,
 }
 

@@ -5,13 +5,31 @@ using UnityEngine;
 public class BossSkeletonKing : MeleeBossCharacter
 {
     [SerializeField]
-    GameObject m_AttackImpactEfect;
+    GameObject m_AttackImpactEffect;
     protected override void Awake()
     {
         base.Awake();
 
+        StartCoroutine(C_Initialize());
+
         SetAutoPlayLogic(AutoPlayLogic);
         AddDamageEvent(DamageEvent_S);
+    }
+
+    IEnumerator C_Initialize()
+    {
+        while(true)
+        {
+            if (GameManager.Instance.m_Main)
+            {
+                if (GameManager.Instance.m_Main.IsLoadingComplete)
+                {
+                    BossCharacterUI.Instance.InsertUI(this);
+                    yield break;
+                }
+            }
+            yield return null;
+        }
     }
 
     protected override void AutoPlayLogic()
@@ -32,7 +50,7 @@ public class BossSkeletonKing : MeleeBossCharacter
         base.AttackMomentEvent();
 
         Vector3 location = transform.position + (transform.forward * m_AttackRange) + new Vector3(0.0f, 0.01f, 0.0f);
-        LifeTimerWithObjectPool life = ObjectPool.GetObject<LifeTimerWithObjectPool>(m_AttackImpactEfect.name);
+        LifeTimerWithObjectPool life = ObjectPool.GetObject<LifeTimerWithObjectPool>(m_AttackImpactEffect.name);
         if (life)
         {
             life.Initialize();

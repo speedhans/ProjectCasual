@@ -106,7 +106,7 @@ public class Skill : MonoBehaviour
 
     public virtual void AutoPlayLogic() { }
     public E_ACTUATIONTYPE GetSkillActuationType() { return m_ActuationType; }
-    static protected float CalculrateSkillDamage(Character _Caster, E_DAMAGETYPE _DamageType, float _SkillDamageMultiply)
+    static protected float CalculateSkillDamage(Character _Caster, E_DAMAGETYPE _DamageType, float _SkillDamageMultiply)
     {
         if (_Caster.m_AttackType == _DamageType)
             return (_Caster.m_AttackDamage + _Caster.m_AddAttackDamage[(int)_DamageType]) * _SkillDamageMultiply; // 타입이 같을때 공식

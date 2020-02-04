@@ -72,6 +72,17 @@ MonoBehaviour:
   m_CurrentCooldown: 0
   m_UseEffect: {fileID: 0}
   m_EffectLocalPosition: {x: 0, y: 0, z: 0}
+  m_SkillManual: 
+  m_SkillType: 0
+  m_DamageType: 1
+  m_Damage: 0
+  m_DamageMultiply: 5
+  m_DefenceBonus: 0
+  m_DefenceBonusMultiply: 0
+  m_Radius: 5
+  m_AttackSpeedMultiply: 0
+  m_MovementSpeedMultiply: 0
+  m_Duration: 0
   m_ChargeRibbonEffect: {fileID: 5302348793852318141, guid: c764bc768d0632c479533a967617e515,
     type: 3}
   m_ChargeBallEffect: {fileID: 6327446508197019608, guid: b9253d3b45d773f419bbe3818f23bb95,
@@ -80,6 +91,3 @@ MonoBehaviour:
   m_BlastEffect: {fileID: 7865555833751672720, guid: 9f94f3789008f3d4ab0f07d737c8fcc1,
     type: 3}
   m_ChargeTime: 4
-  m_DamageMultiply: 5
-  m_DamageType: 1
-  m_DamageAreaRadius: 5

@@ -258,14 +258,14 @@ public class Object : RootComponent
                 case E_DAMAGETYPE.ELECTRIC:
                     damage *= (100.0f - Mathf.Clamp((m_Resistance.Electric + m_AddResistance[2]), 0.0f, 100.0f)) * 0.01f;
                     break;
-                case E_DAMAGETYPE.CUT:
-                    damage *= (100.0f - Mathf.Clamp((m_Resistance.Cut + m_AddResistance[3]), 0.0f, 100.0f)) * 0.01f;
+                case E_DAMAGETYPE.WIND:
+                    damage *= (100.0f - Mathf.Clamp((m_Resistance.Wind + m_AddResistance[3]), 0.0f, 100.0f)) * 0.01f;
                     break;
-                case E_DAMAGETYPE.BLUNT:
-                    damage *= (100.0f - Mathf.Clamp((m_Resistance.Blunt + m_AddResistance[4]), 0.0f, 100.0f)) * 0.01f;
+                case E_DAMAGETYPE.LIGHT:
+                    damage *= (100.0f - Mathf.Clamp((m_Resistance.Light + m_AddResistance[4]), 0.0f, 100.0f)) * 0.01f;
                     break;
-                case E_DAMAGETYPE.PIERCE:
-                    damage *= (100.0f - Mathf.Clamp((m_Resistance.Pierce + m_AddResistance[5]), 0.0f, 100.0f)) * 0.01f;
+                case E_DAMAGETYPE.DARK:
+                    damage *= (100.0f - Mathf.Clamp((m_Resistance.Dark + m_AddResistance[5]), 0.0f, 100.0f)) * 0.01f;
                     break;
             }
             caculratedamages[i] = damage;

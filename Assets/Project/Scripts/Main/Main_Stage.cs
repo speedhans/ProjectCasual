@@ -12,6 +12,7 @@ public class Main_Stage : Main
     GameObject m_ControlCanvas;
     GameUICanvas m_GameUICanvas;
     GameObject m_SkillUICanvas;
+    BossCharacterUI m_BossUICanvas;
 
     [SerializeField]
     GameObject m_StageDefaultCamera;
@@ -38,6 +39,9 @@ public class Main_Stage : Main
         gameUI.SetActive(false);
         m_SkillUICanvas = Instantiate(Resources.Load<GameObject>("SkillUICanvas"), Vector3.zero, Quaternion.identity);
         m_SkillUICanvas.SetActive(false);
+        GameObject bossUI = Instantiate(Resources.Load<GameObject>("BossUICanvas"));
+        m_BossUICanvas = bossUI.GetComponent<BossCharacterUI>();
+        bossUI.SetActive(false);
 
         GameObject g = PhotonNetwork.Instantiate("PlayerCharacter", Vector3.zero, Quaternion.identity, 0, new object[] { -1, -1, -1, -1, -1, InventoryManager.Instance.GetPlayerModelName() });
         m_MyCharacter = g.GetComponent<PlayerCharacter>();
@@ -80,6 +84,9 @@ public class Main_Stage : Main
         m_ControlCanvas.SetActive(true);
         m_GameUICanvas.gameObject.SetActive(true);
         m_SkillUICanvas.SetActive(true);
+        m_BossUICanvas.gameObject.SetActive(true);
+
+        IsLoadingComplete = true;
     }
 
     public override void OnJoinedRoom()

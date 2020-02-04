@@ -8,6 +8,9 @@ public class Main : MonoBehaviourPunCallbacks
 {
     public VerticalFollowCamera m_Camera;
     Dictionary<int, PlayerCharacter> m_DicPlayerCharacter = new Dictionary<int, PlayerCharacter>();
+
+    public bool IsLoadingComplete { get; protected set; }
+
     protected virtual void Awake()
     {
         GameManager.Instance.m_Main = this;

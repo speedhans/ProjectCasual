@@ -25,7 +25,7 @@ public class ASShockImpact : ActiveSkill
         if (list != null)
         {
             
-            float[] damage = new float[] { CalculrateSkillDamage(m_Caster, m_DamageType, m_DamageMultiply) };
+            float[] damage = new float[] { CalculateSkillDamage(m_Caster, m_DamageType, m_DamageMultiply) };
             int[] type = new int[] { (int)m_DamageType };
             foreach (Character c in list)
             {

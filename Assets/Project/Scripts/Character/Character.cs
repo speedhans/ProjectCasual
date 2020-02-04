@@ -61,7 +61,7 @@ public class Character : Object
     public float m_AttackRange = 0.5f;
     public float m_CriticalChance = 10.0f;
     public float m_CriticalMuliply = 1.5f;
-    public E_DAMAGETYPE m_AttackType = E_DAMAGETYPE.CUT;
+    public E_DAMAGETYPE m_AttackType = E_DAMAGETYPE.WIND;
     [SerializeField]
     protected float m_AttackAfterDelay = 0.0f;
     protected float m_AttackDelayTimer;

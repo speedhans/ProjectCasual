@@ -95,10 +95,16 @@ MonoBehaviour:
     Fire: 0
     Ice: 0
     Electric: 0
-    Cut: 0
-    Blunt: 0
-    Pierce: 0
-  m_MaxCarbonization: 100
+    Wind: 0
+    Light: 0
+    Dark: 0
+  m_AddResistance:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   m_HealthZeroIsDestroy: 1
   m_DestroyDelay: 3
   m_DefaultDamageEffect: {fileID: 5198289190822979863, guid: 6edd564ae38efeb4b8bede8325a6f0f7,
@@ -131,7 +137,7 @@ MonoBehaviour:
   m_ListPassiveSkill: []
   m_IsAutoPlay: 1
   m_AutoSearchRadius: 10
-  m_AttackImpactEfect: {fileID: 4818399390995637422, guid: 6d11e70e83bba2944893d0bcab7979ca,
+  m_AttackImpactEffect: {fileID: 4818399390995637422, guid: 6d11e70e83bba2944893d0bcab7979ca,
     type: 3}
 --- !u!1 &2985306745308755604
 GameObject:

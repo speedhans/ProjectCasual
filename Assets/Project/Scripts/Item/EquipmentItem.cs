@@ -9,9 +9,9 @@ public class EquipmentItem : Item
         FIREDAMAGE,
         ICEDAMAGE,
         ELECTRICDAMAGE,
-        CUTDAMAGE,
-        BLUNTDAMAGE,
-        PIERCEDAMAGE,
+        WINDDAMAGE,
+        LIGHTDAMAGE,
+        DARKDAMAGE,
         ATTACKSPEED,
         MOVEMENTSPEED,
         ATTACKRANGE,
@@ -33,7 +33,7 @@ public class EquipmentItem : Item
     [SerializeField]
     E_WEAPONTYPE m_WeaponType;
 
-    public E_DAMAGETYPE m_ItemElement = E_DAMAGETYPE.BLUNT;
+    public E_DAMAGETYPE m_ItemElement = E_DAMAGETYPE.WIND;
     [Space(2)]
     [Header("Fire, Ice, Electric, Cut, Blunt, Pierce")]
     [Tooltip("&0&")]
@@ -46,14 +46,14 @@ public class EquipmentItem : Item
     public float m_ElectricDamage; // &2&
     public float m_ElectricDamageReinforceBonus;
     [Tooltip("&3&")]
-    public float m_CutDamage; // &3&
-    public float m_CutDamageReinforceBonus;
+    public float m_WindDamage; // &3&
+    public float m_WindDamageReinforceBonus;
     [Tooltip("&4&")]
-    public float m_BluntDamage; // &4&
-    public float m_BluntDamageReinforceBonus;
+    public float m_LightDamage; // &4&
+    public float m_LightDamageReinforceBonus;
     [Tooltip("&5&")]
-    public float m_PierceDamage; // &5&
-    public float m_PierceDamageReinforceBonus;
+    public float m_DarkDamage; // &5&
+    public float m_DarkDamageReinforceBonus;
     [Space(2)]
     [Range(1.0f, 10.0f)]
     [Tooltip("&6&")]
@@ -83,7 +83,6 @@ public class EquipmentItem : Item
     {
         base.Awake();
         m_Type = E_TYPE.EQUIPMENT;
-        Debug.Log("item awake");
     }
 
     public virtual void EquipAction(Character _Character)
@@ -91,9 +90,9 @@ public class EquipmentItem : Item
         _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.FIRE] += m_FireDamage + (m_ReinforceCount * m_FireDamageReinforceBonus);
         _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.ICE] += m_IceDamage + (m_ReinforceCount * m_IceDamageReinforceBonus);
         _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.ELECTRIC] += m_ElectricDamage + (m_ReinforceCount * m_ElectricDamageReinforceBonus);
-        _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.CUT] += m_CutDamage + (m_ReinforceCount * m_CutDamageReinforceBonus);
-        _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.BLUNT] += m_BluntDamage + (m_ReinforceCount * m_BluntDamageReinforceBonus);
-        _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.PIERCE] += m_PierceDamage + (m_ReinforceCount * m_PierceDamageReinforceBonus);
+        _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.WIND] += m_WindDamage + (m_ReinforceCount * m_WindDamageReinforceBonus);
+        _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.LIGHT] += m_LightDamage + (m_ReinforceCount * m_LightDamageReinforceBonus);
+        _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.DARK] += m_DarkDamage + (m_ReinforceCount * m_DarkDamageReinforceBonus);
 
         _Character.m_AttackSpeed *= m_AttackSpeed + (m_ReinforceCount * m_AttackSpeedReinforceBonus);
         _Character.m_MovePerSpeed *= m_MovementSpeed + (m_ReinforceCount * m_MovementSpeedReinforceBonus);
@@ -175,12 +174,12 @@ public class EquipmentItem : Item
                 return m_IceDamage + (m_ReinforceCount * m_IceDamageReinforceBonus);
             case E_ITEMSTATE.ELECTRICDAMAGE:
                 return m_ElectricDamage + (m_ReinforceCount * m_ElectricDamageReinforceBonus);
-            case E_ITEMSTATE.CUTDAMAGE:
-                return m_CutDamage + (m_ReinforceCount * m_CutDamageReinforceBonus);
-            case E_ITEMSTATE.BLUNTDAMAGE:
-                return m_BluntDamage + (m_ReinforceCount * m_BluntDamageReinforceBonus);
-            case E_ITEMSTATE.PIERCEDAMAGE:
-                return m_PierceDamage + (m_ReinforceCount * m_PierceDamageReinforceBonus);
+            case E_ITEMSTATE.WINDDAMAGE:
+                return m_WindDamage + (m_ReinforceCount * m_WindDamageReinforceBonus);
+            case E_ITEMSTATE.LIGHTDAMAGE:
+                return m_LightDamage + (m_ReinforceCount * m_LightDamageReinforceBonus);
+            case E_ITEMSTATE.DARKDAMAGE:
+                return m_DarkDamage + (m_ReinforceCount * m_DarkDamageReinforceBonus);
             case E_ITEMSTATE.ATTACKSPEED:
                 return (m_AttackSpeed + (m_ReinforceCount * m_AttackSpeedReinforceBonus)) * 100.0f - 100.0f;
             case E_ITEMSTATE.MOVEMENTSPEED:

@@ -46,7 +46,7 @@ public class Thing : Object
         float shock = m_BeforeVelocity.magnitude - m_Hardness;
         if (shock > 0.0f)
         {
-            GiveToDamage(new float[] { shock }, new int[] { (int)E_DAMAGETYPE.BLUNT }, null);
+            GiveToDamage(new float[] { shock }, new int[] { (int)E_DAMAGETYPE.WIND }, null);
             if (m_DefaultDamageEffect)
                 Instantiate(m_DefaultDamageEffect, collision.contacts[0].point, Quaternion.identity); // 네트워크 작업시 수정해야 할 필요가 있음
         }

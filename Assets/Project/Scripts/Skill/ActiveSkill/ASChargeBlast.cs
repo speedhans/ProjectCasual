@@ -87,7 +87,7 @@ public class ASChargeBlast : ActiveSkill
         List<Character> list = Character.FindEnemyAllArea(m_Caster, m_Caster.transform.position, m_Radius);
         if (list != null)
         {
-            float[] damage = new float[] { CalculrateSkillDamage(m_Caster, m_DamageType, m_DamageMultiply) };
+            float[] damage = new float[] { CalculateSkillDamage(m_Caster, m_DamageType, m_DamageMultiply) };
             int[] type = new int[] { (int)m_DamageType };
 
             for (int i = 0; i < list.Count; ++i)

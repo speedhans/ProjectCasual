@@ -31,7 +31,7 @@ public class ASFlameBlast : ActiveSkill
             ASFlameBlastSub f = g.GetComponent<ASFlameBlastSub>();
             if (f)
             {
-                f.Initialize(m_Caster, CalculrateSkillDamage(m_Caster, E_DAMAGETYPE.FIRE, m_DamageMultiply), E_DAMAGETYPE.FIRE);
+                f.Initialize(m_Caster, CalculateSkillDamage(m_Caster, E_DAMAGETYPE.FIRE, m_DamageMultiply), E_DAMAGETYPE.FIRE);
             }
         }
     }

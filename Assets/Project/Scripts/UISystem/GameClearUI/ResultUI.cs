@@ -8,11 +8,14 @@ public class ResultUI : MonoBehaviour
     Transform m_Grid;
     List<ResultItemSlot> m_ListSlot = new List<ResultItemSlot>();
 
+    [SerializeField]
+    TMPro.TMP_Text m_ScoreText;
     int m_Score;
     Item[] m_RewardItems;
-
     Coroutine m_Coroutine;
 
+    [HideInInspector]
+    public int m_Phase = 0;
     public void Initialize(int _Score, List<Item> _RewardItems)
     {
         m_Score = _Score;
@@ -37,9 +40,37 @@ public class ResultUI : MonoBehaviour
         }
     }
 
+    public void StartScoreAnimation()
+    {
+        if (m_Coroutine != null) StopCoroutine(m_Coroutine);
+        m_Coroutine = StartCoroutine(C_StartScoreAnimation());
+        m_Phase = 1;
+    }
+
+    IEnumerator C_StartScoreAnimation()
+    {
+        float progressvalue = 0.0f;
+        while (true)
+        {
+            progressvalue += Time.deltaTime * m_Score * 0.5f;
+            if (progressvalue >= m_Score)
+            {
+                m_ScoreText.text = m_Score.ToString();
+                yield return new WaitForSeconds(1.0f);
+                StarSlotsAnimation();
+                yield break;
+            }
+            else
+                m_ScoreText.text = ((int)progressvalue).ToString();
+            yield return null;
+        }
+    }
+
     public void StarSlotsAnimation()
     {
+        if (m_Coroutine != null) StopCoroutine(m_Coroutine);
         m_Coroutine = StartCoroutine(C_StartSlotAnimation());
+        m_Phase = 2;
     }
 
     IEnumerator C_StartSlotAnimation()
@@ -52,6 +83,8 @@ public class ResultUI : MonoBehaviour
             ++count;
             yield return wait;
         }
+
+        m_Phase = 3;
     }
 
     public void DirectResult()
@@ -61,9 +94,13 @@ public class ResultUI : MonoBehaviour
             StopCoroutine(m_Coroutine);
         }
 
+        m_ScoreText.text = m_Score.ToString();
+
         for (int i = 0; i < m_RewardItems.Length; ++i)
         {
             m_ListSlot[i].DirectResult();
         }
+
+        m_Phase = 3;
     }
 }

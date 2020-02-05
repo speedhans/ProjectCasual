@@ -69,6 +69,11 @@ public class Character : Object
     protected int m_AttackAniNumber;
     protected float m_AttackLevelConnetTimer;
     protected HateTarget m_AttackTarget;
+    public HateTarget AttackTarget
+    {
+        get { return m_AttackTarget; }
+        private set { }
+    }
     [SerializeField]
     bool m_PlayHitAnimation = true;
     public List<ActiveSkill> m_ListActiveSkill = new List<ActiveSkill>();
@@ -106,22 +111,6 @@ public class Character : Object
         AddDamageEvent(DamageEvent);
 
         AddDeadEvent(DeadEvent);
-
-        if (m_ListActiveSkill.Count > 0)
-        {
-            for (int i = 0; i < m_ListActiveSkill.Count; ++i)
-            {
-                m_ListActiveSkill[i].Initialize(this);
-            }
-        }
-
-        if (m_ListPassiveSkill.Count > 0)
-        {
-            for (int i = 0; i < m_ListPassiveSkill.Count; ++i)
-            {
-                m_ListPassiveSkill[i].Initialize(this);
-            }
-        }
     }
 
     IEnumerator C_Initialize()
@@ -159,6 +148,22 @@ public class Character : Object
     protected override void Start()
     {
         base.Start();
+
+        if (m_ListActiveSkill.Count > 0)
+        {
+            for (int i = 0; i < m_ListActiveSkill.Count; ++i)
+            {
+                m_ListActiveSkill[i].Initialize(this);
+            }
+        }
+
+        if (m_ListPassiveSkill.Count > 0)
+        {
+            for (int i = 0; i < m_ListPassiveSkill.Count; ++i)
+            {
+                m_ListPassiveSkill[i].Initialize(this);
+            }
+        }
 
         if (m_CharacterType == E_CHARACTERTYPE.BOSSNPC)
         {
@@ -301,9 +306,7 @@ public class Character : Object
     public Vector3 GetLastTargetLocation() { return m_NavMeshController.m_MoveLocation; }
     public bool IsNavMeshRunning() { return m_NavMeshController.IsUpdate(); }
 
-    public virtual void AttackMomentEvent()
-    {
-    }
+    public virtual void AttackMomentEvent() { }
 
     public E_CHARACTERTYPE GetCharacterType() { return m_CharacterType; }
 
@@ -358,6 +361,9 @@ public class Character : Object
             case E_ANIMATION.SPECIAL1:
             case E_ANIMATION.SPECIAL2:
             case E_ANIMATION.SPECIAL3:
+            case E_ANIMATION.SPECIAL4:
+            case E_ANIMATION.SPECIAL5:
+            case E_ANIMATION.SPECIAL6:
                 SetCharacterState(E_STATE.SPECIAL, _IsCharing, _Network);
                 break;
             case E_ANIMATION.HIT:
@@ -459,6 +465,15 @@ public class Character : Object
                 break;
             case E_ANIMATION.SPECIAL3:
                 m_Animator.CrossFade("Special3", _Duration);
+                break;
+            case E_ANIMATION.SPECIAL4:
+                m_Animator.CrossFade("Special4", _Duration);
+                break;
+            case E_ANIMATION.SPECIAL5:
+                m_Animator.CrossFade("Special5", _Duration);
+                break;
+            case E_ANIMATION.SPECIAL6:
+                m_Animator.CrossFade("Special6", _Duration);
                 break;
             case E_ANIMATION.HIT:
                 m_Animator.CrossFade("HIT", _Duration);

@@ -22,7 +22,6 @@ public class GameClearUICanvas : MonoBehaviour
     [SerializeField]
     ResultUI m_ResultUI;
 
-    int m_Phase = 0;
     public void Initialize(Main_Stage _Main)
     {
         m_Main = _Main;
@@ -40,13 +39,13 @@ public class GameClearUICanvas : MonoBehaviour
         while(true)
         {
             float deltatime = Time.deltaTime;
-            m_ColorPointAdd = Fraction(m_ColorPointAdd + (deltatime * m_ColorChangeSpeed));
+            m_ColorPointAdd = LoopValue01(m_ColorPointAdd + (deltatime * m_ColorChangeSpeed));
 
             TMPro.VertexGradient vtxgradient;
-            vtxgradient.topLeft = m_TextGradientColor.Evaluate(Fraction(m_ColorPointAdd + (m_ColorPointOffset * 1)));
-            vtxgradient.topRight = m_TextGradientColor.Evaluate(Fraction(m_ColorPointAdd + (m_ColorPointOffset * 2)));
-            vtxgradient.bottomLeft = m_TextGradientColor.Evaluate(Fraction(m_ColorPointAdd + (m_ColorPointOffset * 3)));
-            vtxgradient.bottomRight = m_TextGradientColor.Evaluate(Fraction(m_ColorPointAdd + (m_ColorPointOffset * 4)));
+            vtxgradient.topLeft = m_TextGradientColor.Evaluate(LoopValue01(m_ColorPointAdd + (m_ColorPointOffset * 1)));
+            vtxgradient.topRight = m_TextGradientColor.Evaluate(LoopValue01(m_ColorPointAdd + (m_ColorPointOffset * 2)));
+            vtxgradient.bottomLeft = m_TextGradientColor.Evaluate(LoopValue01(m_ColorPointAdd + (m_ColorPointOffset * 3)));
+            vtxgradient.bottomRight = m_TextGradientColor.Evaluate(LoopValue01(m_ColorPointAdd + (m_ColorPointOffset * 4)));
 
             m_ClearText.colorGradient = vtxgradient;
 
@@ -54,20 +53,18 @@ public class GameClearUICanvas : MonoBehaviour
         }
     }
 
-    float Fraction(float _Value)
+    float LoopValue01(float _Value)
     {
-        if (_Value < 0.0f)
-            return 1.0f;
         if (_Value > 1.0f)
             return 0.0f;
-
+        else if (_Value < 0.0f)
+            return 1.0f;
         return _Value;
     }
 
     public void TouchBackground()
     {
-        ++m_Phase;
-        if (m_Phase == 1)
+        if (m_ResultUI.m_Phase == 0)
         {
             if (m_Coroutine != null)
             {
@@ -79,18 +76,19 @@ public class GameClearUICanvas : MonoBehaviour
             list.AddRange(items);
             m_ResultUI.Initialize(Random.Range(10000, 100000), list); // db 작업 필요
             m_ResultUI.gameObject.SetActive(true);
+            m_ResultUI.StartScoreAnimation();
             return;
         }
 
-        if (m_Phase == 2)
-        {
-            m_ResultUI.StarSlotsAnimation();
-            return;
-        }
-
-        if (m_Phase == 3)
+        if (m_ResultUI.m_Phase == 1 || m_ResultUI.m_Phase == 2)
         {
             m_ResultUI.DirectResult();
+            return;
+        }
+
+        if (m_ResultUI.m_Phase > 2)
+        {
+            SceneManager.Instance.LoadScene("LobbyScene");
             return;
         }
     }

@@ -82,7 +82,7 @@ public class Skill : MonoBehaviour
     public virtual void UseSkill()
     {
         if (!m_PhotonView.IsMine) return;
-        if (m_CurrentCooldown > 0.0f || m_Caster.IsFreeze() || m_Caster.m_Live == Object.E_LIVE.DEAD) return;
+        if (m_CurrentCooldown > 0.0f || m_Caster.IsFreeze() || m_Caster.IsCharging() || m_Caster.m_Live == Object.E_LIVE.DEAD) return;
         m_CurrentCooldown = m_MaxCooldown;
         m_PhotonView.RPC("UseSkill_RPC", RpcTarget.AllViaServer);
     }

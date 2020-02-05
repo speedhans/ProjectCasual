@@ -79,6 +79,22 @@ public class InventoryManager : MonoBehaviour
         m_InventoryContainer.InsertItem(_Item);
     }
 
+    public void InserItem(Item[] _Items)
+    {
+        for (int i = 0; i < _Items.Length; ++i)
+        {
+            m_InventoryContainer.InsertItem(_Items[i]);
+        }
+    }
+
+    public void InserItem(List<Item> _Items)
+    {
+        for (int i = 0; i < _Items.Count; ++i)
+        {
+            m_InventoryContainer.InsertItem(_Items[i]);
+        }
+    }
+
     public void DestroyItem(Item _Item)
     {
         m_InventoryContainer.DeleteItem(_Item);

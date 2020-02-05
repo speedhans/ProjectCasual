@@ -89,7 +89,7 @@ public class Main_Stage : Main
         m_BossUICanvas.gameObject.SetActive(true);
 
         IsLoadingComplete = true;
-
+        return;
         // test code
         GameObject clearui = Instantiate(Resources.Load<GameObject>("GameClearUICanvas"));
         GameClearUICanvas canvas = clearui.GetComponent<GameClearUICanvas>();
@@ -97,7 +97,18 @@ public class Main_Stage : Main
         canvas.StartClearTextAnimation();
     }
 
-    public Item[] GetResultItemlist() { return m_ResultItemlist; }
+    public Item[] GetResultItemlist() 
+    {
+        List<Item> list = new List<Item>();
+        for (int i = 0; i < m_ResultItemlist.Length; ++i)
+        {
+            list.Add(Instantiate(m_ResultItemlist[i].gameObject).GetComponent<Item>());
+        }
+
+        InventoryManager.Instance.InserItem(list);
+
+        return list.ToArray();
+    }
 
     public override void OnJoinedRoom()
     {

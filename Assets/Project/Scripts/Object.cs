@@ -58,9 +58,6 @@ public class Object : RootComponent
     protected float m_DestroyDelay;
     [Tooltip("null 이면 생성 안함")]
     [SerializeField]
-    protected GameObject m_DefaultDamageEffect;
-    [Tooltip("null 이면 생성 안함")]
-    [SerializeField]
     protected GameObject m_DestoryEffect;
 
     protected Object m_AttachTarget;

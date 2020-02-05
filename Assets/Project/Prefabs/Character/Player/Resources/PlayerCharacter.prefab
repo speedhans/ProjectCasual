@@ -106,7 +106,6 @@ MonoBehaviour:
   - 0
   m_HealthZeroIsDestroy: 0
   m_DestroyDelay: 0
-  m_DefaultDamageEffect: {fileID: 0}
   m_DestoryEffect: {fileID: 0}
   m_WeekPoint: []
   m_Team: 0

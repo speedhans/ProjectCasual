@@ -36,6 +36,9 @@ public enum E_ANIMATION
     SPECIAL1,
     SPECIAL2,
     SPECIAL3,
+    SPECIAL4,
+    SPECIAL5,
+    SPECIAL6,
     HIT,
 }
 

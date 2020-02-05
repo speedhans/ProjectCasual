@@ -74,6 +74,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public class RoomControl
     {
+        public void LeaveRoom()
+        {
+            if (PhotonNetwork.InRoom)
+            {
+                PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+                PhotonNetwork.LeaveRoom();
+            }
+        }
+
         public int PlayerCount { get { return PhotonNetwork.CurrentRoom.PlayerCount; } }
 
         public void SetRoomProperties(string _Keys, object _Values)

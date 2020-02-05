@@ -128,6 +128,12 @@ public class InventorySlot : MonoBehaviour
 
         if (!item || !titem) return;
 
+        if (item.m_EquipState.IsEquip)
+        {
+            MessageBox.CreateOneButtonType("장착중인 아이템은 강화재료로 사용 할 수 없습니다");
+            return;
+        }
+
         if (item.GetReinforceCount() > 0)
         {
             MessageBox.CreateTwoButtonType("이 아이템은 강화가 되어있습니다. 정말로 재료로 사용하시겠습니까?", "YES", ReinforceItemSuccess, "NO");

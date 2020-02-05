@@ -145,6 +145,7 @@
     <Compile Include="Assets\Project\Scripts\Skill\ActiveSkill\ASChargeBlast.cs" />
     <Compile Include="Assets\Project\Scripts\Skill\ActiveSkill\ASDamageUp.cs" />
     <Compile Include="Assets\Project\Scripts\Skill\ActiveSkill\ASDamageUpMultiply.cs" />
+    <Compile Include="Assets\Project\Scripts\Skill\ActiveSkill\ASFiveSwingAttack.cs" />
     <Compile Include="Assets\Project\Scripts\Skill\ActiveSkill\ASFlameBlast.cs" />
     <Compile Include="Assets\Project\Scripts\Skill\ActiveSkill\ASHasteSkill.cs" />
     <Compile Include="Assets\Project\Scripts\Skill\ActiveSkill\ASPhalanx.cs" />

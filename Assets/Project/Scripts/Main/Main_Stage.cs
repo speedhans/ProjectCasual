@@ -21,6 +21,14 @@ public class Main_Stage : Main
     [SerializeField]
     Item[] m_ResultItemlist;
 
+    [SerializeField]
+    Character m_BossCharacter;
+    [HideInInspector]
+    public int m_MonsterDeadCount;
+    public int m_BossWakeUpCount;
+    [SerializeField]
+    Transform m_BossRoomStartPoint;
+
     protected override void Awake()
     {
         base.Awake();
@@ -87,14 +95,8 @@ public class Main_Stage : Main
         m_GameUICanvas.gameObject.SetActive(true);
         m_SkillUICanvas.SetActive(true);
         m_BossUICanvas.gameObject.SetActive(true);
-
+        m_BossCharacter.SetFreeze(999999.9f);
         IsLoadingComplete = true;
-        return;
-        // test code
-        GameObject clearui = Instantiate(Resources.Load<GameObject>("GameClearUICanvas"));
-        GameClearUICanvas canvas = clearui.GetComponent<GameClearUICanvas>();
-        canvas.Initialize(this);
-        canvas.StartClearTextAnimation();
     }
 
     public Item[] GetResultItemlist() 
@@ -108,6 +110,47 @@ public class Main_Stage : Main
         InventoryManager.Instance.InserItem(list);
 
         return list.ToArray();
+    }
+
+    bool m_BossWakeUp = false;
+    public void MonsterDead()
+    {
+        ++m_MonsterDeadCount;
+        if (!m_BossWakeUp && m_MonsterDeadCount >= m_BossWakeUpCount)
+        {
+            BossWakeUp();
+        }
+    }
+
+    public void BossWakeUp()
+    {
+        m_BossWakeUp = true;
+        m_BossCharacter.SetFreeze(0.0f);
+        m_BossUICanvas.gameObject.SetActive(true);
+        m_BossUICanvas.InsertUI(m_BossCharacter);
+        StartCoroutine(C_BossStateCheck());
+    }
+
+    IEnumerator C_BossStateCheck()
+    {
+        m_MyCharacter.transform.position = m_BossRoomStartPoint.position;
+        m_MyCharacter.transform.rotation = Quaternion.identity;
+        VerticalFollowCamera.SetDistanceSmooth(5.0f, 1.5f);
+
+        while (true)
+        {
+            if (m_BossCharacter.m_Live == Object.E_LIVE.DEAD)
+            {
+                m_ControlCanvas.SetActive(false);
+                m_SkillUICanvas.SetActive(false);
+                GameObject clearui = Instantiate(Resources.Load<GameObject>("GameClearUICanvas"));
+                GameClearUICanvas canvas = clearui.GetComponent<GameClearUICanvas>();
+                canvas.Initialize(this);
+                canvas.StartClearTextAnimation();
+                yield break;
+            }
+            yield return null;
+        }
     }
 
     public override void OnJoinedRoom()

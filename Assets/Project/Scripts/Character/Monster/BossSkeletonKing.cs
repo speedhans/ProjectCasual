@@ -18,18 +18,7 @@ public class BossSkeletonKing : MeleeBossCharacter
 
     IEnumerator C_Initialize()
     {
-        while(true)
-        {
-            if (GameManager.Instance.m_Main)
-            {
-                if (GameManager.Instance.m_Main.IsLoadingComplete)
-                {
-                    BossCharacterUI.Instance.InsertUI(this);
-                    yield break;
-                }
-            }
-            yield return null;
-        }
+        yield return null;
     }
 
     protected override void AutoPlayLogic()

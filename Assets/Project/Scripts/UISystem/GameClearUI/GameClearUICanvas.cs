@@ -88,6 +88,7 @@ public class GameClearUICanvas : MonoBehaviour
 
         if (m_ResultUI.m_Phase > 2)
         {
+            NetworkManager.Instance.RoomController.LeaveRoom();
             SceneManager.Instance.LoadScene("LobbyScene");
             return;
         }

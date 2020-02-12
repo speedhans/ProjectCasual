@@ -12,8 +12,11 @@ public class IntroManager : MonoBehaviourPunCallbacks
 #if !UNITY_EDITOR
         Debug.unityLogger.logEnabled = false;
 #endif
-
+        GameManager.Instance.m_TestMode = false;
         InventoryManager.Instance.LoadItemList();
+
+        TestModeDefaultItemSetting list = Resources.Load<TestModeDefaultItemSetting>("TestModeDefaultItemList");
+        list.SetTestDefaultItemInventory();
     }
 
     public void StartGame()

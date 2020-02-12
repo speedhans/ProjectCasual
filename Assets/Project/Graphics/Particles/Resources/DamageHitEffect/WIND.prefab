@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5198289190842763735}
   - component: {fileID: 8368468382481047977}
   m_Layer: 0
-  m_Name: CUT
+  m_Name: WIND
   m_TagString: FxTemporaire
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -187,7 +187,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+      maxColor: {r: 0.504717, g: 1, b: 0.6788574, a: 0.5019608}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1218,7 +1218,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
+        key0: {r: 0.6273585, g: 1, b: 0.70441145, a: 1}
         key1: {r: 1, g: 1, b: 1, a: 0.49803922}
         key2: {r: 0, g: 0.12156863, b: 0.59607846, a: 0.039215688}
         key3: {r: 0, g: 0.12156863, b: 0.59607846, a: 0.039215688}

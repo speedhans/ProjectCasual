@@ -195,6 +195,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -497,6 +498,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -696,6 +698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PhysicsType: 0
+  m_Live: 0
   m_Health: 100
   m_MaxHealth: 0
   m_PerSecondHealthRegeneration: 0.5
@@ -703,14 +706,18 @@ MonoBehaviour:
     Fire: 0
     Ice: 0
     Electric: 0
-    Cut: 0
-    Blunt: 0
-    Pierce: 0
-  m_MaxCarbonization: 100
-  m_HealthZeroIsDeath: 1
+    Wind: 0
+    Light: 0
+    Dark: 0
+  m_AddResistance:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  m_HealthZeroIsDestroy: 1
   m_DestroyDelay: 2
-  m_DefaultDamageEffect: {fileID: 5198289190822979863, guid: 6edd564ae38efeb4b8bede8325a6f0f7,
-    type: 3}
   m_DestoryEffect: {fileID: 0}
   m_WeekPoint:
   - {fileID: 1806466611185281240}
@@ -719,6 +726,13 @@ MonoBehaviour:
   m_MovePerSpeed: 2
   m_RotatePerSpeed: 360
   m_AttackDamage: 2
+  m_AddAttackDamage:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   m_AttackSpeed: 1
   m_AttackRange: 1.5
   m_CriticalChance: 10
@@ -727,7 +741,8 @@ MonoBehaviour:
   m_AttackAfterDelay: 3
   m_AttackAniKey: []
   m_PlayHitAnimation: 1
-  m_ListSkill: []
+  m_ListActiveSkill: []
+  m_ListPassiveSkill: []
   m_IsAutoPlay: 1
   m_AutoSearchRadius: 5
 --- !u!114 &291161154663983660

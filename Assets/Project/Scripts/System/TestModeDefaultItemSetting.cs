@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestModeDefaultItemSetting : MonoBehaviour
+[CreateAssetMenu(fileName = "TestModeDefaultItemList", menuName = "TestModeDefaultItemList")]
+public class TestModeDefaultItemSetting : ScriptableObject
 {
     [SerializeField]
     GameObject[] m_ListItems;
 
-    private void Start()
+    public void SetTestDefaultItemInventory()
     {
         GameObject item = null;
         for (int i = 0; i < m_ListItems.Length; ++i)

@@ -83,12 +83,13 @@ public class TimerNet : MonoBehaviourPun, IPunObservable
     static public float GetTimer(string _Name)
     {
         TimerData timer = Instance.FindTimer(_Name);
-        if (timer == null) return 0;
+        if (timer == null) return 999999.9f;
         return timer.m_CurrentTime;
     }
 
     static public void InsertTimer(string _Name, float _StartTime, bool _IsStop = false)
     {
+        if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient) return;
         Instance.m_PhotonView.RPC("InsertTimer_RPC", RpcTarget.AllViaServer, _Name, _StartTime, _IsStop);
     }
     
@@ -106,6 +107,51 @@ public class TimerNet : MonoBehaviourPun, IPunObservable
         }
 
         AddTimer(_Name, _StartTime, _IsStop);
+    }
+
+    static public void SetTimer_s(string _Name, bool _IsStop)
+    {
+        Instance.SetTimer(_Name, _IsStop);
+    }
+
+    static public void SetTimer_s(string _Name, float _Time, bool _IsStop = false)
+    {
+        Instance.SetTimer(_Name, _Time, _IsStop);
+    }
+
+    static public void SetTimer_s(string _Name, float _Time, float _StartTime, bool _IsStop)
+    {
+        Instance.SetTimer(_Name, _Time, _StartTime, _IsStop);
+    }
+
+    protected void SetTimer(string _Name, bool _IsStop)
+    {
+        TimerData timer = FindTimer(_Name);
+        if (timer != null)
+        {
+            timer.IsStop = _IsStop;
+        }
+    }
+
+    protected void SetTimer(string _Name, float _Time, bool _IsStop)
+    {
+        TimerData timer = FindTimer(_Name);
+        if (timer != null)
+        {
+            timer.m_CurrentTime = _Time;
+            timer.IsStop = _IsStop;
+        }
+    }
+
+    protected void SetTimer(string _Name, float _Time, float _StartTime, bool _IsStop)
+    {
+        TimerData timer = FindTimer(_Name);
+        if (timer != null)
+        {
+            timer.m_CurrentTime = _Time;
+            timer.m_StartTime = _StartTime;
+            timer.IsStop = _IsStop;
+        }
     }
 
     void AddTimer(string _Name, float _StartTime, bool _IsStop = false)

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon;
+using Photon.Pun;
 
 public class SceneManager : MonoBehaviour
 {
@@ -47,9 +49,19 @@ public class SceneManager : MonoBehaviour
 
     IEnumerator C_Loading(string _NextSceneName)
     {
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(3.0f); // 임시
 
         while (m_LoadingManager == null) yield return null;
+
+        if (_NextSceneName.Contains("Intro"))
+        {
+            NetworkManager.Instance.ServerDisconnect();
+        }
+        else
+        {
+            if (!PhotonNetwork.IsConnectedAndReady || !PhotonNetwork.IsConnected)
+                NetworkManager.Instance.ServerConnet();
+        }
 
         AsyncOperation Op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(_NextSceneName);
         Op.allowSceneActivation = false;

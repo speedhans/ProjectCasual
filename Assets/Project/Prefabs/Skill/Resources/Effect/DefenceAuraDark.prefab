@@ -4641,7 +4641,7 @@ GameObject:
   - component: {fileID: 5857507928025492451}
   - component: {fileID: 5857507928033738435}
   m_Layer: 0
-  m_Name: DefenceAuraPurple
+  m_Name: DefenceAuraDark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14099,7 +14099,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7849356897677004727}
   m_Layer: 0
-  m_Name: DefenceAuraPurple
+  m_Name: DefenceAuraDark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

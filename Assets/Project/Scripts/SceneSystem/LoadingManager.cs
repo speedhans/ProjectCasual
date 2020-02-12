@@ -12,9 +12,6 @@ public class LoadingManager : MonoBehaviourPunCallbacks
     private void Awake()
     {
         SceneManager.Instance.m_LoadingManager = this;
-
-        if (!PhotonNetwork.IsConnectedAndReady || !PhotonNetwork.IsConnected)
-            NetworkManager.Instance.ServerConnet();
     }
 
     public void SetValue(float _Value)

@@ -3,22 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
+[RequireComponent(typeof(PhotonView))]
 public class Main : MonoBehaviourPunCallbacks
 {
+    [HideInInspector]
     public VerticalFollowCamera m_Camera;
     Dictionary<int, PlayerCharacter> m_DicPlayerCharacter = new Dictionary<int, PlayerCharacter>();
 
+    protected PhotonView m_PhotonView;
     public bool IsLoadingComplete { get; protected set; }
 
     protected virtual void Awake()
     {
         GameManager.Instance.m_Main = this;
+        m_PhotonView = GetComponent<PhotonView>();
     }
 
     protected virtual void Start()
     {
-
     }
 
     // Players Data

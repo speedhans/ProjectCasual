@@ -6,9 +6,29 @@ using Photon.Pun;
 
 public class Main_Stage : Main
 {
+    public enum E_GAMESEQUENCE
+    {
+        BEGINGAME,
+        READY,
+        START,
+        NORMALSTAGE,
+        NORMALSTAGE_END,
+        BOSSSTAGESTART,
+        BOSSSTAGE,
+        BOSSSTAGE_END,
+        AFTERGAME,
+        MAX
+    }
+
+    E_GAMESEQUENCE m_GameSequence = E_GAMESEQUENCE.BEGINGAME;
+    bool[] m_SequenceProgress = new bool[(int)E_GAMESEQUENCE.MAX];
+    string m_SequenceTimerKey = "GameSequence";
+
     PlayerCharacter m_MyCharacter;
     public Shader m_DissolveShader;
 
+    PianoEffectCanvas m_PianoEffect;
+    GameReadyCanvas m_GameReadyCanvas;
     GameObject m_ControlCanvas;
     GameUICanvas m_GameUICanvas;
     GameObject m_SkillUICanvas;
@@ -22,25 +42,65 @@ public class Main_Stage : Main
     Item[] m_ResultItemlist;
 
     [SerializeField]
-    Character m_BossCharacter;
-    [HideInInspector]
-    public int m_MonsterDeadCount;
-    public int m_BossWakeUpCount;
-    [SerializeField]
     Transform m_BossRoomStartPoint;
+
+    [HideInInspector]
+    public SpawnManager m_SpawnManager;
 
     protected override void Awake()
     {
         base.Awake();
         
+        if (PhotonNetwork.IsMasterClient)
+        {
+            // timer set
+            TimerNet.InsertTimer(m_SequenceTimerKey, 0.0f, true);
+        }
+
         gameObject.AddComponent<FrameChecker>();
         Instantiate(m_StageDefaultCamera, Vector3.zero, Quaternion.identity);
+        Resources.Load<Shader>(m_DissolveShader.name);
 
         StartCoroutine(C_Initialize());
     }
 
+    void TestModeServerConnect()
+    {
+        StartCoroutine(C_TestModeServerConnect());
+    }
+
+    IEnumerator C_TestModeServerConnect()
+    {
+        NetworkManager.Instance.ServerConnet();
+        while (!PhotonNetwork.IsConnectedAndReady || !PhotonNetwork.InLobby) yield return null;
+        NetworkManager.Instance.CreateRoom("TESTROOM01");
+
+    }
+
     IEnumerator C_Initialize()
     {
+        if (GameManager.Instance.m_TestMode)
+        {
+            TestModeDefaultItemSetting list = Resources.Load<TestModeDefaultItemSetting>("TestModeDefaultItemList");
+            list.SetTestDefaultItemInventory();
+
+            TestModeServerConnect();
+            while (!PhotonNetwork.InRoom) yield return null;
+        }
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            // timer set
+            TimerNet.InsertTimer(m_SequenceTimerKey, 0.0f, true);
+        }
+
+        yield return null;
+
+        GameObject pianoUI = Instantiate(Resources.Load<GameObject>("PianoEffectCanvas"));
+        m_PianoEffect = pianoUI.GetComponent<PianoEffectCanvas>();
+        m_PianoEffect.Initialize();
+        GameObject readyUI = Instantiate(Resources.Load<GameObject>("GameReadyCanvas"));
+        m_GameReadyCanvas = readyUI.GetComponent<GameReadyCanvas>();
         m_ControlCanvas = Instantiate(Resources.Load<GameObject>("ControlCanvas"));
         m_ControlCanvas.SetActive(false);
         GameObject gameUI = Instantiate(Resources.Load<GameObject>("GameUICanvas"));
@@ -52,20 +112,21 @@ public class Main_Stage : Main
         GameObject bossUI = Instantiate(Resources.Load<GameObject>("BossUICanvas"));
         m_BossUICanvas = bossUI.GetComponent<BossCharacterUI>();
         bossUI.SetActive(false);
+        m_SpawnManager.Initialize();
 
         GameObject g = PhotonNetwork.Instantiate("PlayerCharacter", Vector3.zero, Quaternion.identity, 0, new object[] { -1, -1, -1, -1, -1, InventoryManager.Instance.GetPlayerModelName() });
         m_MyCharacter = g.GetComponent<PlayerCharacter>();
 
-        GameObject vcamera = Instantiate(m_VerticalCamera, Vector3.zero, Quaternion.identity);
-        VerticalFollowCamera verticalcamera = vcamera.GetComponent<VerticalFollowCamera>();
+        m_VerticalCamera = Instantiate(m_VerticalCamera, Vector3.zero, Quaternion.identity);
+        VerticalFollowCamera verticalcamera = m_VerticalCamera.GetComponent<VerticalFollowCamera>();
         verticalcamera.Initialize(this, m_MyCharacter);
-        vcamera.SetActive(false);
-
-        yield return null;
+        m_VerticalCamera.SetActive(false);
 
         NetworkManager.Instance.RoomController.SetLocalPlayerProperties("InitComp", true);
 
-        while(true)
+        yield return null;
+
+        while (true)
         {
             Dictionary<int, Player> playercontainer = PhotonNetwork.CurrentRoom.Players;
             int compcount = 0;
@@ -79,8 +140,6 @@ public class Main_Stage : Main
 
             if (compcount >= playercount)
             {
-                StageDefaultCamera.Instance.DestroyCamera();
-                vcamera.SetActive(true);
                 InitializeComplete();
                 yield break;
             }
@@ -91,15 +150,125 @@ public class Main_Stage : Main
 
     void InitializeComplete()
     {
-        m_ControlCanvas.SetActive(true);
+        StageDefaultCamera.Instance.DestroyCamera();
+        m_VerticalCamera.SetActive(true);
         m_GameUICanvas.gameObject.SetActive(true);
-        m_SkillUICanvas.SetActive(true);
-        m_BossUICanvas.gameObject.SetActive(true);
-        m_BossCharacter.SetFreeze(999999.9f);
         IsLoadingComplete = true;
+
+        TimerNet.SetTimer_s(m_SequenceTimerKey, 1.0f, false);
     }
 
-    public Item[] GetResultItemlist() 
+    private void Update()
+    {
+        if (!IsLoadingComplete) return;
+
+        float timer = TimerNet.GetTimer(m_SequenceTimerKey);
+
+        if (m_SequenceProgress[(int)m_GameSequence]) return;
+        switch (m_GameSequence)
+        {
+            case E_GAMESEQUENCE.BEGINGAME:
+                {
+                    if (timer <= 0.0f)
+                    {
+                        SetNextGameSequence();
+                    }
+                }
+                break;
+            case E_GAMESEQUENCE.READY:
+                {
+                    m_GameReadyCanvas.Run();
+                    SetNextGameSequence();
+                }
+                break;
+            case E_GAMESEQUENCE.START:
+                {
+                    if (m_GameReadyCanvas.IsComplete)
+                    {
+                        m_SpawnManager.NormalMonsterSpawnStart();
+                        m_ControlCanvas.SetActive(true);
+                        m_SkillUICanvas.SetActive(true);
+                        SetNextGameSequence();
+                    }
+                }
+                break;
+            case E_GAMESEQUENCE.NORMALSTAGE:
+                {
+                    if (m_SpawnManager.IsAllNormalMonsterSpawnOperationsCompleted())
+                    {
+                        TimerNet.SetTimer_s(m_SequenceTimerKey, 1.5f);
+                        SetNextGameSequence();
+                    }
+                }
+                break;
+            case E_GAMESEQUENCE.NORMALSTAGE_END:
+                {
+                    if (timer <= 0.0f)
+                    {
+                        m_PianoEffect.CurtainClose();
+                        TimerNet.SetTimer_s(m_SequenceTimerKey, 2.0f);
+                        SetNextGameSequence();
+                    }
+                }
+                break;
+            case E_GAMESEQUENCE.BOSSSTAGESTART:
+                {
+                    if (timer <= 0.0f)
+                    {
+                        m_PianoEffect.CurtainOpen();
+                        m_BossUICanvas.gameObject.SetActive(true);
+                        m_MyCharacter.transform.position = m_BossRoomStartPoint.position;
+                        m_MyCharacter.transform.rotation = Quaternion.identity;
+                        VerticalFollowCamera.SetDistanceSmooth(5.0f, 1.5f);
+                        SetNextGameSequence();
+                    }
+                }
+                break;
+            case E_GAMESEQUENCE.BOSSSTAGE:
+                {
+                    m_SpawnManager.BossMonsterSpawnStart();
+                    SetNextGameSequence();
+                }
+                break;
+            case E_GAMESEQUENCE.BOSSSTAGE_END:
+                {
+                    if (m_SpawnManager.IsAllBossMonsterSpawnOperationsCompleted())
+                    {
+                        GameClearUIOpen();
+                        SetNextGameSequence();
+                    }
+                }
+                break;
+            case E_GAMESEQUENCE.AFTERGAME:
+                {
+                    m_SequenceProgress[(int)m_GameSequence] = true;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    void SetNextGameSequence()
+    {
+        m_SequenceProgress[(int)m_GameSequence] = true;
+        SetGameSequence(m_GameSequence + 1);
+    }
+
+    void SetGameSequence(E_GAMESEQUENCE _Sequence)
+    {
+        if (PhotonNetwork.IsMasterClient)
+            m_PhotonView.RPC("SetGameSequence_RPC", RpcTarget.AllViaServer, (int)_Sequence);
+    }
+
+    [PunRPC]
+    void SetGameSequence_RPC(int _Sequence)
+    {
+        m_SequenceProgress[(int)m_GameSequence] = true;
+        m_GameSequence = (E_GAMESEQUENCE)_Sequence;
+    }
+
+    public Item[] GetResultItemlist() // 임시. 네트워크 방식으로 변경해야함
     {
         List<Item> list = new List<Item>();
         for (int i = 0; i < m_ResultItemlist.Length; ++i)
@@ -112,45 +281,14 @@ public class Main_Stage : Main
         return list.ToArray();
     }
 
-    bool m_BossWakeUp = false;
-    public void MonsterDead()
+    public void GameClearUIOpen()
     {
-        ++m_MonsterDeadCount;
-        if (!m_BossWakeUp && m_MonsterDeadCount >= m_BossWakeUpCount)
-        {
-            BossWakeUp();
-        }
-    }
-
-    public void BossWakeUp()
-    {
-        m_BossWakeUp = true;
-        m_BossCharacter.SetFreeze(0.0f);
-        m_BossUICanvas.gameObject.SetActive(true);
-        m_BossUICanvas.InsertUI(m_BossCharacter);
-        StartCoroutine(C_BossStateCheck());
-    }
-
-    IEnumerator C_BossStateCheck()
-    {
-        m_MyCharacter.transform.position = m_BossRoomStartPoint.position;
-        m_MyCharacter.transform.rotation = Quaternion.identity;
-        VerticalFollowCamera.SetDistanceSmooth(5.0f, 1.5f);
-
-        while (true)
-        {
-            if (m_BossCharacter.m_Live == Object.E_LIVE.DEAD)
-            {
-                m_ControlCanvas.SetActive(false);
-                m_SkillUICanvas.SetActive(false);
-                GameObject clearui = Instantiate(Resources.Load<GameObject>("GameClearUICanvas"));
-                GameClearUICanvas canvas = clearui.GetComponent<GameClearUICanvas>();
-                canvas.Initialize(this);
-                canvas.StartClearTextAnimation();
-                yield break;
-            }
-            yield return null;
-        }
+        m_ControlCanvas.SetActive(false);
+        m_SkillUICanvas.SetActive(false);
+        GameObject clearui = Instantiate(Resources.Load<GameObject>("GameClearUICanvas"));
+        GameClearUICanvas canvas = clearui.GetComponent<GameClearUICanvas>();
+        canvas.Initialize(this);
+        canvas.StartClearTextAnimation();
     }
 
     public override void OnJoinedRoom()
@@ -177,4 +315,16 @@ public class Main_Stage : Main
     {
         base.OnCreateRoomFailed(returnCode, message);
     }
+
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (m_BossRoomStartPoint == null) return;
+
+        Gizmos.matrix = Matrix4x4.identity;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawCube(m_BossRoomStartPoint.position + new Vector3(0.0f, 0.5f, 0.0f), Vector3.one);
+    }
+#endif
 }

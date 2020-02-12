@@ -98,6 +98,7 @@ public class PlayerCharacter : HumanoidCharacter
             weapon.transform.SetParent(m_RightHandAxis);
             weapon.transform.localPosition = Vector3.zero;
             weapon.transform.localRotation = Quaternion.identity;
+            weapon.transform.transform.localScale = Vector3.one;
             SwitchAnimator((E_WEAPONTYPE)_WeaponType);
         }
     }

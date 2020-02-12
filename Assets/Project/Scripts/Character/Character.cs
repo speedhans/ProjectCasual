@@ -165,11 +165,7 @@ public class Character : Object
             }
         }
 
-        if (m_CharacterType == E_CHARACTERTYPE.BOSSNPC)
-        {
-
-        }
-        else
+        if (m_CharacterType != E_CHARACTERTYPE.BOSSNPC)
         {
             CharacterUI ui = Instantiate(Resources.Load<GameObject>("CharacterUI")).GetComponent<CharacterUI>();
             if (ui)
@@ -525,13 +521,6 @@ public class Character : Object
             m_Live = E_LIVE.DEAD;
             m_IsCharging = false;
             m_FreezeTimer = 0.0f;
-
-            if (GameManager.Instance.m_Main)
-            {
-                Main_Stage stage = GameManager.Instance.m_Main as Main_Stage;
-                if (stage)
-                    stage.MonsterDead();
-            }
 
             return;
         }

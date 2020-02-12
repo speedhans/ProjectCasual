@@ -81,7 +81,7 @@ MonoBehaviour:
   m_DamageMultiply: 2
   m_DefenceBonus: 0
   m_DefenceBonusMultiply: 0
-  m_Radius: 4
+  m_Radius: 3.5
   m_AttackSpeedMultiply: 0
   m_MovementSpeedMultiply: 0
   m_Duration: 0

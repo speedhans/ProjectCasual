@@ -34,6 +34,10 @@ public class CharacterPreviewUI : MonoBehaviour
         }
 
         m_Model = _Model;
+        m_Model.transform.SetParent(m_CharacterPosition);
+        m_Model.transform.localPosition = Vector3.zero;
+        m_Model.transform.localRotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
+        m_Model.transform.localScale = Vector3.one;
         m_Animator = m_Model.GetComponentInChildren<Animator>();
 
         Transform t = Character.FindBone(m_Model.transform, "Character1_RightHandMiddle1");
@@ -44,11 +48,10 @@ public class CharacterPreviewUI : MonoBehaviour
             m_AttachRightHandPoint.transform.SetParent(t);
             m_AttachRightHandPoint.transform.localPosition = new Vector3(0.0f, 0.02f, 0.0f);
             m_AttachRightHandPoint.transform.localRotation = Quaternion.Euler(0.0f, -90.0f, -90.0f);
+            m_AttachRightHandPoint.transform.localScale = Vector3.one;
         }
 
-        m_Model.transform.SetParent(m_CharacterPosition);
-        m_Model.transform.localPosition = Vector3.zero;
-        m_Model.transform.localRotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
+
     }
 
     public void SetPerviewWeapon(string _WeaponPath, E_WEAPONTYPE _WeaponType)
@@ -61,14 +64,19 @@ public class CharacterPreviewUI : MonoBehaviour
             }
         }
 
-        GameObject weapon = Instantiate(Resources.Load<GameObject>(_WeaponPath));
-        if (weapon)
+        if (_WeaponPath != "")
         {
-            weapon.transform.SetParent(m_AttachRightHandPoint);
-            weapon.transform.localPosition = Vector3.zero;
-            weapon.transform.localRotation = Quaternion.identity;
-            SwitchAnimator((E_WEAPONTYPE)_WeaponType);
+            GameObject weapon = Instantiate(Resources.Load<GameObject>(_WeaponPath));
+            if (weapon)
+            {
+                weapon.transform.SetParent(m_AttachRightHandPoint);
+                weapon.transform.localPosition = Vector3.zero;
+                weapon.transform.localRotation = Quaternion.identity;
+                weapon.transform.transform.localScale = Vector3.one;
+            }
         }
+
+        SwitchAnimator((E_WEAPONTYPE)_WeaponType);
     }
 
     void SwitchAnimator(E_WEAPONTYPE _Type)

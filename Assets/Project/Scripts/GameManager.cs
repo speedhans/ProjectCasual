@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    [HideInInspector]
+    public bool m_TestMode = true;
+
     public Main m_Main;
     public PlayerCharacter m_MyCharacter;
     System.Action<Object> m_SkyEnvironmentEvent;

@@ -16,7 +16,7 @@ MonoBehaviour:
     AppIdRealtime: 6b457b74-6488-47ee-b414-790329b1a384
     AppIdChat: 
     AppIdVoice: 
-    AppVersion: 1.0
+    AppVersion: 1.0test
     UseNameServer: 1
     FixedRegion: 
     Server: 
@@ -56,5 +56,7 @@ MonoBehaviour:
   - SetCharging_RPC
   - AttachWeapon_RPC
   - InsertTimer_RPC
+  - SetManagementTarget_RPC
+  - SetGameSequence_RPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1

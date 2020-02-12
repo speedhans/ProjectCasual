@@ -43,12 +43,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     string m_CreateRoomName;
 
-    public void ServerConnet()
+    public void ServerConnet(bool _Test = false)
     {
         if (PhotonNetwork.IsConnectedAndReady) return;
-        PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion = "1.0";
-        
+        if (_Test)
+            PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion = "1.0";
+        else
+            PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion = "1.0" + "test";
+
         PhotonNetwork.ConnectUsingSettings();
+    }
+
+    public void ServerDisconnect()
+    {
+        PhotonNetwork.Disconnect();
     }
 
     public void CreateRoom(string _RoomName, ExitGames.Client.Photon.Hashtable _DefaultPropertie = null, bool _IsOpen = true, bool _IsVisible = true, byte _MaxPlayer = 0)

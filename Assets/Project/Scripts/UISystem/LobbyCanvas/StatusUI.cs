@@ -46,7 +46,7 @@ public class StatusUI : LobbyUI
         for (int i = 0; i < m_EquipmentSlotUI.Length; ++i)
         {
             EquipmentItem item = InventoryManager.Instance.GetEquippedItem(i);
-            if (item != null && item.GetWeaponModel() != null)
+            if (item != null && item.GetWeaponModel() != null && firstequip == null)
                 firstequip = item;
             m_EquipmentSlotUI[i].SetData(item);
         }
@@ -54,6 +54,9 @@ public class StatusUI : LobbyUI
         GameObject model = Instantiate(Resources.Load<GameObject>(InventoryManager.Instance.GetPlayerModelName()), Vector3.zero, Quaternion.identity);
 
         m_CharacterPreviewUI.SetPreviewModel(model);
-        m_CharacterPreviewUI.SetPerviewWeapon(firstequip.GetWeaponModel().name, firstequip.GetWeaponType());
+        if (firstequip)
+            m_CharacterPreviewUI.SetPerviewWeapon(firstequip.GetWeaponModel().name, firstequip.GetWeaponType());
+        else
+            m_CharacterPreviewUI.SetPerviewWeapon("", E_WEAPONTYPE.PUNCH);
     }
 }

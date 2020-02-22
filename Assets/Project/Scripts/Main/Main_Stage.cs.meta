@@ -7,10 +7,16 @@ MonoImporter:
   - m_Camera: {instanceID: 0}
   - m_DissolveShader: {fileID: -6465566751694194690, guid: a5470e641e572134784b975920adce86,
       type: 3}
+  - m_LocalOutLineMaterial: {fileID: 2100000, guid: 075b0f9b325c8c542a11625ac49620f3,
+      type: 2}
+  - m_OtherOutLineMaterial: {fileID: 2100000, guid: 9093db6f83b2ddf429db2dc44aa12754,
+      type: 2}
   - m_StageDefaultCamera: {fileID: 3967622247133941813, guid: d91ee4eb4ea75d147949152abb7a3f42,
       type: 3}
   - m_VerticalCamera: {fileID: 548840614249836159, guid: 32b3105e0df0c3749954f1f7737ca33b,
       type: 3}
+  - m_BossRoomStartPoint: {instanceID: 0}
+  - m_SpawnManager: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

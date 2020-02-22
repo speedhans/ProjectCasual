@@ -32,10 +32,21 @@ public class GameManager : MonoBehaviour
     public bool m_TestMode = true;
 
     public Main m_Main;
+    public PlayerData m_PlayerData;
     public PlayerCharacter m_MyCharacter;
     System.Action<Object> m_SkyEnvironmentEvent;
 
     public bool m_GameStop = false;
+
+    public void CreatePlayerData()
+    {
+        m_PlayerData = new PlayerData();
+        // 임시 데이터
+        m_PlayerData.m_Name = "TestPlayer" + Random.Range(1,100).ToString();
+        m_PlayerData.m_Level = 99;
+        m_PlayerData.m_CurrentStamina = 20;
+        m_PlayerData.m_CurrentExp = 5;
+    }
 
     public void QuitGame()
     {

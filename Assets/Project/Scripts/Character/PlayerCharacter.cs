@@ -5,6 +5,8 @@ using Photon.Pun;
 
 public class PlayerCharacter : HumanoidCharacter
 {
+    public const string m_CharacterReadyKey = "CharacterReady";
+
     [SerializeField]
     RuntimeAnimatorController[] m_AnimatorControllers;
 
@@ -13,11 +15,11 @@ public class PlayerCharacter : HumanoidCharacter
     {
         base.Awake();
         m_CharacterType = E_CHARACTERTYPE.PLAYER;
-        if (true)
+        if (m_PhotonView.IsMine)
             GameManager.Instance.m_MyCharacter = this;
 
-        string modelpath = (string)m_PhotonView.InstantiationData[5];
-        Instantiate(Resources.Load<GameObject>(modelpath), Vector3.zero, Quaternion.identity, transform);
+        string modelname = (string)m_PhotonView.InstantiationData[5];
+        Instantiate(Resources.Load<GameObject>(modelname + "/" + modelname), Vector3.zero, Quaternion.identity, transform);
 
         StartCoroutine(C_Initialize());
     }
@@ -31,47 +33,67 @@ public class PlayerCharacter : HumanoidCharacter
             yield return null;
         }
 
+        while (!main.IsBeginLoadingComplete) yield return null;
+
         main.AddPlayerCharacter(this);
 
         while(!m_IsInitializeComplete) yield return null;
 
-        if (!m_PhotonView.IsMine) yield break;
-
-        for (int i = 0; i < 3; ++i)
+        Material mat = null;
+        if (m_PhotonView.IsMine)
+            mat = ((Main_Stage)GameManager.Instance.m_Main).m_LocalOutLineMaterial;
+        else
+            mat = ((Main_Stage)GameManager.Instance.m_Main).m_OtherOutLineMaterial;
+        SkinnedMeshRenderer[] renderers = m_Animator.GetComponentsInChildren<SkinnedMeshRenderer>();
+        for (int i = 0; i < renderers.Length; ++i)
         {
-            EquipmentItem item =  InventoryManager.Instance.GetEquippedItem(i);
-            GameObject weapon = item.GetWeaponModel();
-            if (weapon)
+            Material[] newmat = new Material[renderers[i].materials.Length + 1];
+            for (int j = 0; j < renderers[i].materials.Length; ++j)
             {
-                m_AttackType = item.m_ItemElement;
-                AttachWeapon(weapon.name, item.GetWeaponType());
-                break;
+                newmat[j] = renderers[i].materials[j];
             }
+            newmat[newmat.Length - 1] = mat;
+            renderers[i].materials = newmat;
         }
 
-        for (int i = 0; i < 3; ++i)
+        if (m_PhotonView.IsMine)
         {
-            EquipmentItem item = InventoryManager.Instance.GetEquippedItem(i);
-            if (item)
+            for (int i = 0; i < 3; ++i)
             {
-                item.EquipAction(this);
-                ActiveSkill sk = item.GetActiveSkill();
-                if (sk)
+                EquipmentItem item = InventoryManager.Instance.GetEquippedItem(i);
+                GameObject weapon = item.GetWeaponModel();
+                if (weapon)
                 {
-                    sk.Initialize(this, true);
+                    m_AttackType = item.m_ItemElement;
+                    AttachWeapon(weapon.name, item.GetWeaponType());
+                    break;
                 }
+            }
 
-                List<PassiveSkill> list = item.GetPassiveSkills();
-                if (list != null)
+            for (int i = 0; i < 3; ++i)
+            {
+                EquipmentItem item = InventoryManager.Instance.GetEquippedItem(i);
+                if (item)
                 {
-                    for (int j = 0; j < list.Count; ++j)
+                    item.EquipAction(this);
+                    ActiveSkill sk = item.GetActiveSkill();
+                    if (sk)
                     {
-                        list[j].Initialize(this, true);
+                        sk.Initialize(this, true);
+                    }
+
+                    List<PassiveSkill> list = item.GetPassiveSkills();
+                    if (list != null)
+                    {
+                        for (int j = 0; j < list.Count; ++j)
+                        {
+                            list[j].Initialize(this, true);
+                        }
                     }
                 }
             }
+            NetworkManager.Instance.RoomController.SetLocalPlayerProperties(m_CharacterReadyKey, true);
         }
-
         m_IsPlayerCharacterInitializeComplete = true;
     }
 
@@ -100,6 +122,27 @@ public class PlayerCharacter : HumanoidCharacter
             weapon.transform.localRotation = Quaternion.identity;
             weapon.transform.transform.localScale = Vector3.one;
             SwitchAnimator((E_WEAPONTYPE)_WeaponType);
+
+            if (PhotonNetwork.InRoom)
+            {
+                Material mat = null;
+                if (m_PhotonView.IsMine)
+                    mat = ((Main_Stage)GameManager.Instance.m_Main).m_LocalOutLineMaterial;
+                else
+                    mat = ((Main_Stage)GameManager.Instance.m_Main).m_OtherOutLineMaterial;
+
+                MeshRenderer[] renderers = weapon.GetComponentsInChildren<MeshRenderer>();
+                for (int i = 0; i < renderers.Length; ++i)
+                {
+                    Material[] newmat = new Material[renderers[i].materials.Length + 1];
+                    for (int j = 0; j < renderers[i].materials.Length; ++j)
+                    {
+                        newmat[j] = renderers[i].materials[j];
+                    }
+                    newmat[newmat.Length - 1] = mat;
+                    renderers[i].materials = newmat;
+                }
+            }
         }
     }
 
@@ -107,7 +150,13 @@ public class PlayerCharacter : HumanoidCharacter
     {
         RuntimeAnimatorController anim = FindAnimator(_Type.ToString());
         if (anim)
-            m_Animator.runtimeAnimatorController = anim;
+            StartCoroutine(C_SwitchAnimator(anim));
+    }
+
+    IEnumerator C_SwitchAnimator(RuntimeAnimatorController _Anim)
+    {
+        while (m_Animator == null) yield return null;
+        m_Animator.runtimeAnimatorController = _Anim;
     }
 
     RuntimeAnimatorController FindAnimator(string _Name)

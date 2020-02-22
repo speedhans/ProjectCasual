@@ -51,7 +51,8 @@ public class StatusUI : LobbyUI
             m_EquipmentSlotUI[i].SetData(item);
         }
 
-        GameObject model = Instantiate(Resources.Load<GameObject>(InventoryManager.Instance.GetPlayerModelName()), Vector3.zero, Quaternion.identity);
+        string modelname = InventoryManager.Instance.GetPlayerModelName();
+        GameObject model = Instantiate(Resources.Load<GameObject>(modelname + "/" + modelname), Vector3.zero, Quaternion.identity);
 
         m_CharacterPreviewUI.SetPreviewModel(model);
         if (firstequip)

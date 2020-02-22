@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TestModeDefaultItemList", menuName = "TestModeDefaultItemList")]
+[CreateAssetMenu(fileName = "TestModeDefaultItemList", menuName = "CreateScriptableObject/TestModeDefaultItemList")]
 public class TestModeDefaultItemSetting : ScriptableObject
 {
     [SerializeField]

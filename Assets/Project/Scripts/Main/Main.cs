@@ -14,7 +14,8 @@ public class Main : MonoBehaviourPunCallbacks
     Dictionary<int, PlayerCharacter> m_DicPlayerCharacter = new Dictionary<int, PlayerCharacter>();
 
     protected PhotonView m_PhotonView;
-    public bool IsLoadingComplete { get; protected set; }
+    public bool IsBeginLoadingComplete { get; protected set; }
+    public bool IsAfterLoadingComplete { get; protected set; }
 
     protected virtual void Awake()
     {

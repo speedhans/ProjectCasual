@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class NavMeshController
 {
+    [SerializeField]
+    float m_AvoidRadius;
+
     public bool m_UpdateRotate = true;
     public Vector3 m_MoveLocation;
     List<Vector3> m_ListNavPath = new List<Vector3>();
@@ -95,4 +99,6 @@ public class NavMeshController
 
         return true;
     }
+
+    public float GetAvoidRadius() { return m_AvoidRadius; }
 }

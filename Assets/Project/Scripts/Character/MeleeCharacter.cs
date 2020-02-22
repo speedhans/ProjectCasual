@@ -33,7 +33,6 @@ public class MeleeCharacter : Character
                 transform.forward = m_AttackTarget.m_Character.transform.position - transform.position;
 
                 SetStateAndAnimation(E_ANIMATION.ATTACK, 0.25f, 1.0f, 0.0f);
-                m_AttackTarget.m_Character.GiveToDamage(GetDamages(), this);
             }
             else // 추격
             {
@@ -57,5 +56,14 @@ public class MeleeCharacter : Character
                 m_AttackTarget = t;
             }
         }
+    }
+
+    public override void AttackMomentEvent()
+    {
+        if (m_Live == E_LIVE.DEAD) return;
+        base.AttackMomentEvent();
+        if (m_AttackTarget == null) return;
+
+        m_AttackTarget.m_Character.GiveToDamage(GetDamages(), this);
     }
 }

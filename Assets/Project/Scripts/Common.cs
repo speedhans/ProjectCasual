@@ -62,7 +62,7 @@ public class Common
 {
     static public Color[] m_DamageColor = new Color[(int)E_DAMAGETYPE.MAX] {
         Color.red, new Color(0.2f, 0.3f, 1.0f), Color.yellow,
-        new Color(0.8f, 0.8f, 0.8f), new Color(0.2f, 0.2f, 0.2f), new Color(0.7f, 0.3f, .7f) };
+        new Color(0.15f, 0.5f, 0.8f), new Color(0.8f, 0.8f, 0.2f), new Color(0.1f, 0.1f, 0.1f) };
 
     static public float BLOCK_SIZE = 0.5f;
     static public int STATIC_LAYER = 10;

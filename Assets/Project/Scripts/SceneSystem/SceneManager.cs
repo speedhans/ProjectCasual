@@ -49,7 +49,7 @@ public class SceneManager : MonoBehaviour
 
     IEnumerator C_Loading(string _NextSceneName)
     {
-        yield return new WaitForSeconds(3.0f); // 임시
+        yield return new WaitForSeconds(1.0f); // 임시
 
         while (m_LoadingManager == null) yield return null;
 

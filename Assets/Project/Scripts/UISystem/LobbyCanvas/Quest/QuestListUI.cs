@@ -43,7 +43,7 @@ public class QuestListUI : LobbyUI
 
         for (int i = 0; i < _DataList.Count; ++i)
         {
-            m_ListQuestSlot[i].Initialize(_DataList[i]);
+            m_ListQuestSlot[i].Initialize(_DataList[i], m_LobbyCanvasUI);
         }
     }
 

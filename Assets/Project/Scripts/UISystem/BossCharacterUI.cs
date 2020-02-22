@@ -37,7 +37,7 @@ public class BossCharacterUI : DefaultUI
             m_Character = _Character;
             m_Slot = _Slot;
             m_NameField = m_Slot.transform.Find("Name_Text").GetComponent<TMPro.TMP_Text>();
-            m_NameField.text = m_Character.name.Replace(" (Clone)", "");
+            m_NameField.text = m_Character.name.Replace("(Clone)", "").Trim();
             Transform bufflist = m_Slot.Find("BuffList");
             m_Slider = m_Slot.transform.Find("HpBar/Slider").GetComponent<RectTransform>();
             for (int i = 0; i < bufflist.childCount; ++i)

@@ -723,6 +723,10 @@ MonoBehaviour:
   - {fileID: 1806466611185281240}
   m_Team: 1
   m_State: 0
+  m_NavMeshController:
+    m_AvoidRadius: 0
+    m_UpdateRotate: 1
+    m_MoveLocation: {x: 0, y: 0, z: 0}
   m_MovePerSpeed: 2
   m_RotatePerSpeed: 360
   m_AttackDamage: 2
@@ -737,7 +741,7 @@ MonoBehaviour:
   m_AttackRange: 1.5
   m_CriticalChance: 10
   m_CriticalMuliply: 1.5
-  m_AttackType: 4
+  m_AttackType: 1
   m_AttackAfterDelay: 3
   m_AttackAniKey: []
   m_PlayHitAnimation: 1

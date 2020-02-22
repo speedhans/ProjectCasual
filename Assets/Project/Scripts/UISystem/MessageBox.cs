@@ -54,7 +54,7 @@ public class MessageBox : DefaultUI
         }
         else
         {
-            box = Instantiate(Resources.Load<GameObject>("MessageBox/MessageBoxCanvas"));
+            box = Instantiate(Resources.Load<GameObject>("MessageBox/MessageBox"));
         }
 
         if (box)

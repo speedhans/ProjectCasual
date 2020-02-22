@@ -24,6 +24,7 @@ public class TouchEventSkillButton : CustomTouchEvent
         PlayerCharacter c = GameManager.Instance.m_MyCharacter;
         if (c)
         {
+            if (!GameManager.Instance.m_Main.IsBeginLoadingComplete) return;
             if (!c.m_IsPlayerCharacterInitializeComplete) return;
 
             if (c.m_ListActiveSkill[m_ButtonNumber] != null)

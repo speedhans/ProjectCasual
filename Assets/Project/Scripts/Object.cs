@@ -165,13 +165,24 @@ public class Object : RootComponent
     public void GiveToDamage(float[] _Damage, int[] _DamageType, Character _Self)
     {
         if (m_Live == E_LIVE.DEAD) return;
+
+        bool critical = Random.Range(0, 100) < _Self.m_CriticalChance ? true : false;
+
+        if (critical)
+        {
+            for (int i = 0; i < _Damage.Length; ++i)
+            {
+                _Damage[i] = critical ? _Damage[i] * _Self.m_CriticalMuliply : _Damage[i];
+            }
+        }
+
         if (PhotonNetwork.IsConnectedAndReady && _Self != null)
         {
             if (_Self.m_PhotonView.IsMine)
-                m_PhotonView.RPC("GiveToDamage_RPC", RpcTarget.AllViaServer, _Damage, _DamageType, _Self.m_PhotonView.ViewID);
+                m_PhotonView.RPC("GiveToDamage_RPC", RpcTarget.AllViaServer, _Damage, _DamageType, critical, _Self.m_PhotonView.ViewID);
         }
         else
-            GiveToDamage_Local(_Damage, _DamageType, _Self);
+            GiveToDamage_Local(_Damage, _DamageType, critical, _Self);
     }
 
     public void GiveToDamage(float[] _Damage, Character _Self)
@@ -180,18 +191,22 @@ public class Object : RootComponent
 
         List<float> damages = new List<float>();
         List<int> types = new List<int>();
+
+        bool critical = Random.Range(0, 100) < _Self.m_CriticalChance ? true : false;
+
         for (int i = 0; i < _Damage.Length; ++i)
         {
             if (_Damage[i] > 0.0f)
             {
+                float damage = critical ? _Damage[i] * _Self.m_CriticalMuliply : _Damage[i];
                 if ((E_DAMAGETYPE)i == _Self.m_AttackType)
                 {
-                    damages.Insert(0, _Damage[i]);
+                    damages.Insert(0, damage);
                     types.Insert(0, i);
                 }
                 else
                 {
-                    damages.Add(_Damage[i]);
+                    damages.Add(damage);
                     types.Add(i);
                 }
             }
@@ -201,49 +216,44 @@ public class Object : RootComponent
         if (PhotonNetwork.IsConnectedAndReady && _Self != null)
         {
             if (_Self.m_PhotonView.IsMine)
-                m_PhotonView.RPC("GiveToDamage_RPC", RpcTarget.AllViaServer, damages.ToArray(), types.ToArray(), _Self.m_PhotonView.ViewID);
+                m_PhotonView.RPC("GiveToDamage_RPC", RpcTarget.AllViaServer, damages.ToArray(), types.ToArray(), critical, _Self.m_PhotonView.ViewID);
         }
         else
-            GiveToDamage_Local(damages.ToArray(), types.ToArray(), _Self);
+            GiveToDamage_Local(damages.ToArray(), types.ToArray(), critical, _Self);
     }
 
     [PunRPC]
-    public void GiveToDamage_RPC(float[] _Damage, int[] _DamageType, int _AttackerID)
+    public void GiveToDamage_RPC(float[] _Damage, int[] _DamageType, bool _Critical, int _AttackerID)
     {
         Character attacker = NetworkManager.Instance.RoomController.FindObjectWithPhotonViewID(_AttackerID) as Character;
 
-        GiveToDamage_Local(_Damage, _DamageType, attacker);
+        GiveToDamage_Local(_Damage, _DamageType, _Critical, attacker);
     }
 
-    void GiveToDamage_Local(float[] _Damage, int[] _DamageType, Character _Attacker)
+    void GiveToDamage_Local(float[] _Damage, int[] _DamageType, bool _Critical, Character _Attacker)
     {
         if (m_Live == E_LIVE.DEAD) return;
 
         float fulldamage = 0.0f;
-        bool critical = false;
-        if (_Attacker.m_CriticalChance > Random.Range(0.0f, 100.0f))
-            critical = true;
 
         bool weekpointhit = false;
-        if (m_WeekPoint.Count > 0)
-        {
-            for (int i = 0; i < m_WeekPoint.Count; ++i)
-            {
-                if (m_WeekPoint[i].gameObject.activeSelf && 
-                    0.7f <= Vector3.Dot(m_WeekPoint[i].forward, (_Attacker.transform.position - transform.position).normalized))
-                {
-                    weekpointhit = true;
-                    break;
-                }
-            }
-        }
+        //if (m_WeekPoint.Count > 0)
+        //{
+        //    for (int i = 0; i < m_WeekPoint.Count; ++i)
+        //    {
+        //        if (m_WeekPoint[i].gameObject.activeSelf && 
+        //            0.7f <= Vector3.Dot(m_WeekPoint[i].forward, (_Attacker.transform.position - transform.position).normalized))
+        //        {
+        //            weekpointhit = true;
+        //            break;
+        //        }
+        //    }
+        //}
 
         float[] caculratedamages = (float[])_Damage.Clone();
         for (int i = 0; i < _Damage.Length; ++i)
         {
-            float damage = weekpointhit ? _Damage[i] * 1.35f : _Damage[i];
-            if (critical)
-                damage *= _Attacker.m_CriticalMuliply;
+            float damage = _Damage[i];// weekpointhit ? _Damage[i] * 1.35f : _Damage[i];
             switch ((E_DAMAGETYPE)_DamageType[i])
             {
                 case E_DAMAGETYPE.FIRE:
@@ -272,21 +282,21 @@ public class Object : RootComponent
 
         if (m_HealthZeroIsDestroy && m_Health <= 0.0f)
         {
-            if (PhotonNetwork.IsConnectedAndReady && m_PhotonView.IsMine)
-                StartCoroutine(C_DestroyTimer(m_DestroyDelay, m_PhotonView.isRuntimeInstantiated));
-            else
-                StartCoroutine(C_DestroyTimer(m_DestroyDelay, false));
+            StartCoroutine(C_DestroyTimer(m_DestroyDelay));
         }
 
-        m_DamageEvent?.Invoke(_Damage, caculratedamages, _DamageType, fulldamage, critical, _Attacker);
+        m_DamageEvent?.Invoke(_Damage, caculratedamages, _DamageType, fulldamage, _Critical, _Attacker);
     }
 
-    IEnumerator C_DestroyTimer(float _Timer, bool _RuntimeInstaiated)
+    IEnumerator C_DestroyTimer(float _Timer)
     {
         m_Live = E_LIVE.DEAD;
         m_DeadEvent?.Invoke();
         yield return new WaitForSeconds(_Timer);
-        ObjectDestroy(_RuntimeInstaiated);
+        if (PhotonNetwork.IsConnectedAndReady && m_PhotonView.IsMine)
+            ObjectDestroy(m_PhotonView.isRuntimeInstantiated);
+        else
+            ObjectDestroy(false);
     }
 
     public void ObjectDestroy(bool _RuntimeInstaiated = true)
@@ -307,8 +317,11 @@ public class Object : RootComponent
     [PunRPC]
     protected void ObjectDestroy_RPC(bool _RuntimeInstaiated = true)
     {
-        if (PhotonNetwork.IsConnectedAndReady && _RuntimeInstaiated)
-            PhotonNetwork.Destroy(gameObject);
+        if (PhotonNetwork.IsConnectedAndReady)
+        {
+            if (m_PhotonView.IsMine && _RuntimeInstaiated)
+                PhotonNetwork.Destroy(gameObject);
+        }
         else
             Destroy(gameObject);
     }

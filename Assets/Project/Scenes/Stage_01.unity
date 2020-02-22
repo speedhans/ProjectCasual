@@ -222,6 +222,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1195096141597990149, guid: aef3c429251abe845a806a2fb803e79b,
+        type: 3}
+      propertyPath: m_ListObject.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1195096141597990149, guid: aef3c429251abe845a806a2fb803e79b,
+        type: 3}
+      propertyPath: m_ListObject.Array.data[7]
+      value: 
+      objectReference: {fileID: 8867546514784590159, guid: f04cd56688da0f042ae7b18bc1622e13,
+        type: 3}
     - target: {fileID: 1768756388460403856, guid: aef3c429251abe845a806a2fb803e79b,
         type: 3}
       propertyPath: m_Name
@@ -2436,6 +2447,10 @@ MonoBehaviour:
   m_Camera: {fileID: 0}
   m_DissolveShader: {fileID: -6465566751694194690, guid: a5470e641e572134784b975920adce86,
     type: 3}
+  m_LocalOutLineMaterial: {fileID: 2100000, guid: 075b0f9b325c8c542a11625ac49620f3,
+    type: 2}
+  m_OtherOutLineMaterial: {fileID: 2100000, guid: 9093db6f83b2ddf429db2dc44aa12754,
+    type: 2}
   m_StageDefaultCamera: {fileID: 3967622247133941813, guid: d91ee4eb4ea75d147949152abb7a3f42,
     type: 3}
   m_VerticalCamera: {fileID: 548840614249836159, guid: 32b3105e0df0c3749954f1f7737ca33b,
@@ -2443,9 +2458,9 @@ MonoBehaviour:
   m_ResultItemlist:
   - {fileID: 6895961972118602322, guid: d8f6b7d2209def44bb70a46879a3f125, type: 3}
   - {fileID: 4240647789283917576, guid: add6cf7bb068bc445845f911f3f34b5b, type: 3}
-  - {fileID: 1952962046061837900, guid: 893d55f1fa402c24b981848f40ebc512, type: 3}
   - {fileID: 421931330980584961, guid: 757a38e510b817341ba87ac2b5a297a2, type: 3}
   - {fileID: 421931330980584961, guid: 3964529b654a9ad41bb0a97219a507dc, type: 3}
+  - {fileID: 1952962046061837900, guid: 893d55f1fa402c24b981848f40ebc512, type: 3}
   m_BossRoomStartPoint: {fileID: 1575886961}
   m_SpawnManager: {fileID: 0}
 --- !u!4 &1393934331
@@ -2707,6 +2722,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1086951098964149178, guid: b649ddb3b58668145ae75f167f1c8df5,
+        type: 3}
+      propertyPath: viewIdField
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2596116173769469241, guid: b649ddb3b58668145ae75f167f1c8df5,
         type: 3}
       propertyPath: m_Name

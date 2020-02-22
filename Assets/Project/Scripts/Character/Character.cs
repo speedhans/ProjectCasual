@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+[RequireComponent(typeof(TransformNet))]
 public class Character : Object
 {
     public class HateTarget
@@ -45,6 +46,7 @@ public class Character : Object
     protected E_CHARACTERTYPE m_CharacterType;
 
     public Animator m_Animator { get; private set; }
+    [SerializeField]
     protected NavMeshController m_NavMeshController = new NavMeshController();
 
     public Transform m_HeadAxis { get; protected set; }
@@ -53,6 +55,25 @@ public class Character : Object
 
     protected CapsuleCollider m_BodyCollider;
     
+    public enum E_STATS
+    {
+        FIRE,       // 화염
+        ICE,        // 얼음
+        ELECTRIC,   // 전기
+        WIND,        // 바람
+        LIGHT,      // 때리기
+        DARK,     // 찌르기
+        ATTACKSPEED,
+        MOVESPEED,
+        ATTACKRANGE,
+        CRITICALCHANCE,
+        CRITICALMULTIPLY,
+        MAXHEALTH,
+        HEALTH,
+        HEALTHREGENERATION,
+        MAX
+    }
+
     public float m_MovePerSpeed = 2.0f;
     public float m_RotatePerSpeed = 360.0f;
     public float m_AttackDamage = 1.0f;
@@ -94,6 +115,8 @@ public class Character : Object
     protected override void Awake()
     {
         base.Awake();
+
+        gameObject.name = gameObject.name.Replace("(Clone)", "").Trim();
 
         StartCoroutine(C_Initialize());
 
@@ -260,7 +283,6 @@ public class Character : Object
         }
 
         if (m_Live == E_LIVE.DEAD) return;
-        if (PhotonNetwork.IsConnectedAndReady && !m_PhotonView.IsMine) return;
         if (m_IsCharging) return;
         if (m_FreezeTimer > 0.0f) return;
 
@@ -434,7 +456,12 @@ public class Character : Object
                 m_Animator.CrossFade("Run", _Duration);
                 break;
             case E_ANIMATION.DEAD:
-                m_Animator.CrossFade("Dead", _Duration);
+                {
+                    m_Live = E_LIVE.DEAD;
+                    m_IsCharging = false;
+                    m_FreezeTimer = 0.0f;
+                    m_Animator.CrossFade("Dead", _Duration);
+                }
                 break;
             case E_ANIMATION.ATTACK:
                 {
@@ -477,6 +504,66 @@ public class Character : Object
         }
     }
 
+    public void SetStats(float[] _Stats)
+    {
+        m_PhotonView.RPC("SetStats_RPC", RpcTarget.AllBuffered, _Stats);
+    }
+
+    [PunRPC]
+    public void SetStats_RPC(float[] _Stats)
+    {
+        for (int i = 0; i < _Stats.Length; ++i)
+        {
+            switch ((E_STATS)i)
+            {
+                case E_STATS.FIRE:
+                    m_AddAttackDamage[(int)E_DAMAGETYPE.FIRE] = _Stats[i];
+                    break;
+                case E_STATS.ICE:
+                    m_AddAttackDamage[(int)E_DAMAGETYPE.ICE] = _Stats[i];
+                    break;
+                case E_STATS.ELECTRIC:
+                    m_AddAttackDamage[(int)E_DAMAGETYPE.ELECTRIC] = _Stats[i];
+                    break;
+                case E_STATS.WIND:
+                    m_AddAttackDamage[(int)E_DAMAGETYPE.WIND] = _Stats[i];
+                    break;
+                case E_STATS.LIGHT:
+                    m_AddAttackDamage[(int)E_DAMAGETYPE.LIGHT] = _Stats[i];
+                    break;
+                case E_STATS.DARK:
+                    m_AddAttackDamage[(int)E_DAMAGETYPE.DARK] = _Stats[i];
+                    break;
+                case E_STATS.ATTACKSPEED:
+                    m_AttackSpeed = _Stats[i];
+                    break;
+                case E_STATS.MOVESPEED:
+                    m_MovePerSpeed = _Stats[i];
+                    break;
+                case E_STATS.ATTACKRANGE:
+                    m_AttackRange = _Stats[i];
+                    break;
+                case E_STATS.CRITICALCHANCE:
+                    m_CriticalChance = _Stats[i];
+                    break;
+                case E_STATS.CRITICALMULTIPLY:
+                    m_CriticalMuliply = _Stats[i];
+                    break;
+                case E_STATS.MAXHEALTH:
+                    m_MaxHealth = _Stats[i];
+                    break;
+                case E_STATS.HEALTH:
+                    m_Health = _Stats[i];
+                    break;
+                case E_STATS.HEALTHREGENERATION:
+                    m_PerSecondHealthRegeneration = _Stats[i];
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     public float[] GetDamages()
     {
         float[] damages = (float[])m_AddAttackDamage.Clone();
@@ -514,14 +601,9 @@ public class Character : Object
             }
         }
 
-        if (m_Health <= 0.0f)
+        if (m_Health <= 0.0f && m_PhotonView.IsMine)
         {
-            m_Animator.speed = 1.0f;
-            m_Animator.CrossFade("Dead", 0.15f);
-            m_Live = E_LIVE.DEAD;
-            m_IsCharging = false;
-            m_FreezeTimer = 0.0f;
-
+            SetStateAndAnimation(E_ANIMATION.DEAD, 0.15f, 1.0f, 0.0f);
             return;
         }
 
@@ -927,4 +1009,15 @@ public class Character : Object
     }
 
     #endregion Static Functions
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (m_NavMeshController.GetAvoidRadius() <= 0.0f) return;
+
+        Gizmos.matrix = Matrix4x4.identity;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position + new Vector3(0.0f, m_NavMeshController.GetAvoidRadius(), 0.0f), m_NavMeshController.GetAvoidRadius());
+    }
+#endif
 }

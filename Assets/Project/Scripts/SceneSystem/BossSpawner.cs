@@ -4,28 +4,15 @@ using UnityEngine;
 using Photon;
 using Photon.Pun;
 
-public class BossSpawner : MonoBehaviour
+public class BossSpawner : Spawner
 {
-    SpawnManager m_SpawnManager;
-    int m_SpawnerNumber;
-
-    [SerializeField]
-    string m_FilePath;
-    [SerializeField]
-    GameObject m_MonsterPrefab;
-    [HideInInspector]
-    public Character m_ManagementTarget;
-
-    PhotonView m_PhotonView;
-
     int m_SpawnCount = 1;
     int m_DeadCount;
 
-    bool m_SpawnRun = false;
-
-    private void Awake()
+    protected override void Awake()
     {
-        m_PhotonView = GetComponent<PhotonView>();
+        base.Awake();
+        m_SetManagementTargetEvent += SetManagementTargetEvent;
     }
 
     public void Initialize(int _Number, SpawnManager _SpawnManager)
@@ -74,8 +61,7 @@ public class BossSpawner : MonoBehaviour
         }
     }
 
-    [PunRPC]
-    void SetManagementTarget_RPC(int _ViewID)
+    void SetManagementTargetEvent(int _ViewID)
     {
         PhotonView view = PhotonView.Find(_ViewID);
         if (view)
@@ -89,7 +75,7 @@ public class BossSpawner : MonoBehaviour
         }
     }
 
-    public void SpawnRun()
+    public override void SpawnRun()
     {
         m_SpawnRun = true;
     }

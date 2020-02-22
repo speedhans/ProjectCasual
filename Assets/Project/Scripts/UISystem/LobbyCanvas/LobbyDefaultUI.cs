@@ -20,6 +20,11 @@ public class LobbyDefaultUI : MonoBehaviour
     [SerializeField]
     TMP_Text m_JewelText;
 
+    [SerializeField]
+    GameObject m_TopUIGroup;
+    [SerializeField]
+    GameObject m_BottomUIGroup;
+
     public void Initialize(LobbyCanvasUI _LobbyCanvasUI)
     {
         m_LobbyCanvasUI = _LobbyCanvasUI;
@@ -73,5 +78,15 @@ public class LobbyDefaultUI : MonoBehaviour
     public void Jewel(int _Jewel)
     {
         m_JewelText.text = _Jewel.ToString();
+    }
+
+    public void TopUIGroupVisible(bool _Visible)
+    {
+        m_TopUIGroup.SetActive(_Visible);
+    }
+
+    public void BottomUIGroupVisible(bool _Visible)
+    {
+        m_BottomUIGroup.SetActive(_Visible);
     }
 }

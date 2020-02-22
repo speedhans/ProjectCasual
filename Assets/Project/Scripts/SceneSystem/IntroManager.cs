@@ -13,8 +13,10 @@ public class IntroManager : MonoBehaviourPunCallbacks
         Debug.unityLogger.logEnabled = false;
 #endif
         GameManager.Instance.m_TestMode = false;
-        InventoryManager.Instance.LoadItemList();
 
+        // 임시 데이터 불러오기
+        InventoryManager.Instance.LoadItemList();
+        GameManager.Instance.CreatePlayerData();
         TestModeDefaultItemSetting list = Resources.Load<TestModeDefaultItemSetting>("TestModeDefaultItemList");
         list.SetTestDefaultItemInventory();
     }

@@ -13,6 +13,8 @@ public class LobbyCanvasUI : MonoBehaviour
     [SerializeField]
     protected QuestUI m_QuestUI;
     [SerializeField]
+    protected WaitingRoomUI m_WaitingRoomUI;
+    [SerializeField]
     protected ItemDataViewer m_ItemDataViewer;
     [SerializeField]
     protected LobbyDefaultUI m_LobbyDefaultUI;
@@ -36,6 +38,9 @@ public class LobbyCanvasUI : MonoBehaviour
         if (!m_QuestUI)
             transform.Find("QuestUI").GetComponent<QuestUI>();
         m_QuestUI.Initialize(this);
+        if (!m_WaitingRoomUI)
+            transform.Find("WaitingRoomUI").GetComponent<WaitingRoomUI>();
+        m_WaitingRoomUI.Initialize(this);
         if (!m_LobbyDefaultUI)
             transform.Find("LobbyDefaultUI").GetComponent<LobbyDefaultUI>();
         m_LobbyDefaultUI.Initialize(this);
@@ -54,7 +59,7 @@ public class LobbyCanvasUI : MonoBehaviour
     public MenuUI GetMenuUI() { return m_MenuUI; }
 
     public QuestUI GetQuestUI() { return m_QuestUI; }
-
+    public WaitingRoomUI GetWaitingRoomUI() { return m_WaitingRoomUI; }
     public ItemDataViewer GetItemDataViewer() { return m_ItemDataViewer; }
     public LobbyDefaultUI GetLobbyDefaultUI() { return m_LobbyDefaultUI; }
     public InventoryViewer GetInventoryViewer() { return m_InventoryViewer; }

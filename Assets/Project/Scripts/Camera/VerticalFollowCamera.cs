@@ -22,12 +22,13 @@ public class VerticalFollowCamera : CameraSystem
 
     protected override void Awake()
     {
-        DefaultInstance = this;
         base.Awake();
     }
 
     public void Initialize(Main _Main, Object _CameraTarget)
     {
+        DefaultInstance = this;
+
         _Main.m_Camera = this;
         m_Target = _CameraTarget;
 

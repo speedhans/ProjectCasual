@@ -4,19 +4,8 @@ using UnityEngine;
 using Photon;
 using Photon.Pun;
 
-[RequireComponent(typeof(PhotonView))]
-public class MonsterSpawner : MonoBehaviour
+public class MonsterSpawner : Spawner
 {
-    SpawnManager m_SpawnManager;
-    int m_SpawnerNumber;
-
-    [SerializeField]
-    string m_FilePath;
-    [SerializeField]
-    GameObject m_MonsterPrefab;
-    [HideInInspector]
-    public Character m_ManagementTarget;
-
     [SerializeField]
     GameObject m_SpawnEffectPrefab;
     GameObject m_SpawnEffect;
@@ -25,18 +14,15 @@ public class MonsterSpawner : MonoBehaviour
     float m_SpawnDelay;
     string m_TimerKey;
 
-    PhotonView m_PhotonView;
-
     [SerializeField]
     int m_SpawnCount = 1;
     int m_CurrentSpawnCount;
     int m_DeadCount;
 
-    bool m_SpawnRun = false;
-
-    private void Awake()
+    protected override void Awake()
     {
-        m_PhotonView = GetComponent<PhotonView>();
+        base.Awake();
+        m_SetManagementTargetEvent += SetManagementTargetEvent;
         m_SpawnEffect = Instantiate(m_SpawnEffectPrefab, transform);
         m_SpawnEffect.transform.localPosition = new Vector3(0.0f, 0.1f, 0.0f);
         m_SpawnEffect.transform.localRotation = Quaternion.identity;
@@ -47,9 +33,10 @@ public class MonsterSpawner : MonoBehaviour
     {
         m_SpawnManager = _SpawnManager;
         m_SpawnerNumber = _Number;
+        Resources.Load<GameObject>(m_FilePath + "/" + m_MonsterPrefab.name);
+
         m_TimerKey = "Spawner" + m_SpawnerNumber.ToString();
         TimerNet.InsertTimer(m_TimerKey, 2.0f, true);
-        Resources.Load<GameObject>(m_FilePath + "/" + m_MonsterPrefab.name);
     }
 
     // Update is called once per frame
@@ -95,8 +82,7 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
-    [PunRPC]
-    void SetManagementTarget_RPC(int _ViewID)
+    void SetManagementTargetEvent(int _ViewID)
     {
         ++m_CurrentSpawnCount;
         PlayParticle();
@@ -112,7 +98,7 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
-    public void SpawnRun()
+    public override void SpawnRun()
     {
         m_SpawnRun = true;
         TimerNet.SetTimer_s(m_TimerKey, 2.0f, false);

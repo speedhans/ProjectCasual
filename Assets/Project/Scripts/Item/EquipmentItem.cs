@@ -61,10 +61,10 @@ public class EquipmentItem : Item
     public float m_AttackSpeedReinforceBonus;
     [Range(1.0f, 10.0f)]
     [Tooltip("&7&")]
-    public float m_MovementSpeed;
+    public float m_MovementSpeed; // &7&
     public float m_MovementSpeedReinforceBonus;
     [Tooltip("&8&")]
-    public float m_AttackRange; // &7&
+    public float m_AttackRange; // &8&
     public float m_AttackRangeReinforceBonus;
     [Tooltip("&9&")]
     public float m_CriticalChance; // &9&
@@ -87,23 +87,25 @@ public class EquipmentItem : Item
 
     public virtual void EquipAction(Character _Character)
     {
-        _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.FIRE] += m_FireDamage + (m_ReinforceCount * m_FireDamageReinforceBonus);
-        _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.ICE] += m_IceDamage + (m_ReinforceCount * m_IceDamageReinforceBonus);
-        _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.ELECTRIC] += m_ElectricDamage + (m_ReinforceCount * m_ElectricDamageReinforceBonus);
-        _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.WIND] += m_WindDamage + (m_ReinforceCount * m_WindDamageReinforceBonus);
-        _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.LIGHT] += m_LightDamage + (m_ReinforceCount * m_LightDamageReinforceBonus);
-        _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.DARK] += m_DarkDamage + (m_ReinforceCount * m_DarkDamageReinforceBonus);
+        float[] stats = new float[(int)Character.E_STATS.MAX];
 
-        _Character.m_AttackSpeed *= m_AttackSpeed + (m_ReinforceCount * m_AttackSpeedReinforceBonus);
-        _Character.m_MovePerSpeed *= m_MovementSpeed + (m_ReinforceCount * m_MovementSpeedReinforceBonus);
-        _Character.m_AttackRange += m_AttackRange + (m_ReinforceCount * m_AttackRangeReinforceBonus);
-        _Character.m_CriticalChance += m_CriticalChance + (m_ReinforceCount * m_CriticalChanceReinforceBonus);
-        _Character.m_CriticalMuliply += (m_CriticalDamage + (m_ReinforceCount * m_CriticalDamageReinforceBonus)) * 0.01f;
-        _Character.m_MaxHealth += m_Health + (m_ReinforceCount * m_HealthReinforceBonus);
-        _Character.m_Health += m_Health + (m_ReinforceCount * m_HealthReinforceBonus);
-        _Character.m_PerSecondHealthRegeneration += m_HealthRegeneration + (m_ReinforceCount * m_HealthRegenerationReinforceBonus);
+        stats[0] = _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.FIRE] + m_FireDamage + (m_ReinforceCount * m_FireDamageReinforceBonus);
+        stats[1] = _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.ICE] + m_IceDamage + (m_ReinforceCount * m_IceDamageReinforceBonus);
+        stats[2] = _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.ELECTRIC] + m_ElectricDamage + (m_ReinforceCount * m_ElectricDamageReinforceBonus);
+        stats[3] = _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.WIND] + m_WindDamage + (m_ReinforceCount * m_WindDamageReinforceBonus);
+        stats[4] = _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.LIGHT] + m_LightDamage + (m_ReinforceCount * m_LightDamageReinforceBonus);
+        stats[5] = _Character.m_AddAttackDamage[(int)E_DAMAGETYPE.DARK] + m_DarkDamage + (m_ReinforceCount * m_DarkDamageReinforceBonus);
 
+        stats[6] = _Character.m_AttackSpeed * m_AttackSpeed + (m_ReinforceCount * m_AttackSpeedReinforceBonus);
+        stats[7] = _Character.m_MovePerSpeed * m_MovementSpeed + (m_ReinforceCount * m_MovementSpeedReinforceBonus);
+        stats[8] = _Character.m_AttackRange + m_AttackRange + (m_ReinforceCount * m_AttackRangeReinforceBonus);
+        stats[9] = _Character.m_CriticalChance + m_CriticalChance + (m_ReinforceCount * m_CriticalChanceReinforceBonus);
+        stats[10] = _Character.m_CriticalMuliply + (m_CriticalDamage + (m_ReinforceCount * m_CriticalDamageReinforceBonus)) * 0.01f;
+        stats[11] = _Character.m_MaxHealth + m_Health + (m_ReinforceCount * m_HealthReinforceBonus);
+        stats[12] = _Character.m_Health + m_Health + (m_ReinforceCount * m_HealthReinforceBonus);
+        stats[13] = _Character.m_PerSecondHealthRegeneration + m_HealthRegeneration + (m_ReinforceCount * m_HealthRegenerationReinforceBonus);
 
+        _Character.SetStats(stats);
     }
 
     public ActiveSkill GetActiveSkill() 

@@ -6,35 +6,40 @@ public class QuestUI : LobbyUI
 {
     QuestListUI m_QuestListUI;
 
+    [SerializeField]
+    QuestMultiTypeSelectUI m_QuestMultiTypeSelectUI;
+    [SerializeField]
+    QuestRoomListUI m_QuestRoomListUI;
+
     public override void Initialize(LobbyCanvasUI _LobbyCanvasUI)
     {
         base.Initialize(_LobbyCanvasUI);
 
         m_QuestListUI = transform.Find("QuestListUI").GetComponent<QuestListUI>();
         m_QuestListUI.Initialize(_LobbyCanvasUI);
+
+        m_QuestMultiTypeSelectUI.Initialize(_LobbyCanvasUI);
     }
 
     public void SingleBattleButton()
     {
-        List<QuestData> tmpList = new List<QuestData>()
-        {
-            new QuestData() { m_Icon = null, m_Level = E_QUESTLEVEL.NORMAL, m_Name = "Stage1", m_SceneName = "Stage_01", m_Multiplay = false },
-            new QuestData() { m_Icon = null, m_Level = E_QUESTLEVEL.HARD, m_Name = "Stage2", m_SceneName = "Stage_02", m_Multiplay = false },
-            new QuestData() { m_Icon = null, m_Level = E_QUESTLEVEL.VERYHARD, m_Name = "Stage3", m_SceneName = "Stage_03", m_Multiplay = false }
-        };
-
-        m_QuestListUI.QuestListOpen(tmpList); // 데이터 불러와서 넣어줘야함
+        List<QuestData> list = DataLoad.QuestSceneDataAllLoad(DataLoad.E_SCENETYPE.SINGLE);
+        m_QuestListUI.QuestListOpen(list); // 데이터 불러와서 넣어줘야함
     }
 
     public void MultiBattelButton()
     {
-        List<QuestData> tmpList = new List<QuestData>()
-        {
-            new QuestData() { m_Icon = null, m_Level = E_QUESTLEVEL.NORMAL, m_Name = "MultiStage1", m_SceneName = "MultiStage_01", m_Multiplay = true },
-            new QuestData() { m_Icon = null, m_Level = E_QUESTLEVEL.HARD, m_Name = "MultiStage2", m_SceneName = "MultiStage_02", m_Multiplay = true },
-            new QuestData() { m_Icon = null, m_Level = E_QUESTLEVEL.VERYHARD, m_Name = "MultiStage3", m_SceneName = "MultiStage_03", m_Multiplay = true }
-        };
+        List<QuestData> list = DataLoad.QuestSceneDataAllLoad(DataLoad.E_SCENETYPE.MULTIPLAY);
+        m_QuestListUI.QuestListOpen(list); // 데이터 불러와서 넣어줘야함
+    }
 
-        m_QuestListUI.QuestListOpen(tmpList); // 데이터 불러와서 넣어줘야함
+    public void OpenQuestMultiTypeSelectUI(QuestData _Data)
+    {
+        m_QuestMultiTypeSelectUI.OpenMultiTypeSelectUI(_Data);
+    }
+
+    public void RoomListRefresh()
+    {
+        m_QuestRoomListUI.Refresh();
     }
 }

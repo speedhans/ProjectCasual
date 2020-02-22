@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestScript2 : TestScript1
+public class TestScript2 : MonoBehaviour
 {
-    public override void TestCall()
+    private void Start()
     {
-        base.TestCall();
-
-        Debug.Log("Child");
+        //Debug.Log(byte.Parse(s1));
+        //Debug.Log(byte.Parse(s2));
     }
 }

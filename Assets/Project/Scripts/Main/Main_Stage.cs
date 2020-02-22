@@ -11,6 +11,7 @@ public class Main_Stage : Main
         BEGINGAME,
         READY,
         START,
+        NORMALSTAGESTART,
         NORMALSTAGE,
         NORMALSTAGE_END,
         BOSSSTAGESTART,
@@ -26,6 +27,8 @@ public class Main_Stage : Main
 
     PlayerCharacter m_MyCharacter;
     public Shader m_DissolveShader;
+    public Material m_LocalOutLineMaterial;
+    public Material m_OtherOutLineMaterial;
 
     PianoEffectCanvas m_PianoEffect;
     GameReadyCanvas m_GameReadyCanvas;
@@ -73,7 +76,7 @@ public class Main_Stage : Main
     {
         NetworkManager.Instance.ServerConnet();
         while (!PhotonNetwork.IsConnectedAndReady || !PhotonNetwork.InLobby) yield return null;
-        NetworkManager.Instance.CreateRoom("TESTROOM01");
+        NetworkManager.Instance.CreateRoom("TESTROOM01", "test01");
 
     }
 
@@ -126,13 +129,13 @@ public class Main_Stage : Main
 
         yield return null;
 
-        while (true)
+        while (!IsBeginLoadingComplete)
         {
-            Dictionary<int, Player> playercontainer = PhotonNetwork.CurrentRoom.Players;
+            Player[] players = PhotonNetwork.PlayerList;
             int compcount = 0;
-            int playercount = playercontainer.Count;
+            int playercount = players.Length;
 
-            foreach (Player p in playercontainer.Values)
+            foreach (Player p in players)
             {
                 if (NetworkManager.Instance.RoomController.GetOtherPlayerPropertie<bool>(p, "InitComp"))
                     ++compcount;
@@ -140,10 +143,25 @@ public class Main_Stage : Main
 
             if (compcount >= playercount)
             {
-                InitializeComplete();
-                yield break;
+                IsBeginLoadingComplete = true;
             }
+            yield return null;
+        }
 
+        while (!IsAfterLoadingComplete)
+        {
+            Player[] players = PhotonNetwork.PlayerList;
+
+            bool complete = true;
+            for (int i = 0; i < players.Length; ++i)
+            {
+                if (!NetworkManager.Instance.RoomController.GetOtherPlayerPropertie<bool>(players[i], PlayerCharacter.m_CharacterReadyKey))
+                {
+                    complete = false;
+                }
+            }
+            if (complete)
+                InitializeComplete();
             yield return null;
         }
     }
@@ -153,18 +171,17 @@ public class Main_Stage : Main
         StageDefaultCamera.Instance.DestroyCamera();
         m_VerticalCamera.SetActive(true);
         m_GameUICanvas.gameObject.SetActive(true);
-        IsLoadingComplete = true;
-
-        TimerNet.SetTimer_s(m_SequenceTimerKey, 1.0f, false);
+        IsAfterLoadingComplete = true;
     }
 
     private void Update()
     {
-        if (!IsLoadingComplete) return;
+        if (!IsAfterLoadingComplete) return;
+
+        if (m_SequenceProgress[(int)m_GameSequence]) return;
 
         float timer = TimerNet.GetTimer(m_SequenceTimerKey);
 
-        if (m_SequenceProgress[(int)m_GameSequence]) return;
         switch (m_GameSequence)
         {
             case E_GAMESEQUENCE.BEGINGAME:
@@ -185,19 +202,23 @@ public class Main_Stage : Main
                 {
                     if (m_GameReadyCanvas.IsComplete)
                     {
-                        m_SpawnManager.NormalMonsterSpawnStart();
-                        m_ControlCanvas.SetActive(true);
-                        m_SkillUICanvas.SetActive(true);
                         SetNextGameSequence();
                     }
+                }
+                break;
+            case E_GAMESEQUENCE.NORMALSTAGESTART:
+                {
+                    m_SpawnManager.NormalMonsterSpawnStart();
+                    m_ControlCanvas.SetActive(true);
+                    m_SkillUICanvas.SetActive(true);
+                    SetNextGameSequence();
                 }
                 break;
             case E_GAMESEQUENCE.NORMALSTAGE:
                 {
                     if (m_SpawnManager.IsAllNormalMonsterSpawnOperationsCompleted())
                     {
-                        TimerNet.SetTimer_s(m_SequenceTimerKey, 1.5f);
-                        SetNextGameSequence();
+                        SetNextGameSequence(1.5f);
                     }
                 }
                 break;
@@ -206,8 +227,7 @@ public class Main_Stage : Main
                     if (timer <= 0.0f)
                     {
                         m_PianoEffect.CurtainClose();
-                        TimerNet.SetTimer_s(m_SequenceTimerKey, 2.0f);
-                        SetNextGameSequence();
+                        SetNextGameSequence(2.0f);
                     }
                 }
                 break;
@@ -249,24 +269,27 @@ public class Main_Stage : Main
         }
     }
 
-    void SetNextGameSequence()
+    void SetNextGameSequence(float _WaitTime = 0.0f)
     {
         m_SequenceProgress[(int)m_GameSequence] = true;
-        SetGameSequence(m_GameSequence + 1);
+        SetGameSequence(m_GameSequence + 1, _WaitTime);
     }
 
-    void SetGameSequence(E_GAMESEQUENCE _Sequence)
+    void SetGameSequence(E_GAMESEQUENCE _Sequence, float _WaitTime)
     {
         if (PhotonNetwork.IsMasterClient)
-            m_PhotonView.RPC("SetGameSequence_RPC", RpcTarget.AllViaServer, (int)_Sequence);
+            m_PhotonView.RPC("SetGameSequence_RPC", RpcTarget.AllViaServer, (int)_Sequence, _WaitTime);
     }
 
     [PunRPC]
-    void SetGameSequence_RPC(int _Sequence)
+    void SetGameSequence_RPC(int _Sequence, float _WaitTime)
     {
         m_SequenceProgress[(int)m_GameSequence] = true;
         m_GameSequence = (E_GAMESEQUENCE)_Sequence;
+        TimerNet.SetTimer_s(m_SequenceTimerKey, _WaitTime);
     }
+
+    public E_GAMESEQUENCE GetCurrentSequence() { return m_GameSequence; }
 
     public Item[] GetResultItemlist() // 임시. 네트워크 방식으로 변경해야함
     {

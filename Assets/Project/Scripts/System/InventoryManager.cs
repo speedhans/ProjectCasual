@@ -36,7 +36,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     EquipmentItem[] m_EquipItem = new EquipmentItem[3];
-    string m_PlayerModel = "UnityChan/UnityChan";
+    string m_PlayerModel = "UnityChan";
 
     public void LoadItemList()
     {

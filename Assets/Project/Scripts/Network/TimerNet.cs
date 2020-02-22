@@ -55,6 +55,8 @@ public class TimerNet : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
+            if (m_ListTimerData.Count < 1) return;
+
             stream.SendNext(m_StreamNumber);
             stream.SendNext(m_ListTimerData[m_StreamNumber].m_Name);
             stream.SendNext(m_ListTimerData[m_StreamNumber].m_CurrentTime);

@@ -282,10 +282,15 @@ public class Object : RootComponent
 
         if (m_HealthZeroIsDestroy && m_Health <= 0.0f)
         {
-            StartCoroutine(C_DestroyTimer(m_DestroyDelay));
+            ObjectDestroyTimer(m_DestroyDelay);
         }
 
         m_DamageEvent?.Invoke(_Damage, caculratedamages, _DamageType, fulldamage, _Critical, _Attacker);
+    }
+
+    public void ObjectDestroyTimer(float _Delay = 2.5f)
+    {
+        StartCoroutine(C_DestroyTimer(_Delay));
     }
 
     IEnumerator C_DestroyTimer(float _Timer)
@@ -294,19 +299,19 @@ public class Object : RootComponent
         m_DeadEvent?.Invoke();
         yield return new WaitForSeconds(_Timer);
         if (PhotonNetwork.IsConnectedAndReady && m_PhotonView.IsMine)
-            ObjectDestroy(m_PhotonView.isRuntimeInstantiated);
+            ObjectDestroy();
         else
-            ObjectDestroy(false);
+            ObjectDestroy();
     }
 
-    public void ObjectDestroy(bool _RuntimeInstaiated = true)
+    public void ObjectDestroy()
     {
-        if (PhotonNetwork.IsConnectedAndReady)
+        if (PhotonNetwork.InRoom)
         {
-            if (_RuntimeInstaiated)
-                m_PhotonView.RPC("ObjectDestroy_RPC", RpcTarget.AllViaServer, _RuntimeInstaiated);
+            if (m_PhotonView.isRuntimeInstantiated)
+                m_PhotonView.RPC("ObjectDestroy_RPC", RpcTarget.AllViaServer, true);
             else
-                m_PhotonView.RPC("ObjectDestroy_RPC", RpcTarget.AllBufferedViaServer, _RuntimeInstaiated);
+                m_PhotonView.RPC("ObjectDestroy_RPC", RpcTarget.AllBufferedViaServer, false);
         }
         else
         {
@@ -317,7 +322,7 @@ public class Object : RootComponent
     [PunRPC]
     protected void ObjectDestroy_RPC(bool _RuntimeInstaiated = true)
     {
-        if (PhotonNetwork.IsConnectedAndReady)
+        if (PhotonNetwork.InRoom)
         {
             if (m_PhotonView.IsMine && _RuntimeInstaiated)
                 PhotonNetwork.Destroy(gameObject);

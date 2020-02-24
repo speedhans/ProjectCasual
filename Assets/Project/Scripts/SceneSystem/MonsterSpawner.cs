@@ -93,6 +93,7 @@ public class MonsterSpawner : Spawner
             if (c)
             {
                 m_ManagementTarget = c;
+                m_ManagementTarget.SetFreeze(0.5f);
                 TimerNet.SetTimer_s(m_TimerKey, m_SpawnDelay, false);
             }
         }

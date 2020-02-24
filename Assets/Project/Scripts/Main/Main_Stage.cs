@@ -50,10 +50,14 @@ public class Main_Stage : Main
     [HideInInspector]
     public SpawnManager m_SpawnManager;
 
+    protected List<List<Character>> m_ListCharacters = new List<List<Character>>();
     protected override void Awake()
     {
         base.Awake();
-        
+
+        for (int i = 0; i < (int)E_TEAMTYPE.MAX; ++i)
+            m_ListCharacters.Add(new List<Character>());
+
         if (PhotonNetwork.IsMasterClient)
         {
             // timer set
@@ -254,6 +258,9 @@ public class Main_Stage : Main
                 {
                     if (m_SpawnManager.IsAllBossMonsterSpawnOperationsCompleted())
                     {
+                        DeleteTeamAllUnits(E_TEAMTYPE.BLUE);
+                        DeleteTeamAllUnits(E_TEAMTYPE.GREEN);
+                        DeleteTeamAllUnits(E_TEAMTYPE.YELLOW);
                         GameClearUIOpen();
                         SetNextGameSequence();
                     }
@@ -312,6 +319,39 @@ public class Main_Stage : Main
         GameClearUICanvas canvas = clearui.GetComponent<GameClearUICanvas>();
         canvas.Initialize(this);
         canvas.StartClearTextAnimation();
+    }
+
+    public void InsertTeamUnit(E_TEAMTYPE _Type, Character _Character)
+    {
+        m_ListCharacters[(int)_Type].Add(_Character);
+    }
+
+    public void RemoveTeamUnit(E_TEAMTYPE _Type, Character _Character)
+    {
+        m_ListCharacters[(int)_Type].Remove(_Character);
+    }
+
+    public List<Character> GetTeamUnits(E_TEAMTYPE _Type)
+    {
+        return m_ListCharacters[(int)_Type];
+    }
+
+    public void DeleteTeamAllUnits(E_TEAMTYPE _Type, bool _Network = true)
+    {
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        Character[] c = m_ListCharacters[(int)_Type].ToArray();
+        for (int i = 0; i < c.Length; ++i)
+        {
+            c[i].ObjectDestroyTimer();
+        }
+        m_ListCharacters[(int)_Type].Clear();
+    }
+
+    void ClearTeamUnitDate()
+    {
+        for (int i = 0; i < m_ListCharacters.Count; ++i)
+            m_ListCharacters[i].Clear();
     }
 
     public override void OnJoinedRoom()

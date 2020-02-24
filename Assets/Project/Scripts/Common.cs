@@ -47,7 +47,8 @@ public enum E_TEAMTYPE
     RED,
     BLUE,
     GREEN,
-    YELLOW
+    YELLOW,
+    MAX
 }
 
 public enum E_WEAPONTYPE

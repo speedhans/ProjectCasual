@@ -46,7 +46,15 @@ public class ASSummonMonster : ActiveSkill
                 effect.gameObject.SetActive(true);
             }
             if (!m_PhotonView.IsMine) continue;
-            PhotonNetwork.InstantiateSceneObject(m_SummonMonsterPath + "/" + m_SummonMonsterPrefab.name, spawnpos, Quaternion.identity);
+            GameObject g = PhotonNetwork.InstantiateSceneObject(m_SummonMonsterPath + "/" + m_SummonMonsterPrefab.name, spawnpos, Quaternion.identity);
+            if (g)
+            {
+                Character c = g.GetComponent<Character>();
+                if (c)
+                {
+                    c.SetFreeze(1.0f, true);
+                }
+            }
         }
     }
 

@@ -1822,7 +1822,13 @@ MonoBehaviour:
   m_Team: 1
   m_State: 0
   m_NavMeshController:
-    m_AvoidRadius: 0
+    m_DynamicObjectAvoidedData:
+      m_CheckLineCount: 4
+      m_CheckLineLength: 1.5
+      m_CheckRadius: 0.5
+      m_AvoidLayer:
+        serializedVersion: 2
+        m_Bits: 16384
     m_UpdateRotate: 1
     m_MoveLocation: {x: 0, y: 0, z: 0}
   m_MovePerSpeed: 2

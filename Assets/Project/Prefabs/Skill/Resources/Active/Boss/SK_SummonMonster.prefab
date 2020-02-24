@@ -70,8 +70,9 @@ MonoBehaviour:
   m_Image: {fileID: 0}
   m_MaxCooldown: 5
   m_CurrentCooldown: 0
-  m_UseEffect: {fileID: 0}
-  m_EffectLocalPosition: {x: 0, y: 0, z: 0}
+  m_UseEffect: {fileID: 197718415057660085, guid: c857999d3a45bf143be2a221f4e3a081,
+    type: 3}
+  m_EffectLocalPosition: {x: 0, y: 0.01, z: 0}
   m_SkillManual: 
   m_SkillType: 0
   m_DamageType: 0
@@ -91,7 +92,7 @@ MonoBehaviour:
   - {x: 5, y: 0, z: 0}
   - {x: 0, y: 0, z: -5}
   - {x: 0, y: 0, z: 5}
-  m_SummonEffectPrefab: {fileID: 8867546514784590159, guid: f04cd56688da0f042ae7b18bc1622e13,
+  m_SummonEffectPrefab: {fileID: 7285155063348634413, guid: 10dcfb224780daf48b8572eecb8d48d3,
     type: 3}
   m_HPTrigger:
   - 60

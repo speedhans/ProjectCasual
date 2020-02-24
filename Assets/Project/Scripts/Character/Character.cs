@@ -48,12 +48,11 @@ public class Character : Object
     public Animator m_Animator { get; private set; }
     [SerializeField]
     protected NavMeshController m_NavMeshController = new NavMeshController();
-
     public Transform m_HeadAxis { get; protected set; }
     public Transform m_LeftHandAxis { get; protected set; }
     public Transform m_RightHandAxis { get; protected set; }
 
-    protected CapsuleCollider m_BodyCollider;
+    public CapsuleCollider m_BodyCollider { get; private set; }
     
     public enum E_STATS
     {
@@ -117,6 +116,11 @@ public class Character : Object
         base.Awake();
 
         gameObject.name = gameObject.name.Replace("(Clone)", "").Trim();
+        Main_Stage main = GameManager.Instance.m_Main as Main_Stage;
+        if (main)
+        {
+            main.InsertTeamUnit(m_Team, this);
+        }
 
         StartCoroutine(C_Initialize());
 
@@ -125,6 +129,7 @@ public class Character : Object
         m_RightHandAxis = transform;
 
         m_BodyCollider = GetComponentInChildren<CapsuleCollider>();
+        m_NavMeshController.Initialize(this);
 
         if (m_AttackAniKey == null || m_AttackAniKey.Length < 1)
         {
@@ -328,7 +333,16 @@ public class Character : Object
 
     public E_CHARACTERTYPE GetCharacterType() { return m_CharacterType; }
 
-    public void SetFreeze(float _Time)
+    public void SetFreeze(float _Time, bool _Network = false)
+    {
+        if (_Network)
+            m_PhotonView.RPC("SetFreeze_RPC", RpcTarget.All, _Time);
+        else
+            SetFreeze_RPC(_Time);
+    }
+
+    [PunRPC]
+    public void SetFreeze_RPC(float _Time)
     {
         m_FreezeTimer = _Time;
     }
@@ -450,10 +464,10 @@ public class Character : Object
                 m_Animator.CrossFade("Idle", _Duration);
                 break;
             case E_ANIMATION.WALK:
-                m_Animator.CrossFade("Walk", _Duration);
+                    m_Animator.CrossFade("Walk", _Duration);
                 break;
             case E_ANIMATION.RUN:
-                m_Animator.CrossFade("Run", _Duration);
+                    m_Animator.CrossFade("Run", _Duration);
                 break;
             case E_ANIMATION.DEAD:
                 {
@@ -642,6 +656,7 @@ public class Character : Object
     {
         Main_Stage main = GameManager.Instance.m_Main as Main_Stage;
         if (main == null) return;
+        main.RemoveTeamUnit(m_Team, this);
         if (main.m_DissolveShader == null)
         {
             Debug.LogError("not find shader");
@@ -1013,11 +1028,11 @@ public class Character : Object
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if (m_NavMeshController.GetAvoidRadius() <= 0.0f) return;
+        //if (m_NavMeshController.GetAvoidRadius() <= 0.0f) return;
 
         Gizmos.matrix = Matrix4x4.identity;
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position + new Vector3(0.0f, m_NavMeshController.GetAvoidRadius(), 0.0f), m_NavMeshController.GetAvoidRadius());
+        //Gizmos.DrawWireSphere(transform.position + (transform.forward * m_NavMeshController.GetAvoidDistance()), m_NavMeshController.GetAvoidRadius());
     }
 #endif
 }

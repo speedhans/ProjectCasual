@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class TestScript2 : MonoBehaviour
 {
-    private void Start()
+    private void Update()
     {
-        //Debug.Log(byte.Parse(s1));
-        //Debug.Log(byte.Parse(s2));
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 10.0f, -1))
+        {
+            Debug.Log(hit.transform.gameObject.name);
+        }
+        else
+        {
+            Debug.Log("no hit");
+        }
     }
 }

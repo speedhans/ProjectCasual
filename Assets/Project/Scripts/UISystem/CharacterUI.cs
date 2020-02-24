@@ -35,6 +35,7 @@ public class CharacterUI : DefaultUI
     // Update is called once per frame
     void Update()
     {
+        if (!GameManager.Instance.m_Main.IsAfterLoadingComplete) return;
         if (!m_Character) return;
 
         float RotX = VerticalFollowCamera.GetTransform().eulerAngles.x;

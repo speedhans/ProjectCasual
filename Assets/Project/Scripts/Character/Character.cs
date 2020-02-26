@@ -127,7 +127,6 @@ public class Character : Object
         m_HeadAxis = transform;
         m_LeftHandAxis = transform;
         m_RightHandAxis = transform;
-
         m_BodyCollider = GetComponentInChildren<CapsuleCollider>();
         m_NavMeshController.Initialize(this);
 

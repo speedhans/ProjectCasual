@@ -13,16 +13,22 @@ public class NavMeshController
     Character m_Character;
 
     [System.Serializable]
-    public struct S_DynamicObjectCheckData
+    public struct S_DynamicObjectAvoidedData
     {
-        public int m_CheckLineCount;
-        public float m_CheckLineLength;
-        public float m_CheckRadius;
-        public LayerMask m_AvoidLayer;
+        [Header("[The number of sensors must be odd]")]
+        public int m_SencorCount;
+        public float m_SencorLength;
+        public float m_SencorAngle;
+        public float m_UpdateDelay;
+        public LayerMask m_SencorCenterLayer;
+        public LayerMask m_SencorBothLayer;
     }
 
     [SerializeField]
-    protected S_DynamicObjectCheckData m_DynamicObjectAvoidedData;
+    protected S_DynamicObjectAvoidedData m_DynamicObjectAvoidedData;
+    [SerializeField]
+    bool m_UseObstacleAvoided = true;
+    float m_UpdateTimer;
 
     public bool m_UpdateRotate = true;
     public Vector3 m_MoveLocation;
@@ -40,7 +46,7 @@ public class NavMeshController
 
         float deltatime = Time.deltaTime;
         Vector3 dir = Vector3.zero;
-        if (m_ListAvoidNavPath.Count > 0) 
+        if (m_ListAvoidNavPath.Count > 0)
             dir = m_ListAvoidNavPath[0] - _Transform.position;
         else
             dir = m_ListNavPath[0] - _Transform.position;
@@ -49,24 +55,24 @@ public class NavMeshController
         float speed = deltatime * _MovePerSpeed;
         Vector3 nextpos = _Transform.position + dirnormal * speed;
 
-        if (m_DynamicObjectAvoidedData.m_CheckLineCount > 1 && m_ListAvoidNavPath.Count < 10)
+        if (m_UseObstacleAvoided)
         {
-            float weight = DynamicObjectCheck(_Transform, dirnormal);
-            if (weight != 0.0f)
+            m_UpdateTimer -= deltatime;
+            if (m_UpdateTimer <= 0.0f)
             {
-                float constantweight = Mathf.Abs(weight);
-                Vector3 v = new Vector3(0.0f, 0.0f, 1.0f - constantweight) + new Vector3(weight, 0.0f, 0.0f);
-                Quaternion r = Quaternion.LookRotation(dirnormal, Vector3.up);
-                List<Vector3> list = GetNavPath(_Transform.position, _Transform.position + ((r * v) * speed * (2.0f + (2 * constantweight))));
-                if (list != null && list.Count > 0)
+                m_UpdateTimer = m_DynamicObjectAvoidedData.m_UpdateDelay;
+                Vector3 avoideddirection = CheckAvoidedLocation(_Transform, dirnormal);
+                if (avoideddirection != Vector3.zero)
                 {
-                    m_ListAvoidNavPath.Clear();
-                    m_ListAvoidNavPath.AddRange(list);
-                
-                    dir = m_ListAvoidNavPath[0] - _Transform.position;
-                    dirnormal = dir.normalized;
-                    speed = deltatime * _MovePerSpeed;
-                    nextpos = _Transform.position + dirnormal * speed;
+                    List<Vector3> list = FindNavMeshPath(_Transform.position, _Transform.position + avoideddirection);
+                    if (list.Count > 0)
+                    {
+                        m_ListAvoidNavPath.Clear();
+                        m_ListAvoidNavPath.AddRange(list);
+
+                        dir = m_ListAvoidNavPath[0] - _Transform.position;
+                        dirnormal = dir.normalized;
+                    }
                 }
             }
         }
@@ -111,12 +117,21 @@ public class NavMeshController
         }
     }
 
-    public void SetMoveLocation(Vector3 _CurrentLocation, Vector3 _TargetLocation)
+    public void SetMoveLocation(Vector3 _StartLocation, Vector3 _TargetLocation)
     {
         m_ListNavPath.Clear();
 
-        m_MoveLocation = FindNavMeshSampleLocation(_TargetLocation);
-        m_ListNavPath.AddRange(GetNavPath(_CurrentLocation, _TargetLocation));
+        Vector3 samplelocation = FindNavMeshSampleLocation(_TargetLocation);
+        if (samplelocation == Vector3.zero) return;
+        m_MoveLocation = samplelocation;
+        m_ListNavPath.AddRange(CalculateNavMeshPath(_StartLocation, m_MoveLocation));
+    }
+
+    public List<Vector3> FindNavMeshPath(Vector3 _StartLocation, Vector3 _TargetLocation)
+    {
+        Vector3 samplelocation = FindNavMeshSampleLocation(_StartLocation, 0.5f);
+        if (samplelocation == Vector3.zero) return null;
+        return CalculateNavMeshPath(samplelocation, _TargetLocation);
     }
 
     public Vector3 FindNavMeshSampleLocation(Vector3 _Point, float _SearchRadius = 0.2f)
@@ -130,7 +145,7 @@ public class NavMeshController
         return Vector3.zero;
     }
 
-    List<Vector3> GetNavPath(Vector3 _StartPoint, Vector3 _TargetPoint)
+    List<Vector3> CalculateNavMeshPath(Vector3 _StartPoint, Vector3 _TargetPoint)
     {
         List<Vector3> list = new List<Vector3>();
         UnityEngine.AI.NavMeshPath Path = new UnityEngine.AI.NavMeshPath();
@@ -167,68 +182,96 @@ public class NavMeshController
         return true;
     }
 
-    public int GetAvoidCheckLineCount() { return m_DynamicObjectAvoidedData.m_CheckLineCount; }
-    public float GetAvoidCheckLineLength() { return m_DynamicObjectAvoidedData.m_CheckLineLength; }
+    public int GetAvoidCheckLineCount() { return m_DynamicObjectAvoidedData.m_SencorCount; }
+    public float GetAvoidCheckLineLength() { return m_DynamicObjectAvoidedData.m_SencorLength; }
 
-    float DynamicObjectCheck(Transform _SourceTransform, Vector3 _Direction) // 양수가 right
+    Vector3 CheckAvoidedLocation(Transform _SourceTransform, Vector3 _Direction) // 양수가 right
     {
-        _Direction.y = 0.0f;
-        _Direction.Normalize();
-        Quaternion calRot = Quaternion.LookRotation(_Direction, Vector3.up);
-        Vector3 rightvector = calRot * Vector3.right;
-        rightvector.Normalize();
-        Vector3 leftvector3 = -rightvector;
-        float offet = (m_DynamicObjectAvoidedData.m_CheckRadius * 2.0f) / (m_DynamicObjectAvoidedData.m_CheckLineCount - 1);
-        float[] distance = new float[m_DynamicObjectAvoidedData.m_CheckLineCount];
-        Vector3 startpos = _SourceTransform.position + new Vector3(0.0f, 0.5f, 0.0f) + (leftvector3 * m_DynamicObjectAvoidedData.m_CheckRadius);
-        Vector3 addvector = offet * rightvector;
-        RaycastHit rayhit;
-        int hit = 0;
-        float alllength = 0.0f;
-        for (int i = 0; i < distance.Length; ++i)
+        Ray ray = new Ray();
+        RaycastHit centerrayhit;
+        Vector3 raystart = _SourceTransform.position + new Vector3(0.0f, 0.5f, 0.0f);
+        int centernumber = m_DynamicObjectAvoidedData.m_SencorCount / 2;
+        float interval = m_DynamicObjectAvoidedData.m_SencorAngle / (m_DynamicObjectAvoidedData.m_SencorCount - 1);
+        float halfangle = m_DynamicObjectAvoidedData.m_SencorAngle * 0.5f;
+
+        ray.origin = raystart;
+        ray.direction = _Direction.normalized;
+        if (Physics.Raycast(ray, out centerrayhit, m_DynamicObjectAvoidedData.m_SencorLength, m_DynamicObjectAvoidedData.m_SencorCenterLayer)) // 센터 검사 성공시, 외각 검사 실행
         {
-            if (Physics.Raycast(startpos, _Direction, out rayhit, m_DynamicObjectAvoidedData.m_CheckLineLength, m_DynamicObjectAvoidedData.m_AvoidLayer))
+            Debug.DrawLine(raystart, centerrayhit.point, Color.red);
+
+            Character hittarget = centerrayhit.transform.GetComponent<Character>();
+            if (hittarget.m_Team == m_Character.m_Team)
             {
-                Character target = rayhit.transform.GetComponentInParent<Character>();
-                if (target && target.m_Team == m_Character.m_Team)
+                Vector3 leftsafedirection = Vector3.zero;
+                Vector3 rightsafedirection = Vector3.zero;
+                int leftweight = 0;
+                int rightweight = 0;
+                RaycastHit leftrayhit;
+                RaycastHit rightrayhit;
+                for (int i = 0; i < centernumber; ++i) // left
                 {
-                    ++hit;
-                    distance[i] = (startpos - rayhit.point).magnitude;
-                    Debug.DrawLine(startpos, rayhit.point, Color.red);
+                    ++leftweight;
+                    ray.origin = raystart;
+                    ray.direction = (Quaternion.AngleAxis(-((i + 1) * interval), Vector3.up) * _Direction).normalized;
+                    if (Physics.Raycast(ray, out leftrayhit, m_DynamicObjectAvoidedData.m_SencorLength, m_DynamicObjectAvoidedData.m_SencorBothLayer))
+                    {
+                        Debug.DrawLine(raystart, leftrayhit.point, Color.red);
+                    }
+                    else
+                    {
+                        leftsafedirection = ray.direction;
+                        Debug.DrawLine(raystart, raystart + (ray.direction * m_DynamicObjectAvoidedData.m_SencorLength), Color.green);
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < centernumber; ++i) // right
+                {
+                    ++rightweight;
+                    ray.origin = raystart;
+                    ray.direction = (Quaternion.AngleAxis((i + 1) * interval, Vector3.up) * _Direction).normalized;
+                    if (Physics.Raycast(ray, out rightrayhit, m_DynamicObjectAvoidedData.m_SencorLength, m_DynamicObjectAvoidedData.m_SencorBothLayer))
+                    {
+                        Debug.DrawLine(raystart, rightrayhit.point, Color.red);
+                    }
+                    else
+                    {
+                        rightsafedirection = ray.direction;
+                        Debug.DrawLine(raystart, raystart + (ray.direction * m_DynamicObjectAvoidedData.m_SencorLength), Color.green);
+                        break;
+                    }
+                }
+
+                if (leftweight == rightweight)
+                {
+                    Vector3 rightvector = Vector3.Cross(_Direction, Vector3.up);
+                    float dot = Vector3.Dot(rightvector, (centerrayhit.point - _SourceTransform.position).normalized);
+                    if (dot < 0.0f) // left
+                    {
+                        --rightweight;
+                    }
+                    else // right
+                    {
+                        --leftweight;
+                    }
+                }
+
+                if (leftweight > rightweight)
+                {
+                    return rightsafedirection * m_DynamicObjectAvoidedData.m_SencorLength;
                 }
                 else
                 {
-                    distance[i] = m_DynamicObjectAvoidedData.m_CheckLineLength;
-                    Debug.DrawLine(startpos, startpos + (_Direction * m_DynamicObjectAvoidedData.m_CheckLineLength), Color.green);
+                    return leftsafedirection * m_DynamicObjectAvoidedData.m_SencorLength;
                 }
             }
-            else
-            {
-                distance[i] = m_DynamicObjectAvoidedData.m_CheckLineLength;
-                Debug.DrawLine(startpos, startpos + (_Direction * m_DynamicObjectAvoidedData.m_CheckLineLength), Color.green);
-            }
-            alllength += distance[i];
-            startpos += addvector;
         }
-
-        int halfcount = (int)(m_DynamicObjectAvoidedData.m_CheckLineCount * 0.5f);
-        float weight = 0.0f;
-
-        for (int i = 0; i < halfcount; ++i)
+        else
         {
-            weight -= (distance[i] / m_DynamicObjectAvoidedData.m_CheckLineLength) / halfcount;
-        }
-        for (int i = distance.Length - 1; i >= halfcount; --i)
-        {
-            weight += (distance[i] / m_DynamicObjectAvoidedData.m_CheckLineLength) / halfcount;
+            Debug.DrawLine(raystart, raystart + (ray.direction * m_DynamicObjectAvoidedData.m_SencorLength), Color.green);
         }
 
-        float percent = alllength / (m_DynamicObjectAvoidedData.m_CheckLineCount * m_DynamicObjectAvoidedData.m_CheckLineLength);
-        if (percent > 0.5f)
-        {
-            weight = weight * (1.0f + weight) * (1.0f + percent);
-        }
-
-        return weight;
+        return Vector3.zero;
     }
 }

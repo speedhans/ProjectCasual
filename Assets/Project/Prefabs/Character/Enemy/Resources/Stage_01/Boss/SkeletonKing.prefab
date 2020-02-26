@@ -116,12 +116,17 @@ MonoBehaviour:
   m_State: 0
   m_NavMeshController:
     m_DynamicObjectAvoidedData:
-      m_CheckLineCount: 0
-      m_CheckLineLength: 0
-      m_CheckRadius: 0
-      m_AvoidLayer:
+      m_SencorCount: 0
+      m_SencorLength: 0
+      m_SencorAngle: 0
+      m_UpdateDelay: 0
+      m_SencorCenterLayer:
         serializedVersion: 2
-        m_Bits: 16384
+        m_Bits: 0
+      m_SencorBothLayer:
+        serializedVersion: 2
+        m_Bits: 0
+    m_UseObstacleAvoided: 0
     m_UpdateRotate: 1
     m_MoveLocation: {x: 0, y: 0, z: 0}
   m_MovePerSpeed: 2

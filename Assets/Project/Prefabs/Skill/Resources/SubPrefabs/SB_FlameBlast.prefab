@@ -4691,6 +4691,7 @@ GameObject:
   - component: {fileID: 1096725144877176034}
   - component: {fileID: 1096725144892379554}
   - component: {fileID: 1096725144892418050}
+  - component: {fileID: 3450414039682690991}
   m_Layer: 0
   m_Name: Flame
   m_TagString: Untagged
@@ -9291,6 +9292,20 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &3450414039682690991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096725144877074626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d5c1c714362074581f70ea3cd70e46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 8300000, guid: 80148791db78ea24cb4f091ba98c80b1, type: 3}
+  m_Loop: 0
 --- !u!1 &5296292996142614283
 GameObject:
   m_ObjectHideFlags: 0
@@ -13939,6 +13954,7 @@ GameObject:
   - component: {fileID: 5296292996143110959}
   - component: {fileID: 5296292996123713135}
   - component: {fileID: 5296292996123617231}
+  - component: {fileID: 6199551461623728853}
   m_Layer: 0
   m_Name: LineUp
   m_TagString: Untagged
@@ -18585,6 +18601,20 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &6199551461623728853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296292996142614287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d5c1c714362074581f70ea3cd70e46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 8300000, guid: a101593654097ad45aefce334a57a152, type: 3}
+  m_Loop: 0
 --- !u!1 &7706483433923730334
 GameObject:
   m_ObjectHideFlags: 0

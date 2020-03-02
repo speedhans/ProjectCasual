@@ -9473,6 +9473,7 @@ GameObject:
   m_Component:
   - component: {fileID: 151688637727072295}
   - component: {fileID: 8161172953814760016}
+  - component: {fileID: 1290774630668668903}
   m_Layer: 0
   m_Name: DefenceFieldEffect
   m_TagString: Untagged
@@ -9509,3 +9510,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LifeTime: 3
+--- !u!114 &1290774630668668903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7727825995795305190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d5c1c714362074581f70ea3cd70e46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 8300000, guid: 4d7d7c8df80f31b4393f9699d51dd510, type: 3}
+  m_Loop: 0

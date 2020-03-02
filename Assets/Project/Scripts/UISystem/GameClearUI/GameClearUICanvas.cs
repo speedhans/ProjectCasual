@@ -16,17 +16,27 @@ public class GameClearUICanvas : MonoBehaviour
     float m_ColorPointAdd;
     [SerializeField]
     float m_ColorChangeSpeed;
+    float m_TouchEventDelay;
+    float m_TouchEventDelayTimer;
 
     Coroutine m_Coroutine;
 
     [SerializeField]
     ResultUI m_ResultUI;
 
-    public void Initialize(Main_Stage _Main)
+    public void Initialize(Main_Stage _Main, float _TouchEventDelay = 1.0f)
     {
         m_Main = _Main;
 
         m_ColorPointAdd = 0.0f;
+        m_TouchEventDelay = _TouchEventDelay;
+        m_TouchEventDelayTimer = _TouchEventDelay;
+    }
+
+    private void Update()
+    {
+        if (m_TouchEventDelayTimer > 0.0f)
+            m_TouchEventDelayTimer -= Time.deltaTime;
     }
 
     public void StartClearTextAnimation()
@@ -64,6 +74,10 @@ public class GameClearUICanvas : MonoBehaviour
 
     public void TouchBackground()
     {
+        if (m_TouchEventDelayTimer > 0.0f) return;
+
+        m_TouchEventDelayTimer = m_TouchEventDelay;
+
         if (m_ResultUI.m_Phase == 0)
         {
             if (m_Coroutine != null)

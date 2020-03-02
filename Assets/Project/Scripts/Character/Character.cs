@@ -44,7 +44,10 @@ public class Character : Object
     public E_STATE m_State;
 
     protected E_CHARACTERTYPE m_CharacterType;
-
+    [SerializeField]
+    protected E_WEAPONTYPE m_WeaponType = E_WEAPONTYPE.NONE;
+    public E_WEAPONTYPE WeaponType { get { return m_WeaponType; } private set { } }
+    public AudioClip m_AttackSound;
     public Animator m_Animator { get; private set; }
     [SerializeField]
     protected NavMeshController m_NavMeshController = new NavMeshController();

@@ -148,6 +148,8 @@ public class PlayerCharacter : HumanoidCharacter
 
     void SwitchAnimator(E_WEAPONTYPE _Type)
     {
+        m_WeaponType = _Type;
+        m_AttackSound = SoundManager.Instance.GetPlayerAttackmonetClip(m_WeaponType);
         RuntimeAnimatorController anim = FindAnimator(_Type.ToString());
         if (anim)
             StartCoroutine(C_SwitchAnimator(anim));

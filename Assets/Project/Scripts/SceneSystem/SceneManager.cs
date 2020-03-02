@@ -59,6 +59,7 @@ public class SceneManager : MonoBehaviour
         }
         else
         {
+            SoundManager.Instance.LoadSoundData();
             if (!PhotonNetwork.IsConnectedAndReady || !PhotonNetwork.IsConnected)
                 NetworkManager.Instance.ServerConnet();
         }

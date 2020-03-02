@@ -1821,6 +1821,8 @@ MonoBehaviour:
   m_WeekPoint: []
   m_Team: 1
   m_State: 0
+  m_WeaponType: -1
+  m_AttackSound: {fileID: 8300000, guid: cf91c6ccf43e5da4282f79079592e47a, type: 3}
   m_NavMeshController:
     m_DynamicObjectAvoidedData:
       m_SencorCount: 7

@@ -110,6 +110,8 @@ MonoBehaviour:
   m_WeekPoint: []
   m_Team: 0
   m_State: 0
+  m_WeaponType: -1
+  m_AttackSound: {fileID: 0}
   m_NavMeshController:
     m_DynamicObjectAvoidedData:
       m_SencorCount: 0

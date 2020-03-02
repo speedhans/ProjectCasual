@@ -10,12 +10,15 @@ using UnityEngine.Rendering.Universal;
 public class Main : MonoBehaviourPunCallbacks
 {
     [HideInInspector]
-    public VerticalFollowCamera m_Camera;
+    public CameraSystem m_Camera;
     Dictionary<int, PlayerCharacter> m_DicPlayerCharacter = new Dictionary<int, PlayerCharacter>();
 
     protected PhotonView m_PhotonView;
     public bool IsBeginLoadingComplete { get; protected set; }
     public bool IsAfterLoadingComplete { get; protected set; }
+
+    public AudioClip m_BGMStart;
+    public AudioClip m_BGMLoop;
 
     protected virtual void Awake()
     {
@@ -25,6 +28,8 @@ public class Main : MonoBehaviourPunCallbacks
 
     protected virtual void Start()
     {
+        if (m_BGMStart != null && m_BGMLoop != null)
+            SoundManager.Instance.PlayBGM(m_BGMStart, m_BGMLoop);
     }
 
     // Players Data

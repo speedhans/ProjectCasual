@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 23572dc9d44e3a542ac715144ca5926c,
     type: 2}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2445,6 +2445,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Camera: {fileID: 0}
+  m_BGMStart: {fileID: 8300000, guid: c4e4805c72f899b499f32dbe23be473b, type: 3}
+  m_BGMLoop: {fileID: 8300000, guid: f7947788bda58fe408cb4463e2a70884, type: 3}
   m_DissolveShader: {fileID: -6465566751694194690, guid: a5470e641e572134784b975920adce86,
     type: 3}
   m_LocalOutLineMaterial: {fileID: 2100000, guid: 075b0f9b325c8c542a11625ac49620f3,

@@ -13,6 +13,7 @@ public class AnimationEventCall : MonoBehaviour
 
     public void AttackMomentEvent()
     {
+        SoundManager.Instance.PlayAttackMomentSound(m_Character.m_AttackSound);
         m_Character.AttackMomentEvent();
     }
 

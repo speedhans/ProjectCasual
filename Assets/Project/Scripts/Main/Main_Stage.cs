@@ -78,6 +78,7 @@ public class Main_Stage : Main
 
     IEnumerator C_TestModeServerConnect()
     {
+        SoundManager.Instance.LoadSoundData();
         NetworkManager.Instance.ServerConnet();
         while (!PhotonNetwork.IsConnectedAndReady || !PhotonNetwork.InLobby) yield return null;
         NetworkManager.Instance.CreateRoom("TESTROOM01", "test01");
@@ -317,7 +318,7 @@ public class Main_Stage : Main
         m_SkillUICanvas.SetActive(false);
         GameObject clearui = Instantiate(Resources.Load<GameObject>("GameClearUICanvas"));
         GameClearUICanvas canvas = clearui.GetComponent<GameClearUICanvas>();
-        canvas.Initialize(this);
+        canvas.Initialize(this, 2.0f);
         canvas.StartClearTextAnimation();
     }
 

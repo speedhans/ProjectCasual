@@ -70,6 +70,7 @@ MonoBehaviour:
   m_Image: {fileID: 21300000, guid: 771d06d1f1d7e7b4f974c124ed12c6ee, type: 3}
   m_MaxCooldown: 5
   m_CurrentCooldown: 0
+  m_UseSoundClip: {fileID: 0}
   m_UseEffect: {fileID: 309523375261859019, guid: cc31ea7a7f6ffb6449726e0bf48a334a,
     type: 3}
   m_EffectLocalPosition: {x: 0, y: 0.5, z: 0}

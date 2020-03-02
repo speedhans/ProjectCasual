@@ -70,6 +70,7 @@ public class BossSpawner : Spawner
             if (c)
             {
                 m_ManagementTarget = c;
+                m_ManagementTarget.SetFreeze(1.5f);
                 BossCharacterUI.Instance.InsertUI(c);
             }
         }

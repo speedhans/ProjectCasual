@@ -723,6 +723,8 @@ MonoBehaviour:
   - {fileID: 1806466611185281240}
   m_Team: 1
   m_State: 0
+  m_WeaponType: -1
+  m_AttackSound: {fileID: 8300000, guid: 8e3bbfcd67f5bd64c963ebeb5878a5ed, type: 3}
   m_NavMeshController:
     m_DynamicObjectAvoidedData:
       m_SencorCount: 7

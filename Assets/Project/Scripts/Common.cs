@@ -53,17 +53,18 @@ public enum E_TEAMTYPE
 
 public enum E_WEAPONTYPE
 {
-    NONE,
+    NONE = -1,
     PUNCH,
     ONEHANDSWORD,
     TWOHANDSWORD,
+    MAX
 }
 
 public class Common
 {
     static public Color[] m_DamageColor = new Color[(int)E_DAMAGETYPE.MAX] {
         Color.red, new Color(0.2f, 0.3f, 1.0f), Color.yellow,
-        new Color(0.15f, 0.5f, 0.8f), new Color(0.8f, 0.8f, 0.2f), new Color(0.1f, 0.1f, 0.1f) };
+        new Color(0.15f, 0.5f, 0.8f), new Color(1.0f, 1.0f, 0.75f), new Color(0.1f, 0.1f, 0.1f) };
 
     static public float BLOCK_SIZE = 0.5f;
     static public int STATIC_LAYER = 10;

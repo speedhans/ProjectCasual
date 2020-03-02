@@ -20,6 +20,8 @@ public class Skill : MonoBehaviour
     public float m_CurrentCooldown;
     protected Character m_Caster;
     protected PhotonView m_PhotonView;
+    [SerializeField]
+    AudioClip m_UseSoundClip;
     System.Action m_UseSkillAction;
     [SerializeField]
     protected GameObject m_UseEffect;
@@ -100,6 +102,10 @@ public class Skill : MonoBehaviour
                 effect.Initialize();
                 effect.gameObject.SetActive(true);
             }
+        }
+        if (m_UseSoundClip != null)
+        {
+            SoundManager.Instance.PlayEffectSound(m_UseSoundClip);
         }
         m_UseSkillAction?.Invoke();
     }

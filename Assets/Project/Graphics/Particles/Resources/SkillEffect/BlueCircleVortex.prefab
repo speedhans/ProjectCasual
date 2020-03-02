@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 309523375276303785}
   - component: {fileID: 309523375276399625}
   - component: {fileID: 1525983480188954447}
+  - component: {fileID: 2451660067022099159}
   m_Layer: 0
   m_Name: BlueCircleVortex
   m_TagString: Untagged
@@ -4599,6 +4600,7 @@ ParticleSystemRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4660,6 +4662,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LifeTime: 1.5
+--- !u!114 &2451660067022099159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309523375261859019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d5c1c714362074581f70ea3cd70e46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Clip: {fileID: 8300000, guid: 289db3261d8112246a2f49a301b4b66a, type: 3}
+  m_Loop: 0
 --- !u!1 &3864958040666213918
 GameObject:
   m_ObjectHideFlags: 0
@@ -9365,6 +9381,7 @@ ParticleSystemRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

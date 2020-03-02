@@ -36,7 +36,7 @@ public class SceneManager : MonoBehaviour
     public void LoadScene(string _SceneName)
     {
         if (m_LoadingCoroutine != null) StopCoroutine(m_LoadingCoroutine);
-
+        GameManager.Instance.StartGame();
         UnityEngine.SceneManagement.SceneManager.LoadScene("LoadingScene");
         m_LoadingCoroutine = StartCoroutine(C_Loading(_SceneName));
     }
@@ -44,6 +44,7 @@ public class SceneManager : MonoBehaviour
     public void LoadSceneDirect(string _SceneName)
     {
         if (m_LoadingCoroutine != null) StopCoroutine(m_LoadingCoroutine);
+        GameManager.Instance.StartGame();
         UnityEngine.SceneManagement.SceneManager.LoadScene(_SceneName);
     }
 
@@ -57,11 +58,14 @@ public class SceneManager : MonoBehaviour
         {
             NetworkManager.Instance.ServerDisconnect();
         }
+        else if (_NextSceneName.Contains("Lobby"))
+        {
+            if (!PhotonNetwork.IsConnectedAndReady || !PhotonNetwork.IsConnected)
+                NetworkManager.Instance.ServerConnet();
+        }
         else
         {
             SoundManager.Instance.LoadSoundData();
-            if (!PhotonNetwork.IsConnectedAndReady || !PhotonNetwork.IsConnected)
-                NetworkManager.Instance.ServerConnet();
         }
 
         AsyncOperation Op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(_NextSceneName);

@@ -30,6 +30,7 @@ public class WaitingRoomUI : LobbyUI
         ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
         hash[m_SceneNameKey] = _QuestData.m_SceneName;
         hash[m_GameNameKey] = _QuestData.m_Name;
+        hash[Main_Stage.MultiPlayKey] = _QuestData.m_Multiplay;
         NetworkManager.Instance.CreateRoom(NetworkManager.Instance.CreateInstanceRoomName(), _QuestData.m_SceneName, hash);
     }
 

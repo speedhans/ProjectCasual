@@ -691,6 +691,21 @@ public class Character : Object
         }
     }
 
+    public void Revive()
+    {
+        if (PhotonNetwork.InRoom)
+            m_PhotonView.RPC("Revive_RPC", RpcTarget.AllViaServer);
+        else
+            Revive_RPC();
+    }
+
+    [PunRPC]
+    public void Revive_RPC()
+    {
+        m_State = E_STATE.IDLE;
+        m_Health = m_MaxHealth;
+    }
+
     protected void SetAutoPlayLogic(System.Action _Function) { m_AutoPlayLogic = _Function; }
 
     protected virtual void AutoPlayLogic()

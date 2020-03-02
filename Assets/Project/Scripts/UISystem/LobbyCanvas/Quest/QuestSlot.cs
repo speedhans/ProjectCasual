@@ -54,7 +54,9 @@ public class QuestSlot : MonoBehaviour
             return;
         }
 
-        NetworkManager.Instance.CreateRoom(NetworkManager.Instance.CreateInstanceRoomName(), "single", null, false, false, 1); // 임시 방 생성 코드
+        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+        hash[Main_Stage.MultiPlayKey] = m_QuestData.m_Multiplay;
+        NetworkManager.Instance.CreateRoom(NetworkManager.Instance.CreateInstanceRoomName(), "single", hash, false, false, 1); // 임시 방 생성 코드
         SceneManager.Instance.LoadScene(m_QuestData.m_SceneName);
     }
 }

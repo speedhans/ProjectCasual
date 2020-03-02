@@ -20,14 +20,14 @@ MonoBehaviour:
   m_DropItemList:
   - m_Item: {fileID: 6895961972118602322, guid: d8f6b7d2209def44bb70a46879a3f125,
       type: 3}
-    m_DropChance: 10
+    m_DropChance: 100
   - m_Item: {fileID: 4240647789283917576, guid: add6cf7bb068bc445845f911f3f34b5b,
       type: 3}
-    m_DropChance: 10
+    m_DropChance: 50
   - m_Item: {fileID: 421931330980584961, guid: 757a38e510b817341ba87ac2b5a297a2, type: 3}
-    m_DropChance: 10
+    m_DropChance: 50
   - m_Item: {fileID: 421931330980584961, guid: 3964529b654a9ad41bb0a97219a507dc, type: 3}
-    m_DropChance: 10
+    m_DropChance: 50
   - m_Item: {fileID: 1952962046061837900, guid: 893d55f1fa402c24b981848f40ebc512,
       type: 3}
-    m_DropChance: 10
+    m_DropChance: 50

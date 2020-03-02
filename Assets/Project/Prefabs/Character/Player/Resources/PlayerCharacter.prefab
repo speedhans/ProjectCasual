@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Live: 0
   m_Health: 100
   m_MaxHealth: 0
-  m_PerSecondHealthRegeneration: 30
+  m_PerSecondHealthRegeneration: 1
   m_Resistance:
     Fire: 0
     Ice: 0

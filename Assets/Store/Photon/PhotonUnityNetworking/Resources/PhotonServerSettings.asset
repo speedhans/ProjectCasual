@@ -60,5 +60,6 @@ MonoBehaviour:
   - WaitingRoomUpdateQuery_RPC
   - SetStats_RPC
   - SetFreeze_RPC
+  - Revive_RPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1

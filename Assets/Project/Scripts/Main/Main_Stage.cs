@@ -6,6 +6,8 @@ using Photon.Pun;
 
 public class Main_Stage : Main
 {
+    public const string MultiPlayKey = "MultiKey";
+
     public enum E_GAMESEQUENCE
     {
         BEGINGAME,
@@ -24,6 +26,7 @@ public class Main_Stage : Main
     E_GAMESEQUENCE m_GameSequence = E_GAMESEQUENCE.BEGINGAME;
     bool[] m_SequenceProgress = new bool[(int)E_GAMESEQUENCE.MAX];
     string m_SequenceTimerKey = "GameSequence";
+    public bool m_IsMultiplayGame { get; private set; }
 
     PlayerCharacter m_MyCharacter;
     public Shader m_DissolveShader;
@@ -41,8 +44,7 @@ public class Main_Stage : Main
     GameObject m_StageDefaultCamera;
     [SerializeField]
     GameObject m_VerticalCamera;
-    [SerializeField]
-    Item[] m_ResultItemlist;
+    QuestData.S_DropItemData[] m_DropItemList;
 
     [SerializeField]
     Transform m_BossRoomStartPoint;
@@ -51,6 +53,7 @@ public class Main_Stage : Main
     public SpawnManager m_SpawnManager;
 
     protected List<List<Character>> m_ListCharacters = new List<List<Character>>();
+    public GameSceneData m_GameSceneData { get; private set; }
     protected override void Awake()
     {
         base.Awake();
@@ -67,6 +70,11 @@ public class Main_Stage : Main
         gameObject.AddComponent<FrameChecker>();
         Instantiate(m_StageDefaultCamera, Vector3.zero, Quaternion.identity);
         Resources.Load<Shader>(m_DissolveShader.name);
+        m_GameSceneData = Resources.Load<GameSceneData>(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name + "_data");
+        if (m_GameSceneData)
+        {
+            m_DropItemList = m_GameSceneData.m_DropItemList.ToArray();
+        }
 
         StartCoroutine(C_Initialize());
     }
@@ -81,7 +89,10 @@ public class Main_Stage : Main
         SoundManager.Instance.LoadSoundData();
         NetworkManager.Instance.ServerConnet();
         while (!PhotonNetwork.IsConnectedAndReady || !PhotonNetwork.InLobby) yield return null;
-        NetworkManager.Instance.CreateRoom("TESTROOM01", "test01");
+
+        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+        hash[MultiPlayKey] = false;
+        NetworkManager.Instance.CreateRoom("TESTROOM01", "test01", hash);
 
     }
 
@@ -113,7 +124,13 @@ public class Main_Stage : Main
         m_ControlCanvas.SetActive(false);
         GameObject gameUI = Instantiate(Resources.Load<GameObject>("GameUICanvas"));
         m_GameUICanvas = gameUI.GetComponent<GameUICanvas>();
-        m_GameUICanvas.Initialize();
+        List<Item> droplist = new List<Item>();
+        for (int i = 0; i < m_DropItemList.Length; ++i)
+        {
+            droplist.Add(m_DropItemList[i].m_Item);
+        }
+        m_GameUICanvas.Initialize(this, droplist);
+        m_GameUICanvas.TimeCheck(false);
         gameUI.SetActive(false);
         m_SkillUICanvas = Instantiate(Resources.Load<GameObject>("SkillUICanvas"), Vector3.zero, Quaternion.identity);
         m_SkillUICanvas.SetActive(false);
@@ -124,6 +141,7 @@ public class Main_Stage : Main
 
         GameObject g = PhotonNetwork.Instantiate("PlayerCharacter", Vector3.zero, Quaternion.identity, 0, new object[] { -1, -1, -1, -1, -1, InventoryManager.Instance.GetPlayerModelName() });
         m_MyCharacter = g.GetComponent<PlayerCharacter>();
+        m_MyCharacter.AddDeadEvent(MyCharacterDeadEvent);
 
         m_VerticalCamera = Instantiate(m_VerticalCamera, Vector3.zero, Quaternion.identity);
         VerticalFollowCamera verticalcamera = m_VerticalCamera.GetComponent<VerticalFollowCamera>();
@@ -152,6 +170,8 @@ public class Main_Stage : Main
             }
             yield return null;
         }
+
+        m_IsMultiplayGame = NetworkManager.Instance.RoomController.GetRoomPropertie<bool>(MultiPlayKey);
 
         while (!IsAfterLoadingComplete)
         {
@@ -216,6 +236,7 @@ public class Main_Stage : Main
                     m_SpawnManager.NormalMonsterSpawnStart();
                     m_ControlCanvas.SetActive(true);
                     m_SkillUICanvas.SetActive(true);
+                    m_GameUICanvas.TimeCheck(true);
                     SetNextGameSequence();
                 }
                 break;
@@ -263,6 +284,7 @@ public class Main_Stage : Main
                         DeleteTeamAllUnits(E_TEAMTYPE.GREEN);
                         DeleteTeamAllUnits(E_TEAMTYPE.YELLOW);
                         GameClearUIOpen();
+                        m_GameUICanvas.TimeCheck(false);
                         SetNextGameSequence();
                     }
                 }
@@ -302,13 +324,12 @@ public class Main_Stage : Main
     public Item[] GetResultItemlist() // 임시. 네트워크 방식으로 변경해야함
     {
         List<Item> list = new List<Item>();
-        for (int i = 0; i < m_ResultItemlist.Length; ++i)
+        for (int i = 0; i < m_DropItemList.Length; ++i)
         {
-            list.Add(Instantiate(m_ResultItemlist[i].gameObject).GetComponent<Item>());
+            int random = Random.Range(0, 100);
+            if (m_DropItemList[i].m_DropChance >= random)
+                list.Add(Instantiate(m_DropItemList[i].m_Item).GetComponent<Item>());
         }
-
-        InventoryManager.Instance.InserItem(list);
-
         return list.ToArray();
     }
 
@@ -353,6 +374,11 @@ public class Main_Stage : Main
     {
         for (int i = 0; i < m_ListCharacters.Count; ++i)
             m_ListCharacters[i].Clear();
+    }
+
+    void MyCharacterDeadEvent()
+    {
+        m_GameUICanvas.GetDeadUI().Enable();
     }
 
     public override void OnJoinedRoom()

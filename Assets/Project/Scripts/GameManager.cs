@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     public PlayerCharacter m_MyCharacter;
     System.Action<Object> m_SkyEnvironmentEvent;
 
-    public bool m_GameStop = false;
+    public bool m_GameStop { get; private set; }
 
     public void CreatePlayerData()
     {
@@ -57,6 +57,17 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
+    public void PauseGame()
+    {
+        m_GameStop = true;
+        Time.timeScale = 0.0f;
+    }
+
+    public void StartGame()
+    {
+        m_GameStop = false;
+        Time.timeScale = 1.0f;
+    }
 
 #region WorldTimer
     public enum E_TIMETYPE

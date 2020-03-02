@@ -280,9 +280,12 @@ public class Object : RootComponent
             fulldamage += damage;
         }
 
-        if (m_HealthZeroIsDestroy && m_Health <= 0.0f)
+        if (m_Health <= 0.0f)
         {
-            ObjectDestroyTimer(m_DestroyDelay);
+            m_Live = E_LIVE.DEAD;
+            m_DeadEvent?.Invoke();
+            if (m_HealthZeroIsDestroy)
+                ObjectDestroyTimer(m_DestroyDelay);
         }
 
         m_DamageEvent?.Invoke(_Damage, caculratedamages, _DamageType, fulldamage, _Critical, _Attacker);
@@ -295,8 +298,6 @@ public class Object : RootComponent
 
     IEnumerator C_DestroyTimer(float _Timer)
     {
-        m_Live = E_LIVE.DEAD;
-        m_DeadEvent?.Invoke();
         yield return new WaitForSeconds(_Timer);
         if (PhotonNetwork.IsConnectedAndReady && m_PhotonView.IsMine)
             ObjectDestroy();
@@ -489,12 +490,12 @@ public class Object : RootComponent
         m_ListLinkedObject.Clear();
     }
 
-    protected void AddDeadEvent(System.Action _Action)
+    public void AddDeadEvent(System.Action _Action)
     {
         m_DeadEvent += _Action;
     }
 
-    protected void SubDeadEvent(System.Action _Action)
+    public void SubDeadEvent(System.Action _Action)
     {
         m_DeadEvent -= _Action;
     }

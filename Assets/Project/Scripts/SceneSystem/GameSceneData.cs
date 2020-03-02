@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CreateAssetMenu(fileName = "GameSceneData", menuName = "CreateScriptableObject/GameSceneData")]
-class GameSceneData : ScriptableObject
+public class GameSceneData : ScriptableObject
 {
     public E_QUESTLEVEL m_Level;
     public string m_SceneName;

@@ -180,6 +180,7 @@
     <Compile Include="Assets\Project\Scripts\UISystem\GameClearUI\GameClearUICanvas.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\GameClearUI\ResultItemSlot.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\GameClearUI\ResultUI.cs" />
+    <Compile Include="Assets\Project\Scripts\UISystem\GameUICanvas\GameDeadUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\GameUICanvas\GameMenuUI.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\GameUICanvas\GameReadyCanvas.cs" />
     <Compile Include="Assets\Project\Scripts\UISystem\GameUICanvas\GameUI.cs" />
@@ -342,6 +343,7 @@
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
     <None Include="Assets\Store\RPG Character Animation Pack\Elements\ImageEffects\Shaders\_BloomAndFlares\BlendForBloom.shader" />
     <None Include="Assets\Store\RPG Character Animation Pack\Elements\ImageEffects\Shaders\_DepthOfField\DepthOfField34.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Other.shader" />
     <None Include="Assets\Store\Photon\PhotonLibs\changes-library.txt" />
     <None Include="Assets\Store\RPG Character Animation Pack\Elements\ImageEffects\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />

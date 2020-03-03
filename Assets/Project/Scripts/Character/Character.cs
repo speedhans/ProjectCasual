@@ -703,6 +703,7 @@ public class Character : Object
     public void Revive_RPC()
     {
         m_State = E_STATE.IDLE;
+        m_Live = E_LIVE.LIVE;
         m_Health = m_MaxHealth;
     }
 

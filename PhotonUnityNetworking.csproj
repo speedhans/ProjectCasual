@@ -269,6 +269,18 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="Google.IOSResolver_v1.2.135.0">
+      <HintPath>F:/Project/Project_Casual/Assets/PlayServicesResolver/Editor/Google.IOSResolver_v1.2.135.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.JarResolver_v1.2.135.0">
+      <HintPath>F:/Project/Project_Casual/Assets/PlayServicesResolver/Editor/Google.JarResolver_v1.2.135.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.VersionHandler">
+      <HintPath>F:/Project/Project_Casual/Assets/PlayServicesResolver/Editor/Google.VersionHandler.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.VersionHandlerImpl_v1.2.135.0">
+      <HintPath>F:/Project/Project_Casual/Assets/PlayServicesResolver/Editor/Google.VersionHandlerImpl_v1.2.135.0.dll</HintPath>
+    </Reference>
     <Reference Include="JMOAssets_CartoonFXFreeWelcome">
       <HintPath>F:/Project/Project_Casual/Assets/Store/JMO Assets/Editor/JMOAssets_CartoonFXFreeWelcome.dll</HintPath>
     </Reference>

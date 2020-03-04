@@ -742,7 +742,7 @@ MonoBehaviour:
     m_MoveLocation: {x: 0, y: 0, z: 0}
   m_MovePerSpeed: 2
   m_RotatePerSpeed: 360
-  m_AttackDamage: 2
+  m_AttackDamage: 3
   m_AddAttackDamage:
   - 0
   - 0

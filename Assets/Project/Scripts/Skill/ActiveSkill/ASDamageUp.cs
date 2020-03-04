@@ -21,7 +21,6 @@ public class ASDamageUp : ActiveSkill
     {
         base.Update();
     }
-
     void UseSkillEvent()
     {
         StartCoroutine(C_SkillPlay(1.0f));
@@ -29,16 +28,16 @@ public class ASDamageUp : ActiveSkill
 
     IEnumerator C_SkillPlay(float _Wait)
     {
-        m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL1, 0.25f, 1.0f, _Wait, false, true);
+        m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL1, 0.25f, 1.0f, _Wait, false);
         yield return new WaitForSeconds(_Wait);
 
         m_CurrentCooldown = m_MaxCooldown;
-
+        if (!m_PhotonView.IsMine) yield break;
         m_Caster.AddBuff(E_BUFF.DAMAGEUP, new object[] { m_Duration, m_Damage, m_DamageType, "Effect/" + m_Effect.name, m_EffectAttachPoint });
     }
 
-    public override void AutoPlayLogic()
+    public override bool AutoPlayLogic()
     {
-
+        return false;
     }
 }

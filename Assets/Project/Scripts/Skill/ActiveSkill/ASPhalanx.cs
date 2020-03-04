@@ -36,7 +36,7 @@ public class ASPhalanx : ActiveSkill
 
     IEnumerator C_SkillPlay(float _Wait)
     {
-        m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL1, 0.25f, 1.0f, _Wait, false, true);
+        m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL1, 0.25f, 1.0f, _Wait, false);
         yield return new WaitForSeconds(_Wait);
 
         m_CurrentCooldown = m_MaxCooldown;
@@ -59,8 +59,8 @@ public class ASPhalanx : ActiveSkill
         }
     }
 
-    public override void AutoPlayLogic()
+    public override bool AutoPlayLogic()
     {
-
+        return false;
     }
 }

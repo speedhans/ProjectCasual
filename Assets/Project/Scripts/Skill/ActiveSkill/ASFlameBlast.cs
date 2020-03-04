@@ -21,8 +21,7 @@ public class ASFlameBlast : ActiveSkill
 
     void UseSkillEvent()
     {
-        m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL2, 0.25f, 2.5f, 0.75f, false, true);
-
+        m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL2, 0.25f, 2.5f, 0.75f, false);
         if (!m_PhotonView.IsMine) return;
 
         GameObject g = PhotonNetwork.Instantiate("SubPrefabs/" + m_SubPrefab.name, m_Caster.transform.position + Vector3.up * 0.5f, Quaternion.LookRotation(m_Caster.transform.forward, Vector3.up));
@@ -36,8 +35,8 @@ public class ASFlameBlast : ActiveSkill
         }
     }
 
-    public override void AutoPlayLogic()
+    public override bool AutoPlayLogic()
     {
-
+        return false;
     }
 }

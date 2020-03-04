@@ -36,6 +36,12 @@ public class LobbyDefaultUI : MonoBehaviour
         m_LobbyCanvasUI.GetStatusUI().Open();
     }
 
+    public void CharacterInventoryButton()
+    {
+        m_LobbyCanvasUI.ResetUIDepth();
+        m_LobbyCanvasUI.GetCharacterInventoryUI().Open();
+    }
+
     public void InventoryButton()
     {
         m_LobbyCanvasUI.ResetUIDepth();

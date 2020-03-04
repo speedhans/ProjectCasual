@@ -38,6 +38,13 @@ public class NavMeshController
     public void Initialize(Character _Character)
     {
         m_Character = _Character;
+
+        Vector3 pos = FindNavMeshSampleLocation(m_Character.transform.position);
+        if (pos == Vector3.zero)
+        {
+            pos = FindNavMeshSampleLocation(m_Character.transform.position, 10.0f);
+        }
+        m_Character.transform.position = pos;
     }
 
     public void UpdateTransform(Transform _Transform, float _MovePerSpeed, float _RotatePerSpeed)

@@ -31,3 +31,4 @@ MonoBehaviour:
   - m_Item: {fileID: 1952962046061837900, guid: 893d55f1fa402c24b981848f40ebc512,
       type: 3}
     m_DropChance: 10
+  m_Lock: 1

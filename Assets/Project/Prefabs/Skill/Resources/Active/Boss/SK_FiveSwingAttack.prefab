@@ -70,6 +70,7 @@ MonoBehaviour:
   m_Image: {fileID: 21300000, guid: 33abe664da88d144092be87b4fbf0cf4, type: 3}
   m_MaxCooldown: 20
   m_CurrentCooldown: 0
+  m_UseSoundClip: {fileID: 0}
   m_UseEffect: {fileID: 0}
   m_EffectLocalPosition: {x: 0, y: 0, z: 0}
   m_SkillManual: 
@@ -83,3 +84,5 @@ MonoBehaviour:
   m_AttackSpeedMultiply: 0
   m_MovementSpeedMultiply: 0
   m_Duration: 0
+  m_SwingSound1: {fileID: 8300000, guid: a048e57705d54e448967fd41f11de6f3, type: 3}
+  m_SwingSound2: {fileID: 8300000, guid: 836205f06e63ae14c9b9ba8ff3e6e2d3, type: 3}

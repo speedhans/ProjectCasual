@@ -47,38 +47,7 @@ public class InventorySlot : MonoBehaviour
             m_Stars[i] = transform.Find("Star " + (i + 1).ToString()).GetComponent<UnityEngine.UI.Image>();
         }
 
-        m_ItemImage.sprite = _Item.m_ItemImage;
-
-        if (m_Item.GetItemType() == Item.E_TYPE.EQUIPMENT)
-        {
-            EquipmentItem equip = _Item as EquipmentItem;
-
-            if (equip.m_EquipState.IsEquip)
-                m_OutlineBoxImage.sprite = m_OutlineYellow;
-            else
-                m_OutlineBoxImage.sprite = m_OutlineBlack;
-
-            for (int i = 0; i < Common.MAXREINFORECEVALUE; ++i)
-            {
-                m_Stars[i].gameObject.SetActive(true);
-                if (equip.GetReinforceCount() > i)
-                    m_Stars[i].sprite = m_StarGold;
-                else
-                    m_Stars[i].sprite = m_StarBlack;
-            }
-
-            m_StockCount.gameObject.SetActive(false);
-        }
-        else if (m_Item.GetItemType() == Item.E_TYPE.CONSUME)
-        {
-            for (int i = 0; i < Common.MAXREINFORECEVALUE; ++i)
-            {
-                m_Stars[i].gameObject.SetActive(false);
-            }
-
-            m_StockCount.gameObject.SetActive(true);
-            m_StockCount.text = m_Item.m_StockCount.ToString();
-        }
+        Refresh();
     }
 
     public void SlotClickEvent()
@@ -98,6 +67,8 @@ public class InventorySlot : MonoBehaviour
     {
         if (m_Item == null || m_Item.IsDestoryed) gameObject.SetActive(false);
 
+        m_ItemImage.sprite = m_Item.m_ItemImage;
+        m_StockCount.gameObject.SetActive(false);
         if (m_Item.GetItemType() == Item.E_TYPE.EQUIPMENT)
         {
             EquipmentItem equip = m_Item as EquipmentItem;
@@ -115,29 +86,69 @@ public class InventorySlot : MonoBehaviour
                     m_Stars[i].sprite = m_StarBlack;
             }
         }
+        else if (m_Item.GetItemType() == Item.E_TYPE.CHARACTER)
+        {
+            CharacterItem equip = m_Item as CharacterItem;
+
+            if (equip.m_EquipState.IsEquip)
+                m_OutlineBoxImage.sprite = m_OutlineYellow;
+            else
+                m_OutlineBoxImage.sprite = m_OutlineBlack;
+
+            for (int i = 0; i < Common.MAXREINFORECEVALUE; ++i)
+            {
+                if (equip.GetReinforceCount() > i)
+                    m_Stars[i].sprite = m_StarGold;
+                else
+                    m_Stars[i].sprite = m_StarBlack;
+            }
+        }
         else if (m_Item.GetItemType() == Item.E_TYPE.CONSUME)
         {
+            m_StockCount.gameObject.SetActive(true);
             m_StockCount.text = m_Item.m_StockCount.ToString();
         }
     }
 
     void ReinforceItem()
     {
-        EquipmentItem item = m_Item as EquipmentItem;
-        EquipmentItem titem = ItemDataViewer.DefaultInstance.GetCurrentTargetItem() as EquipmentItem;
-
-        if (!item || !titem) return;
-
-        if (item.m_EquipState.IsEquip)
+        if (ItemDataViewer.DefaultInstance.GetCurrentTargetItem().GetItemType() == Item.E_TYPE.EQUIPMENT)
         {
-            MessageBox.CreateOneButtonType("장착중인 아이템은 강화재료로 사용 할 수 없습니다");
-            return;
+            EquipmentItem item = m_Item as EquipmentItem;
+            EquipmentItem titem = ItemDataViewer.DefaultInstance.GetCurrentTargetItem() as EquipmentItem;
+
+            if (!item || !titem) return;
+
+            if (item.m_EquipState.IsEquip)
+            {
+                MessageBox.CreateOneButtonType("장착중인 아이템은 강화재료로 사용 할 수 없습니다");
+                return;
+            }
+
+            if (item.GetReinforceCount() > 0)
+            {
+                MessageBox.CreateTwoButtonType("이 아이템은 강화가 되어있습니다. 정말로 재료로 사용하시겠습니까?", "YES", ReinforceItemSuccess, "NO");
+                return;
+            }
         }
-
-        if (item.GetReinforceCount() > 0)
+        else if (ItemDataViewer.DefaultInstance.GetCurrentTargetItem().GetItemType() == Item.E_TYPE.CHARACTER)
         {
-            MessageBox.CreateTwoButtonType("이 아이템은 강화가 되어있습니다. 정말로 재료로 사용하시겠습니까?", "YES", ReinforceItemSuccess, "NO");
-            return;
+            CharacterItem item = m_Item as CharacterItem;
+            CharacterItem titem = ItemDataViewer.DefaultInstance.GetCurrentTargetItem() as CharacterItem;
+
+            if (!item || !titem) return;
+
+            if (item.m_EquipState.IsEquip)
+            {
+                MessageBox.CreateOneButtonType("장착중인 아이템은 강화재료로 사용 할 수 없습니다");
+                return;
+            }
+
+            if (item.GetReinforceCount() > 0)
+            {
+                MessageBox.CreateTwoButtonType("이 아이템은 강화가 되어있습니다. 정말로 재료로 사용하시겠습니까?", "YES", ReinforceItemSuccess, "NO");
+                return;
+            }
         }
 
         ReinforceItemSuccess();
@@ -145,12 +156,25 @@ public class InventorySlot : MonoBehaviour
 
     void ReinforceItemSuccess()
     {
-        EquipmentItem item = m_Item as EquipmentItem;
-        EquipmentItem titem = ItemDataViewer.DefaultInstance.GetCurrentTargetItem() as EquipmentItem;
+        if (ItemDataViewer.DefaultInstance.GetCurrentTargetItem().GetItemType() == Item.E_TYPE.EQUIPMENT)
+        {
+            EquipmentItem item = m_Item as EquipmentItem;
+            EquipmentItem titem = ItemDataViewer.DefaultInstance.GetCurrentTargetItem() as EquipmentItem;
 
-        if (!item || !titem) return;
+            if (!item || !titem) return;
 
-        titem.IncreaseReinforceCount(item.GetReinforceCount() + 1);
+            titem.IncreaseReinforceCount(item.GetReinforceCount() + 1);
+        }
+        else if (ItemDataViewer.DefaultInstance.GetCurrentTargetItem().GetItemType() == Item.E_TYPE.CHARACTER)
+        {
+            CharacterItem item = m_Item as CharacterItem;
+            CharacterItem titem = ItemDataViewer.DefaultInstance.GetCurrentTargetItem() as CharacterItem;
+
+            if (!item || !titem) return;
+
+            titem.IncreaseReinforceCount(item.GetReinforceCount() + 1);
+        }
+
         InventoryManager.Instance.DestroyItem(m_Item);
         InventoryViewer.RefreshAllSlots();
         ItemDataViewer.DefaultInstance.Refresh();

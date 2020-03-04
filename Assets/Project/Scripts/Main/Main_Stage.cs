@@ -26,6 +26,7 @@ public class Main_Stage : Main
     E_GAMESEQUENCE m_GameSequence = E_GAMESEQUENCE.BEGINGAME;
     bool[] m_SequenceProgress = new bool[(int)E_GAMESEQUENCE.MAX];
     string m_SequenceTimerKey = "GameSequence";
+    bool m_UpdateSequence;
     public bool m_IsMultiplayGame { get; private set; }
 
     PlayerCharacter m_MyCharacter;
@@ -60,12 +61,6 @@ public class Main_Stage : Main
 
         for (int i = 0; i < (int)E_TEAMTYPE.MAX; ++i)
             m_ListCharacters.Add(new List<Character>());
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            // timer set
-            TimerNet.InsertTimer(m_SequenceTimerKey, 0.0f, true);
-        }
 
         gameObject.AddComponent<FrameChecker>();
         Instantiate(m_StageDefaultCamera, Vector3.zero, Quaternion.identity);
@@ -107,9 +102,12 @@ public class Main_Stage : Main
             while (!PhotonNetwork.InRoom) yield return null;
         }
 
+        yield return new WaitForSeconds(1.0f);
+
         if (PhotonNetwork.IsMasterClient)
         {
             // timer set
+            TimerNet.CreateDefaultTimer();
             TimerNet.InsertTimer(m_SequenceTimerKey, 0.0f, true);
         }
 
@@ -199,22 +197,28 @@ public class Main_Stage : Main
         IsAfterLoadingComplete = true;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (!IsAfterLoadingComplete) return;
+        GameSequenceEvent();
+        m_UpdateSequence = false;
+    }
+
+    void GameSequenceEvent()
+    {
+        if (m_UpdateSequence) return;
+        m_UpdateSequence = true;
 
         if (m_SequenceProgress[(int)m_GameSequence]) return;
 
         float timer = TimerNet.GetTimer(m_SequenceTimerKey);
+        if (timer > 0.0f) return;
 
         switch (m_GameSequence)
         {
             case E_GAMESEQUENCE.BEGINGAME:
                 {
-                    if (timer <= 0.0f)
-                    {
-                        SetNextGameSequence();
-                    }
+                    SetNextGameSequence();
                 }
                 break;
             case E_GAMESEQUENCE.READY:
@@ -250,24 +254,18 @@ public class Main_Stage : Main
                 break;
             case E_GAMESEQUENCE.NORMALSTAGE_END:
                 {
-                    if (timer <= 0.0f)
-                    {
-                        m_PianoEffect.CurtainClose();
-                        SetNextGameSequence(2.0f);
-                    }
+                    m_PianoEffect.CurtainClose();
+                    SetNextGameSequence(2.0f);
                 }
                 break;
             case E_GAMESEQUENCE.BOSSSTAGESTART:
                 {
-                    if (timer <= 0.0f)
-                    {
-                        m_PianoEffect.CurtainOpen();
-                        m_BossUICanvas.gameObject.SetActive(true);
-                        m_MyCharacter.transform.position = m_BossRoomStartPoint.position;
-                        m_MyCharacter.transform.rotation = Quaternion.identity;
-                        VerticalFollowCamera.SetDistanceSmooth(5.0f, 1.5f);
-                        SetNextGameSequence();
-                    }
+                    m_PianoEffect.CurtainOpen();
+                    m_BossUICanvas.gameObject.SetActive(true);
+                    m_MyCharacter.transform.position = m_BossRoomStartPoint.position;
+                    m_MyCharacter.transform.rotation = Quaternion.identity;
+                    VerticalFollowCamera.SetDistanceSmooth(5.0f, 1.5f);
+                    SetNextGameSequence();
                 }
                 break;
             case E_GAMESEQUENCE.BOSSSTAGE:
@@ -299,24 +297,26 @@ public class Main_Stage : Main
         }
     }
 
-    void SetNextGameSequence(float _WaitTime = 0.0f)
+    void SetNextGameSequence(float _WaitTime = 0.1f)
     {
         m_SequenceProgress[(int)m_GameSequence] = true;
-        SetGameSequence(m_GameSequence + 1, _WaitTime);
+        if (PhotonNetwork.IsMasterClient)
+            TimerNet.SetTimer_s(m_SequenceTimerKey, _WaitTime);
+        SetGameSequence(m_GameSequence + 1);
     }
 
-    void SetGameSequence(E_GAMESEQUENCE _Sequence, float _WaitTime)
+    void SetGameSequence(E_GAMESEQUENCE _Sequence)
     {
         if (PhotonNetwork.IsMasterClient)
-            m_PhotonView.RPC("SetGameSequence_RPC", RpcTarget.AllViaServer, (int)_Sequence, _WaitTime);
+            m_PhotonView.RPC("SetGameSequence_RPC", RpcTarget.AllViaServer, (int)_Sequence);
     }
 
     [PunRPC]
-    void SetGameSequence_RPC(int _Sequence, float _WaitTime)
+    void SetGameSequence_RPC(int _Sequence)
     {
         m_SequenceProgress[(int)m_GameSequence] = true;
         m_GameSequence = (E_GAMESEQUENCE)_Sequence;
-        TimerNet.SetTimer_s(m_SequenceTimerKey, _WaitTime);
+        GameSequenceEvent();
     }
 
     public E_GAMESEQUENCE GetCurrentSequence() { return m_GameSequence; }
@@ -365,7 +365,7 @@ public class Main_Stage : Main
         Character[] c = m_ListCharacters[(int)_Type].ToArray();
         for (int i = 0; i < c.Length; ++i)
         {
-            c[i].ObjectDestroyTimer();
+            c[i].ObjectDestroyWithDelay();
         }
         m_ListCharacters[(int)_Type].Clear();
     }
@@ -380,6 +380,8 @@ public class Main_Stage : Main
     {
         m_GameUICanvas.GetDeadUI().Enable();
     }
+
+    public GameUICanvas GetGameUICanvas() { return m_GameUICanvas; }
 
     public override void OnJoinedRoom()
     {

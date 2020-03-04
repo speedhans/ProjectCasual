@@ -6,7 +6,7 @@ public class StatusUI : LobbyUI
 {
     [SerializeField]
     CharacterPreviewUI m_CharacterPreviewUI;
-
+    CharacterSlotUI m_CharacterSlotUI;
     EquipmentSlotUI[] m_EquipmentSlotUI = new EquipmentSlotUI[3];
 
     public override void Initialize(LobbyCanvasUI _LobbyCanvasUI)
@@ -15,6 +15,8 @@ public class StatusUI : LobbyUI
 
         m_CharacterPreviewUI.Initialize();
 
+        m_CharacterSlotUI = transform.Find("CharacterSlot").GetComponent<CharacterSlotUI>();
+        m_CharacterSlotUI.Initialize(_LobbyCanvasUI);
         for (int i = 0; i < 3; ++i)
         {
             m_EquipmentSlotUI[i] = transform.Find("EquipSlot" + (i + 1).ToString()).GetComponent<EquipmentSlotUI>();
@@ -51,6 +53,7 @@ public class StatusUI : LobbyUI
             m_EquipmentSlotUI[i].SetData(item);
         }
 
+        m_CharacterSlotUI.SetData(InventoryManager.Instance.GetEquipmentCharacterData());
         string modelname = InventoryManager.Instance.GetPlayerModelName();
         GameObject model = Instantiate(Resources.Load<GameObject>(modelname + "/" + modelname), Vector3.zero, Quaternion.identity);
 

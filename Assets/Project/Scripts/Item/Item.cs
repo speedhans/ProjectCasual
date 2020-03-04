@@ -9,6 +9,7 @@ public class Item : MonoBehaviour
         NONE,
         EQUIPMENT,
         CONSUME,
+        CHARACTER,
     }
 
     protected E_TYPE m_Type;

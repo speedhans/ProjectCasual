@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class ASFiveSwingAttack : ActiveSkill
 {
+    [SerializeField]
+    AudioClip m_SwingSound1;
+    [SerializeField]
+    AudioClip m_SwingSound2;
     protected override void Awake()
     {
         base.Awake();
@@ -15,30 +19,34 @@ public class ASFiveSwingAttack : ActiveSkill
         base.Update();
 
     }
-
     void UseSkillEvent()
     {
-        m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL2, 0.25f, 1.0f, 3.0f);
         StartCoroutine(C_Progress());
     }
 
     IEnumerator C_Progress()
     {
+        m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL2, 0.25f, 1.0f, 3.0f);
         WaitForSeconds wait = new WaitForSeconds(0.5f);
         yield return wait;
-        m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL3, 0.25f, 1.0f, 1.0f);
+        m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL3, 0.25f, 1.0f, 1.0f);
+        SoundManager.Instance.PlayEffectSound(m_SwingSound1);
         Damage();
         yield return wait;
-        m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL4, 0.25f, 1.0f, 1.0f);
+        m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL4, 0.25f, 1.0f, 1.0f);
+        SoundManager.Instance.PlayEffectSound(m_SwingSound2);
         Damage();
         yield return wait;
-        m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL3, 0.25f, 1.0f, 1.0f);
+        m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL3, 0.25f, 1.0f, 1.0f);
+        SoundManager.Instance.PlayEffectSound(m_SwingSound1);
         Damage();
         yield return wait;
-        m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL4, 0.25f, 1.0f, 1.0f);
+        m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL4, 0.25f, 1.0f, 1.0f);
+        SoundManager.Instance.PlayEffectSound(m_SwingSound2);
         Damage();
         yield return wait;
-        m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL3, 0.25f, 1.0f, 1.0f);
+        m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL3, 0.25f, 1.0f, 1.0f);
+        SoundManager.Instance.PlayEffectSound(m_SwingSound1);
         Damage();
     }
 
@@ -57,16 +65,18 @@ public class ASFiveSwingAttack : ActiveSkill
         }
     }
 
-    public override void AutoPlayLogic()
+    public override bool AutoPlayLogic()
     {
         Character.HateTarget target = m_Caster.AttackTarget;
-        if (target == null) return;
+        if (target == null) return false;
+        if (target.m_Character.m_Live == Object.E_LIVE.DEAD) return false;
 
         Vector3 dir = target.m_Character.transform.position - m_Caster.transform.position;
         float distance = dir.magnitude;
         if (distance < m_Radius * 0.9f)
         {
-            UseSkill();
+            return UseSkill();
         }
+        return false;
     }
 }

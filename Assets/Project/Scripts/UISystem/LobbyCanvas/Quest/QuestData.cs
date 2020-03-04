@@ -25,4 +25,5 @@ public class QuestData
     public string m_SceneName;
     public bool m_Multiplay;
     public List<S_DropItemData> m_ListDropItem;
+    public bool m_Lock = false;
 }

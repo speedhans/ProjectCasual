@@ -17,10 +17,11 @@ public class ASShockImpact : ActiveSkill
         base.Update();
     }
 
+
     void UseSkillEvent()
     {
-        m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL2, 0.25f, 2.5f, 0.5f, false, true);
-
+        m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL2, 0.25f, 2.5f, 0.5f, false);
+        if (!m_PhotonView.IsMine) return;
         List<Character> list = Character.FindEnemyAllArea(m_Caster, m_Caster.transform.position, m_Radius);
         if (list != null)
         {
@@ -34,8 +35,8 @@ public class ASShockImpact : ActiveSkill
         }
     }
 
-    public override void AutoPlayLogic()
+    public override bool AutoPlayLogic()
     {
-
+        return false;
     }
 }

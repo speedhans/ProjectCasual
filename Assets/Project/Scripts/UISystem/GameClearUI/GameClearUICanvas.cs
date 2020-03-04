@@ -88,7 +88,9 @@ public class GameClearUICanvas : MonoBehaviour
             Item[] items = m_Main.GetResultItemlist();
             List<Item> list = new List<Item>();
             list.AddRange(items);
-            m_ResultUI.Initialize(Random.Range(10000, 100000), list); // db 작업 필요
+            float cleartime = m_Main.GetGameUICanvas().GetTime();
+            int score = (int)(cleartime > 600.0f ? 10000.0f : (600 / cleartime) * 10000.0f);
+            m_ResultUI.Initialize(score, list); // db 작업 필요
             m_ResultUI.gameObject.SetActive(true);
             m_ResultUI.StartScoreAnimation();
             return;

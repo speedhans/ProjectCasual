@@ -35,6 +35,7 @@ public class DataLoad
         data.m_Name = scene.m_StageName;
         data.m_SceneName = scene.m_SceneName;
         data.m_StaminaValue = scene.m_StaminaValue;
+        data.m_Lock = scene.m_Lock;
         return data;
     }
 
@@ -49,6 +50,7 @@ public class DataLoad
         data.m_Name = scene.m_StageName;
         data.m_SceneName = scene.m_SceneName;
         data.m_StaminaValue = scene.m_StaminaValue;
+        data.m_Lock = scene.m_Lock;
         return data;
     }
 }

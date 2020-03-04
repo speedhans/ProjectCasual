@@ -109,5 +109,6 @@ public class GameUICanvas : DefaultUI
         }
     }
 
+    public float GetTime() { return m_Time; }
     public GameDeadUI GetDeadUI() { return m_GameDeadUI; }
 }

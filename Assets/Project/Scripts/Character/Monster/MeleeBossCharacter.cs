@@ -31,13 +31,13 @@ public class MeleeBossCharacter : MeleeCharacter
 
                 transform.forward = m_AttackTarget.m_Character.transform.position - transform.position;
 
-                SetStateAndAnimation(E_ANIMATION.ATTACK, 0.25f, 1.0f, 0.0f);
+                SetStateAndAnimationNetwork(E_ANIMATION.ATTACK, 0.25f, 1.0f, 0.0f);
                 //m_AttackTarget.m_Character.GiveToDamage(new float[] { m_AttackDamage }, new int[] { (int)m_AttackType }, this);
             }
             else // 추격
             {
                 if (m_State != E_STATE.MOVE)
-                    SetStateAndAnimation(E_ANIMATION.RUN, 0.25f, 1.0f, 0.0f);
+                    SetStateAndAnimationNetwork(E_ANIMATION.RUN, 0.25f, 1.0f, 0.0f);
                 MoveToLocation(m_AttackTarget.m_Character.transform.position);
             }
         }
@@ -45,7 +45,7 @@ public class MeleeBossCharacter : MeleeCharacter
         {
             if (m_State != E_STATE.IDLE && !m_NavMeshController.IsUpdate())
             {
-                SetStateAndAnimation(E_ANIMATION.IDLE, 0.25f, 1.0f, 0.0f);
+                SetStateAndAnimationNetwork(E_ANIMATION.IDLE, 0.25f, 1.0f, 0.0f);
             }
 
             Character c = FindEnemyArea(this, this.transform.position, m_AutoSearchRadius);

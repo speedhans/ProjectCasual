@@ -81,17 +81,20 @@ public class Skill : MonoBehaviour
     protected void AddUseAction(System.Action _Event) { m_UseSkillAction += _Event; }
     protected void SubUseAction(System.Action _Event) { m_UseSkillAction = _Event; }
 
-    public virtual void UseSkill()
+    public virtual bool UseSkill()
     {
-        if (!m_PhotonView.IsMine) return;
-        if (m_CurrentCooldown > 0.0f || m_Caster.IsFreeze() || m_Caster.IsCharging() || m_Caster.m_Live == Object.E_LIVE.DEAD) return;
+        if (!m_PhotonView.IsMine) return false;
+        if (m_CurrentCooldown > 0.0f || m_Caster.IsFreeze() || m_Caster.IsCharging() || m_Caster.m_Live == Object.E_LIVE.DEAD) return false;
         m_CurrentCooldown = m_MaxCooldown;
         m_PhotonView.RPC("UseSkill_RPC", RpcTarget.AllViaServer);
+        m_Caster.SetCharging_RPC(true);
+        return true;
     }
 
     [PunRPC]
     public void UseSkill_RPC()
     {
+        m_Caster.SetCharging_RPC(false);
         m_CurrentCooldown = m_MaxCooldown;
         if (m_UseEffect != null)
         {
@@ -110,7 +113,7 @@ public class Skill : MonoBehaviour
         m_UseSkillAction?.Invoke();
     }
 
-    public virtual void AutoPlayLogic() { }
+    public virtual bool AutoPlayLogic() { return false; }
     public E_ACTUATIONTYPE GetSkillActuationType() { return m_ActuationType; }
     static protected float CalculateSkillDamage(Character _Caster, E_DAMAGETYPE _DamageType, float _SkillDamageMultiply)
     {

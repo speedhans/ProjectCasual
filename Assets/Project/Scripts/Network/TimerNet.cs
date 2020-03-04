@@ -10,16 +10,16 @@ public class TimerNet : MonoBehaviourPun, IPunObservable
     {
         get
         {
-            if (single == null)
-            {
-                _gameObject = new GameObject("TimerNet");
-                single = _gameObject.AddComponent<TimerNet>();
-                single.m_PhotonView = _gameObject.AddComponent<PhotonView>();
-                single.m_PhotonView.ObservedComponents = new List<Component>();
-                single.m_PhotonView.ObservedComponents.Add(single);
-                single.m_PhotonView.Synchronization = ViewSynchronization.UnreliableOnChange;
-                single.m_PhotonView.ViewID = 999;
-            }
+            //if (single == null)
+            //{
+            //    _gameObject = new GameObject("TimerNet");
+            //    single = _gameObject.AddComponent<TimerNet>();
+            //    single.m_PhotonView = _gameObject.AddComponent<PhotonView>();
+            //    single.m_PhotonView.ObservedComponents = new List<Component>();
+            //    single.m_PhotonView.ObservedComponents.Add(single);
+            //    single.m_PhotonView.Synchronization = ViewSynchronization.UnreliableOnChange;
+            //    single.m_PhotonView.ViewID = 999;
+            //}
             return single;
         }
         set
@@ -28,6 +28,14 @@ public class TimerNet : MonoBehaviourPun, IPunObservable
         }
     }
     static GameObject _gameObject = null;
+
+    static public void CreateDefaultTimer()
+    {
+        if (PhotonNetwork.IsMasterClient && single == null)
+        {
+            PhotonNetwork.InstantiateSceneObject("TimerNet", Vector3.zero, Quaternion.identity);
+        }
+    }
 
     public class TimerData
     {
@@ -41,15 +49,22 @@ public class TimerNet : MonoBehaviourPun, IPunObservable
     List<TimerData> m_ListTimerData = new List<TimerData>();
     int m_StreamNumber;
 
-    public void OnEnable()
+    private void Awake()
     {
-        PhotonNetwork.AddCallbackTarget(this);
+        _gameObject = gameObject;
+        single = _gameObject.GetComponent<TimerNet>();
+        m_PhotonView = GetComponent<PhotonView>();
     }
 
-    public void OnDisable()
-    {
-        PhotonNetwork.RemoveCallbackTarget(this);
-    }
+    //public void OnEnable()
+    //{
+    //    PhotonNetwork.AddCallbackTarget(this);
+    //}
+
+    //public void OnDisable()
+    //{
+    //    PhotonNetwork.RemoveCallbackTarget(this);
+    //}
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -92,7 +107,7 @@ public class TimerNet : MonoBehaviourPun, IPunObservable
     static public void InsertTimer(string _Name, float _StartTime, bool _IsStop = false)
     {
         if (PhotonNetwork.InRoom && !PhotonNetwork.IsMasterClient) return;
-        Instance.m_PhotonView.RPC("InsertTimer_RPC", RpcTarget.AllViaServer, _Name, _StartTime, _IsStop);
+        Instance.m_PhotonView.RPC("InsertTimer_RPC", RpcTarget.AllBufferedViaServer, _Name, _StartTime, _IsStop);
     }
     
     [PunRPC]
@@ -128,6 +143,22 @@ public class TimerNet : MonoBehaviourPun, IPunObservable
 
     protected void SetTimer(string _Name, bool _IsStop)
     {
+        m_PhotonView.RPC("SetTimer1_RPC", RpcTarget.AllViaServer, _Name, _IsStop);
+    }
+
+    protected void SetTimer(string _Name, float _Time, bool _IsStop)
+    {
+        m_PhotonView.RPC("SetTimer2_RPC", RpcTarget.AllViaServer, _Name, _Time, _IsStop);
+    }
+
+    protected void SetTimer(string _Name, float _Time, float _StartTime, bool _IsStop)
+    {
+        m_PhotonView.RPC("SetTimer3_RPC", RpcTarget.AllViaServer, _Name, _Time, _StartTime, _IsStop);
+    }
+
+    [PunRPC]
+    protected void SetTimer1_RPC(string _Name, bool _IsStop)
+    {
         TimerData timer = FindTimer(_Name);
         if (timer != null)
         {
@@ -135,7 +166,8 @@ public class TimerNet : MonoBehaviourPun, IPunObservable
         }
     }
 
-    protected void SetTimer(string _Name, float _Time, bool _IsStop)
+    [PunRPC]
+    protected void SetTimer2_RPC(string _Name, float _Time, bool _IsStop)
     {
         TimerData timer = FindTimer(_Name);
         if (timer != null)
@@ -145,7 +177,8 @@ public class TimerNet : MonoBehaviourPun, IPunObservable
         }
     }
 
-    protected void SetTimer(string _Name, float _Time, float _StartTime, bool _IsStop)
+    [PunRPC]
+    protected void SetTimer3_RPC(string _Name, float _Time, float _StartTime, bool _IsStop)
     {
         TimerData timer = FindTimer(_Name);
         if (timer != null)

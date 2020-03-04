@@ -14,7 +14,7 @@ public class InventoryUI : LobbyUI
         //base.Open();
         //gameObject.SetActive(true);
 
-        m_LobbyCanvasUI.GetInventoryViewer().InventoryOpen();
+        m_LobbyCanvasUI.GetInventoryViewer().InventoryOpen(Item.E_TYPE.EQUIPMENT);
     }
 
     public override void Close()

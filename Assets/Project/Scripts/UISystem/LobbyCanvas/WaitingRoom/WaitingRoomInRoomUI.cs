@@ -95,11 +95,16 @@ public class WaitingRoomInRoomUI : DefaultUI, IInRoomCallbacks
             return;
         }
 
-        m_PhotonView.RPC("WaitingRoomGameStart", RpcTarget.AllViaServer);
+        WaitingRoomGameStart();
+    }
+
+    void WaitingRoomGameStart()
+    {
+        m_PhotonView.RPC("WaitingRoomGameStart_RPC", RpcTarget.AllViaServer);
     }
 
     [PunRPC]
-    void WaitingRoomGameStart()
+    void WaitingRoomGameStart_RPC()
     {
         SceneManager.Instance.LoadScene(m_SceneName);
     }

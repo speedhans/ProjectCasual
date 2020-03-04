@@ -8,7 +8,7 @@ public class StreamComponent : MonoBehaviourPun
 {
     protected PhotonView m_PhotonView;
 
-    protected virtual void Start()
+    private void Awake()
     {
         m_PhotonView = GetComponent<PhotonView>();
         if (m_PhotonView)
@@ -38,6 +38,10 @@ public class StreamComponent : MonoBehaviourPun
         {
             this.enabled = false;
         }
+    }
+
+    protected virtual void Start()
+    {
     }
 
     public void OnEnable()

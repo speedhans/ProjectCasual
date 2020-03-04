@@ -7,6 +7,8 @@ public class LobbyCanvasUI : MonoBehaviour
     [SerializeField]
     protected StatusUI m_StatusUI;
     [SerializeField]
+    protected CharacterInventoryUI m_CharacterInventoryUI;
+    [SerializeField]
     protected InventoryUI m_InventoryUI;
     [SerializeField]
     protected MenuUI m_MenuUI;
@@ -32,6 +34,9 @@ public class LobbyCanvasUI : MonoBehaviour
         if (!m_InventoryUI)
             transform.Find("InventoryUI").GetComponent<InventoryUI>();
         m_InventoryUI.Initialize(this);
+        if (!m_CharacterInventoryUI)
+            transform.Find("CharacterInventoryUI").GetComponent<CharacterInventoryUI>();
+        m_CharacterInventoryUI.Initialize(this);
         if (!m_MenuUI)
             transform.Find("MenuUI").GetComponent<MenuUI>();
         m_MenuUI.Initialize(this);
@@ -53,6 +58,7 @@ public class LobbyCanvasUI : MonoBehaviour
     }
 
     public StatusUI GetStatusUI() { return m_StatusUI; }
+    public CharacterInventoryUI GetCharacterInventoryUI() { return m_CharacterInventoryUI; }
 
     public InventoryUI GetInventoryUI() { return m_InventoryUI; }
 

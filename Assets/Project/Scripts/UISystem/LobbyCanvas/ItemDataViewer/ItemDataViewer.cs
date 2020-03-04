@@ -22,6 +22,8 @@ public class ItemDataViewer : LobbyUI
     GameObject m_EquipmentButton;
     [SerializeField]
     GameObject m_EquipmentOffButton;
+    [SerializeField]
+    GameObject m_ReinforceButton;
 
     [SerializeField]
     Sprite m_StarBlack;
@@ -75,6 +77,7 @@ public class ItemDataViewer : LobbyUI
 
         if (m_Item.GetItemType() == Item.E_TYPE.EQUIPMENT)
         {
+            m_ReinforceButton.SetActive(true);
             EquipmentItem eitem = m_Item as EquipmentItem;
             if (eitem)
             {
@@ -121,8 +124,38 @@ public class ItemDataViewer : LobbyUI
                 m_EffectManualText.text = "";
             }
         }
+        else if (m_Item.GetItemType() == Item.E_TYPE.CHARACTER)
+        {
+            m_ReinforceButton.SetActive(true);
+            CharacterItem eitem = m_Item as CharacterItem;
+            if (eitem)
+            {
+                for (int i = 0; i < Common.MAXREINFORECEVALUE; ++i)
+                {
+                    if (eitem.GetReinforceCount() > i)
+                        m_Stars[i].sprite = m_StarGold;
+                    else
+                        m_Stars[i].sprite = m_StarBlack;
+                }
+
+                if (eitem.GetState().IsEquip)
+                {
+                    m_EquipmentButton.SetActive(false);
+                    m_EquipmentOffButton.SetActive(false);
+                }
+                else
+                {
+                    m_EquipmentButton.SetActive(true);
+                    m_EquipmentOffButton.SetActive(false);
+                }
+            }
+
+            m_DefaultManualText.text = m_Item.m_DefaultManual;
+            m_EffectManualText.text = "";
+        }
         else
         {
+            m_ReinforceButton.SetActive(false);
             m_EquipmentButton.SetActive(false);
             m_EquipmentOffButton.SetActive(false);
 
@@ -145,51 +178,73 @@ public class ItemDataViewer : LobbyUI
 
     public void EquipmentButton()
     {
-        EquipmentItem equip = m_Item as EquipmentItem;
-        if (!equip) return;
-
-        bool complete = false;
-        for (int i = 0; i < InventoryManager.Instance.EquipmentSlotCount(); ++i)
+        if (m_Item.GetItemType() == Item.E_TYPE.EQUIPMENT)
         {
-            if (!InventoryManager.Instance.GetEquippedItem(i))
+            EquipmentItem equip = m_Item as EquipmentItem;
+            if (!equip) return;
+
+            bool complete = false;
+            for (int i = 0; i < InventoryManager.Instance.EquipmentSlotCount(); ++i)
             {
-                InventoryManager.Instance.SetEquipmentItem(i, equip);
+                if (!InventoryManager.Instance.GetEquippedItem(i))
+                {
+                    InventoryManager.Instance.SetEquipmentItem(i, equip);
+                    m_EquipmentButton.SetActive(false);
+                    m_EquipmentOffButton.SetActive(true);
+                    complete = true;
+                    break;
+                }
+            }
+
+            if (!complete)
+            {
+                InventoryManager.Instance.EquipmentOff(InventoryManager.Instance.EquipmentSlotCount() - 1);
+                InventoryManager.Instance.SetEquipmentItem(InventoryManager.Instance.EquipmentSlotCount() - 1, equip);
                 m_EquipmentButton.SetActive(false);
                 m_EquipmentOffButton.SetActive(true);
-                complete = true;
-                break;
             }
         }
-
-        if (!complete)
+        else if (m_Item.GetItemType() == Item.E_TYPE.CHARACTER)
         {
-            InventoryManager.Instance.EquipmentOff(InventoryManager.Instance.EquipmentSlotCount() - 1);
-            InventoryManager.Instance.SetEquipmentItem(InventoryManager.Instance.EquipmentSlotCount() - 1, equip);
+            CharacterItem character = m_Item as CharacterItem;
+            if (!character) return;
+
+            InventoryManager.Instance.EquipmentOffCharacterItem();
+            InventoryManager.Instance.SetEquipmentCharacterItem(character);
             m_EquipmentButton.SetActive(false);
-            m_EquipmentOffButton.SetActive(true);
         }
 
         m_LobbyCanvasUI.GetStatusUI().Refresh();
-        m_LobbyCanvasUI.GetInventoryUI().RefreshInventorySlotData();
+        m_LobbyCanvasUI.GetInventoryViewer().RefreshSlots();
     }
 
     public void EquipmentOffButton()
     {
-        EquipmentItem equip = m_Item as EquipmentItem;
-        if (equip)
+        if (m_Item.GetItemType() == Item.E_TYPE.EQUIPMENT)
         {
-            InventoryManager.Instance.EquipmentOff(equip.GetState().SlotNumber);
-            m_EquipmentButton.SetActive(true);
-            m_EquipmentOffButton.SetActive(false);
+            EquipmentItem equip = m_Item as EquipmentItem;
+            if (equip)
+            {
+                InventoryManager.Instance.EquipmentOff(equip.GetState().SlotNumber);
+            }
+        }
+        else if (m_Item.GetItemType() == Item.E_TYPE.CHARACTER)
+        {
+            CharacterItem character = m_Item as CharacterItem;
+            if (!character) return;
+
+            InventoryManager.Instance.EquipmentOffCharacterItem();
         }
 
+        m_EquipmentButton.SetActive(true);
+        m_EquipmentOffButton.SetActive(false);
         m_LobbyCanvasUI.GetStatusUI().Refresh();
-        m_LobbyCanvasUI.GetInventoryUI().RefreshInventorySlotData();
+        m_LobbyCanvasUI.GetInventoryViewer().RefreshSlots();
     }
 
     public void ReinforceMenuButton()
     {
-        m_InventoryViewer.InventoryOpenTheTypeToID(m_Item.m_ItemID, new int[] { m_Item.m_UniqueID });
+        m_InventoryViewer.InventoryOpenTheTypeToID(m_Item.GetItemType(), m_Item.m_ItemID, new int[] { m_Item.m_UniqueID });
     }
 
     public Item GetCurrentTargetItem() { return m_Item; }

@@ -234,48 +234,46 @@ public class Character : Object
             }
         }
 
-        if (m_AttackTarget != null)
-        {
-            if (m_AttackTarget.m_Character == null)
-                m_AttackTarget = null;
-        }
-        
-        if (m_DicHateTarget.Count > 0)
-        {
-            foreach (HateTarget h in m_DicHateTarget.Values)
-            {
-                h.m_Hate -= deltatime * (1.0f + h.m_Hate * 0.1f);
-            }
-        }
-
-        if (PhotonNetwork.IsConnectedAndReady && !m_PhotonView.IsMine) return;
+        if (PhotonNetwork.InRoom && !m_PhotonView.IsMine) return;
 
         if (m_IsAutoPlay)
         {
+            if (m_AttackTarget != null)
+            {
+                if (m_AttackTarget.m_Character == null || m_AttackTarget.m_Character.m_Live == E_LIVE.DEAD)
+                {
+                    m_AttackTarget = null;
+                    m_NavMeshController.ClearPath();
+                }
+            }
+
+            if (m_DicHateTarget.Count > 0)
+            {
+                foreach (HateTarget h in m_DicHateTarget.Values)
+                {
+                    h.m_Hate -= deltatime * (1.0f + h.m_Hate * 0.1f);
+                }
+            }
+
             if (m_DicHateTarget.Count > 0)
             {
                 List<int> deletekeys = new List<int>();
                 foreach (HateTarget h in m_DicHateTarget.Values)
                 {
-                    if (h.m_Character != null)
+                    if (h.m_Hate <= 0.0f || h.m_Character == null || h.m_Character.m_Live == E_LIVE.DEAD)
                     {
-                        if (m_AttackTarget == null)
-                        {
-                            m_AttackTarget = h;
-                            break;
-                        }
-                        else
-                        {
-                            if (h.m_Hate <= 0.0f || h.m_Character == null)
-                            {
-                                deletekeys.Add(h.m_Key);
-                                continue;
-                            }
-                            else if (h.m_Hate > m_AttackTarget.m_Hate)
-                            {
-                                m_AttackTarget = h;
-                            }
-                        }
+                        deletekeys.Add(h.m_Key);
+                        continue;
+                    }
+
+                    if (m_AttackTarget == null)
+                    {
+                        m_AttackTarget = h;
+                        break;
+                    }
+                    else if(h.m_Hate > m_AttackTarget.m_Hate)
+                    {
+                        m_AttackTarget = h;
                     }
                 }
 
@@ -295,11 +293,19 @@ public class Character : Object
 
         if (m_IsAutoPlay)
         {
+            bool useskill = false;
             if (m_ListActiveSkill.Count > 0)
             {
                 for (int i = 0; i < m_ListActiveSkill.Count; ++i)
-                    m_ListActiveSkill[i].AutoPlayLogic();
+                {
+                    if (m_ListActiveSkill[i].AutoPlayLogic())
+                    {
+                        useskill = true;
+                        break;
+                    }
+                }
             }
+            if (useskill) return;
 
             m_AutoPlayLogic?.Invoke();
         }
@@ -309,7 +315,7 @@ public class Character : Object
             if (m_AttackDelayTimer <= 0.0f && !m_NavMeshController.IsUpdate())
             {
                 m_State = E_STATE.IDLE;
-                SetStateAndAnimation(E_ANIMATION.IDLE, 0.25f, 1.0f, 0.0f);
+                SetStateAndAnimationNetwork(E_ANIMATION.IDLE, 0.25f, 1.0f, 0.0f);
             }
         }
 
@@ -378,19 +384,19 @@ public class Character : Object
         return transform;
     }
 
-    public void SetStateAndAnimation(E_ANIMATION _ANIMATION, float _Duration, float _Speed, float _FreezeTime, bool _IsCharing = false, bool _Network = true)
+    public void SetStateAndAnimationLocal(E_ANIMATION _ANIMATION, float _Duration, float _Speed, float _FreezeTime, bool _IsCharing = false)
     {
         switch (_ANIMATION)
         {
             case E_ANIMATION.IDLE:
-                SetCharacterState(E_STATE.IDLE, _IsCharing, _Network);
+                SetCharacterState(E_STATE.IDLE, _IsCharing, false);
                 break;
             case E_ANIMATION.WALK:
             case E_ANIMATION.RUN:
-                SetCharacterState(E_STATE.MOVE, _IsCharing, _Network);
+                SetCharacterState(E_STATE.MOVE, _IsCharing, false);
                 break;
             case E_ANIMATION.ATTACK:
-                SetCharacterState(E_STATE.ATTACK, _IsCharing, _Network);
+                SetCharacterState(E_STATE.ATTACK, _IsCharing, false);
                 break;
             case E_ANIMATION.SPECIAL1:
             case E_ANIMATION.SPECIAL2:
@@ -398,14 +404,44 @@ public class Character : Object
             case E_ANIMATION.SPECIAL4:
             case E_ANIMATION.SPECIAL5:
             case E_ANIMATION.SPECIAL6:
-                SetCharacterState(E_STATE.SPECIAL, _IsCharing, _Network);
+                SetCharacterState(E_STATE.SPECIAL, _IsCharing, false);
                 break;
             case E_ANIMATION.HIT:
-                SetCharacterState(E_STATE.SPECIAL, _IsCharing, _Network);
+                SetCharacterState(E_STATE.SPECIAL, _IsCharing, false);
                 break;
         }
 
-        PlayAnimation(_ANIMATION, _Duration, _Speed, _FreezeTime, _Network);
+        PlayAnimation(_ANIMATION, _Duration, _Speed, _FreezeTime, false);
+    }
+
+    public void SetStateAndAnimationNetwork(E_ANIMATION _ANIMATION, float _Duration, float _Speed, float _FreezeTime, bool _IsCharing = false)
+    {
+        switch (_ANIMATION)
+        {
+            case E_ANIMATION.IDLE:
+                SetCharacterState(E_STATE.IDLE, _IsCharing, true);
+                break;
+            case E_ANIMATION.WALK:
+            case E_ANIMATION.RUN:
+                SetCharacterState(E_STATE.MOVE, _IsCharing, true);
+                break;
+            case E_ANIMATION.ATTACK:
+                SetCharacterState(E_STATE.ATTACK, _IsCharing, true);
+                break;
+            case E_ANIMATION.SPECIAL1:
+            case E_ANIMATION.SPECIAL2:
+            case E_ANIMATION.SPECIAL3:
+            case E_ANIMATION.SPECIAL4:
+            case E_ANIMATION.SPECIAL5:
+            case E_ANIMATION.SPECIAL6:
+                SetCharacterState(E_STATE.SPECIAL, _IsCharing, true);
+                break;
+            case E_ANIMATION.HIT:
+                SetCharacterState(E_STATE.SPECIAL, _IsCharing, true);
+                break;
+        }
+
+        PlayAnimation(_ANIMATION, _Duration, _Speed, _FreezeTime, true);
     }
 
     public void SetCharacterState(E_STATE _State, bool _IsCharging, bool _Network = true)
@@ -619,7 +655,7 @@ public class Character : Object
 
         if (m_Health <= 0.0f && m_PhotonView.IsMine)
         {
-            SetStateAndAnimation(E_ANIMATION.DEAD, 0.15f, 1.0f, 0.0f);
+            SetStateAndAnimationNetwork(E_ANIMATION.DEAD, 0.15f, 1.0f, 0.0f);
             return;
         }
 
@@ -705,6 +741,7 @@ public class Character : Object
         m_State = E_STATE.IDLE;
         m_Live = E_LIVE.LIVE;
         m_Health = m_MaxHealth;
+        PlayAnimation_RPC((int)E_ANIMATION.IDLE, 0.1f, 1.0f, 0.0f);
     }
 
     protected void SetAutoPlayLogic(System.Action _Function) { m_AutoPlayLogic = _Function; }

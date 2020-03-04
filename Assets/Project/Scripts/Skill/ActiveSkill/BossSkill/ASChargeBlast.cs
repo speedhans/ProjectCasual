@@ -31,13 +31,13 @@ public class ASChargeBlast : ActiveSkill
 
     void UseSkillEvent()
     {
-        m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL1, 0.25f, 1.0f, 0.0f, true);
-
         StartCoroutine(C_Progress());
     }
 
     IEnumerator C_Progress()
     {
+        m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL1, 0.25f, 1.0f, 0.0f, true);
+
         float timer = m_ChargeTime;
         
         Vector3 effectpos = m_Caster.transform.position + (m_Caster.transform.rotation * m_ChargeEffectLocalLocation);
@@ -97,13 +97,15 @@ public class ASChargeBlast : ActiveSkill
         }
     }
     
-    public override void AutoPlayLogic()
+    public override bool AutoPlayLogic()
     {
-        if (m_CurrentCooldown > 0.0f) return;
+        if (m_CurrentCooldown > 0.0f) return false;
         
         if (Character.ScopeEnemyCheck(m_Caster, m_Caster.transform.position, m_Radius * 0.75f) > 0)
         {
-            UseSkill();
+            return UseSkill();
         }
+
+        return false;
     }
 }

@@ -4,63 +4,80 @@ using UnityEngine;
 
 public class InventoryContainer : MonoBehaviour
 {
-    Dictionary<int, List<Item>> m_DicItemData = new Dictionary<int, List<Item>>();
+    Dictionary<Item.E_TYPE, Dictionary<int, List<Item>>> m_DicItemData = new Dictionary<Item.E_TYPE, Dictionary<int, List<Item>>>();
 
     public void InsertItem(Item _Item)
     {
-        List<Item> list;
-        if (m_DicItemData.TryGetValue(_Item.m_ItemID, out list))
+        Dictionary<int, List<Item>> dic = null;
+        if (m_DicItemData.TryGetValue(_Item.GetItemType(), out dic))
         {
-            if (_Item.m_IsStockable)
+            List<Item> list;
+            if (dic.TryGetValue(_Item.m_ItemID, out list))
             {
-                for (int i = 0; i < list.Count; ++i)
+                if (_Item.m_IsStockable)
                 {
-                    if (_Item.m_StockCount < 1) return;
-
-                    if (list[i].m_StockCount < list[i].m_MaxStockCount)
+                    for (int i = 0; i < list.Count; ++i)
                     {
-                        list[i].m_StockCount += _Item.m_StockCount;
-                        if (list[i].m_StockCount > list[i].m_MaxStockCount)
+                        if (_Item.m_StockCount < 1) return;
+
+                        if (list[i].m_StockCount < list[i].m_MaxStockCount)
                         {
-                            _Item.m_StockCount = list[i].m_MaxStockCount - list[i].m_StockCount;
-                            list[i].m_StockCount = list[i].m_MaxStockCount;
-                        }
-                        else
-                        {
-                            return;
+                            list[i].m_StockCount += _Item.m_StockCount;
+                            if (list[i].m_StockCount > list[i].m_MaxStockCount)
+                            {
+                                _Item.m_StockCount = list[i].m_MaxStockCount - list[i].m_StockCount;
+                                list[i].m_StockCount = list[i].m_MaxStockCount;
+                            }
+                            else
+                            {
+                                return;
+                            }
                         }
                     }
+                }
+                else
+                {
+                    list.Add(_Item);
+                    _Item.transform.SetParent(transform);
                 }
             }
             else
             {
+                list = new List<Item>();
                 list.Add(_Item);
+                dic.Add(_Item.m_ItemID, list);
                 _Item.transform.SetParent(transform);
             }
         }
         else
         {
-            list = new List<Item>();
+            List<Item> list = new List<Item>();
             list.Add(_Item);
-            m_DicItemData.Add(_Item.m_ItemID, list);
+            dic = new Dictionary<int, List<Item>>();
+            dic.Add(_Item.m_ItemID, list);
+            m_DicItemData.Add(_Item.GetItemType(), dic);
             _Item.transform.SetParent(transform);
         }
     }
 
-    public void DeleteItem(int _ItemID, int _UniqueID)
+    public void DeleteItem(Item.E_TYPE _Type, int _ItemID, int _UniqueID)
     {
-        List<Item> list;
-        if (m_DicItemData.TryGetValue(_ItemID, out list))
+        Dictionary<int, List<Item>> dic = null;
+        if (m_DicItemData.TryGetValue(_Type, out dic))
         {
-            for (int i = 0; i < list.Count; ++i)
+            List<Item> list;
+            if (dic.TryGetValue(_ItemID, out list))
             {
-                if (list[i].m_UniqueID == _UniqueID)
+                for (int i = 0; i < list.Count; ++i)
                 {
-                    Item item = list[i];
-                    list.RemoveAt(i);
-                    item.IsDestoryed = true;
-                    Destroy(item.gameObject);
-                    return;
+                    if (list[i].m_UniqueID == _UniqueID)
+                    {
+                        Item item = list[i];
+                        list.RemoveAt(i);
+                        item.IsDestoryed = true;
+                        Destroy(item.gameObject);
+                        return;
+                    }
                 }
             }
         }
@@ -68,33 +85,41 @@ public class InventoryContainer : MonoBehaviour
 
     public void DeleteItem(Item _Item)
     {
-        List<Item> list;
-        if (m_DicItemData.TryGetValue(_Item.m_ItemID, out list))
+        Dictionary<int, List<Item>> dic = null;
+        if (m_DicItemData.TryGetValue(_Item.GetItemType(), out dic))
         {
-            for (int i = 0; i < list.Count; ++i)
+            List<Item> list;
+            if (dic.TryGetValue(_Item.m_ItemID, out list))
             {
-                if (list[i].m_UniqueID == _Item.m_UniqueID)
+                for (int i = 0; i < list.Count; ++i)
                 {
-                    Item item = list[i];
-                    list.RemoveAt(i);
-                    item.IsDestoryed = true;
-                    Destroy(item.gameObject);
-                    return;
+                    if (list[i].m_UniqueID == _Item.m_UniqueID)
+                    {
+                        Item item = list[i];
+                        list.RemoveAt(i);
+                        item.IsDestoryed = true;
+                        Destroy(item.gameObject);
+                        return;
+                    }
                 }
             }
         }
     }
 
-    public Item FindItem(int _ItemID, int _UniqueID)
+    public Item FindItem(Item.E_TYPE _Type, int _ItemID, int _UniqueID)
     {
-        List<Item> list;
-        if (m_DicItemData.TryGetValue(_ItemID, out list))
+        Dictionary<int, List<Item>> dic = null;
+        if (m_DicItemData.TryGetValue(_Type, out dic))
         {
-            for (int i = 0; i < list.Count; ++i)
+            List<Item> list;
+            if (dic.TryGetValue(_ItemID, out list))
             {
-                if (list[i].m_UniqueID == _UniqueID)
+                for (int i = 0; i < list.Count; ++i)
                 {
-                    return list[i];
+                    if (list[i].m_UniqueID == _UniqueID)
+                    {
+                        return list[i];
+                    }
                 }
             }
         }
@@ -102,17 +127,21 @@ public class InventoryContainer : MonoBehaviour
         return null;
     }
 
-    public List<Item> FindItemsToID(int _ItemID)
+    public List<Item> FindItemsToID(Item.E_TYPE _Type, int _ItemID)
     {
-        List<Item> list;
-        if (m_DicItemData.TryGetValue(_ItemID, out list))
+        Dictionary<int, List<Item>> dic = null;
+        if (m_DicItemData.TryGetValue(_Type, out dic))
         {
-            List<Item> req = new List<Item>();
-            for (int i = 0; i < list.Count; ++i)
+            List<Item> list;
+            if (dic.TryGetValue(_ItemID, out list))
             {
-                req.Add(list[i]);
+                List<Item> req = new List<Item>();
+                for (int i = 0; i < list.Count; ++i)
+                {
+                    req.Add(list[i]);
+                }
+                return req;
             }
-            return req;
         }
 
         return null;
@@ -121,25 +150,9 @@ public class InventoryContainer : MonoBehaviour
     public List<Item> GetItemList()
     {
         List<Item> list = new List<Item>();
-
-        foreach (List<Item> l in m_DicItemData.Values)
+        foreach (Dictionary<int, List<Item>> d in m_DicItemData.Values)
         {
-            for (int i = 0; i < l.Count; ++i)
-            {
-                list.Add(l[i]);
-            }
-        }
-
-        return list;
-    }
-
-    public List<Item> GetTypeItemList(Item.E_TYPE _Type)
-    {
-        List<Item> list = new List<Item>();
-
-        foreach(List<Item> l in m_DicItemData.Values)
-        {
-            if (l[0].GetItemType() == _Type)
+            foreach(List<Item> l in d.Values)
             {
                 for (int i = 0; i < l.Count; ++i)
                 {
@@ -151,12 +164,30 @@ public class InventoryContainer : MonoBehaviour
         return list;
     }
 
+    public List<Item> GetTypeItemList(Item.E_TYPE _Type)
+    {
+        List<Item> list = new List<Item>();
+        Dictionary<int, List<Item>> dic = null;
+        if (m_DicItemData.TryGetValue(_Type, out dic))
+        {
+            foreach (List<Item> l in dic.Values)
+            {
+                list.AddRange(l);
+            }
+        }
+
+        return list;
+    }
+
     public int GetAllItemCount()
     {
         int count = 0;
-        foreach(List<Item> l in m_DicItemData.Values)
+        foreach(Dictionary<int, List<Item>> d in m_DicItemData.Values)
         {
-            count += l.Count;
+            foreach(List<Item> l in d.Values)
+            {
+                count += l.Count;
+            }
         }
 
         return count;

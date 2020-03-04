@@ -50,11 +50,11 @@ public class InventoryViewer : LobbyUI
         DefaultRefresh();
     }
 
-    public void InventoryOpenTheTypeToID(int _ItemID, int[] _ExclusionNumber = null)
+    public void InventoryOpenTheTypeToID(Item.E_TYPE _Type, int _ItemID, int[] _ExclusionNumber = null)
     {
         Open();
         m_CurrentTargetType = Item.E_TYPE.NONE;
-        SortItemRefresh(_ItemID, _ExclusionNumber);
+        SortItemRefresh(_Type, _ItemID, _ExclusionNumber);
     }
 
     public void DefaultRefresh()
@@ -97,11 +97,11 @@ public class InventoryViewer : LobbyUI
         }
     }
 
-    public void SortItemRefresh(int _ItemID, int[] _ExclusionUniqueID)
+    public void SortItemRefresh(Item.E_TYPE _Type, int _ItemID, int[] _ExclusionUniqueID)
     {
         if (m_Grid == null) m_Grid = transform.Find("MaskField/Grid");
 
-        List<Item> list = InventoryManager.Instance.GetTypeItemList(_ItemID);
+        List<Item> list = InventoryManager.Instance.GetTypeItemList(_Type, _ItemID);
         if (list == null)
         {
             for (int i = 0; i < m_Grid.childCount; ++i)
@@ -134,28 +134,39 @@ public class InventoryViewer : LobbyUI
 
         m_CurrentInventoryCount = list.Count;
 
-        if (m_CurrentInventoryCount > m_Grid.childCount)
+        if (m_CurrentInventoryCount > 0)
         {
-            int interval = m_CurrentInventoryCount - m_Grid.childCount;
-
-            for (int i = 0; i < interval; ++i)
+            if (m_CurrentInventoryCount > m_Grid.childCount)
             {
-                GameObject g = Instantiate(m_SlotPrefab, m_Grid);
-                m_ListInventorySlot.Add(g.GetComponent<InventorySlot>());
+                int interval = m_CurrentInventoryCount - m_Grid.childCount;
+
+                for (int i = 0; i < interval; ++i)
+                {
+                    GameObject g = Instantiate(m_SlotPrefab, m_Grid);
+                    m_ListInventorySlot.Add(g.GetComponent<InventorySlot>());
+                }
+            }
+            else if (m_CurrentInventoryCount < m_Grid.childCount)
+            {
+                for (int i = m_CurrentInventoryCount - 1; i < m_Grid.childCount; ++i)
+                {
+                    m_Grid.GetChild(i).gameObject.SetActive(false);
+                }
+            }
+
+            for (int i = 0; i < m_CurrentInventoryCount; ++i)
+            {
+                m_ListInventorySlot[i].Initialize(list[i], InventorySlot.E_USETYPE.REINFORCE, m_LobbyCanvasUI);
             }
         }
-        else if (m_CurrentInventoryCount < m_Grid.childCount)
+        else
         {
-            for (int i = m_CurrentInventoryCount - 1; i < m_Grid.childCount; ++i)
+            for (int i = 0; i < m_Grid.childCount; ++i)
             {
                 m_Grid.GetChild(i).gameObject.SetActive(false);
             }
         }
 
-        for (int i = 0; i < m_CurrentInventoryCount; ++i)
-        {
-            m_ListInventorySlot[i].Initialize(list[i], InventorySlot.E_USETYPE.REINFORCE, m_LobbyCanvasUI);
-        }
     }
 
     public void RefreshSlots()

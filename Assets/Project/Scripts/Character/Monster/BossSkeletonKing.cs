@@ -36,7 +36,6 @@ public class BossSkeletonKing : MeleeBossCharacter
     public override void AttackMomentEvent()
     {
         if (m_Live == E_LIVE.DEAD) return;
-        base.AttackMomentEvent();
 
         Vector3 location = transform.position + (transform.forward * m_AttackRange) + new Vector3(0.0f, 0.01f, 0.0f);
         LifeTimerWithObjectPool life = ObjectPool.GetObject<LifeTimerWithObjectPool>(m_AttackImpactEffect.name);

@@ -36,7 +36,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     EquipmentItem[] m_EquipItem = new EquipmentItem[3];
-    string m_PlayerModel = "UnityChan";
+    CharacterItem m_EquipCharacterItem;
 
     public void LoadItemList()
     {
@@ -58,8 +58,32 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void SetEquipmentCharacterItem(CharacterItem _Item)
+    {
+        m_EquipCharacterItem = _Item;
+        _Item.SetEquip(true);
+    }
+
+    public void EquipmentOffCharacterItem()
+    {
+        if (m_EquipCharacterItem)
+        {
+            m_EquipCharacterItem.SetEquip(false);
+            m_EquipCharacterItem = null;
+        }
+    }
+
     public int EquipmentSlotCount() { return m_EquipItem.Length; }
-    public string GetPlayerModelName() { return m_PlayerModel; }
+    public CharacterItem GetEquipmentCharacterData() { return m_EquipCharacterItem; }
+    public string GetPlayerModelName()
+    {
+        if (m_EquipCharacterItem)
+        {
+            return m_EquipCharacterItem.GetModelName();
+        }
+
+        return ""; 
+    }
 
     public List<Item> GetItemList()
     {
@@ -69,9 +93,9 @@ public class InventoryManager : MonoBehaviour
     {
         return m_InventoryContainer.GetTypeItemList(_Type);
     }
-    public List<Item> GetTypeItemList(int _ItemID)
+    public List<Item> GetTypeItemList(Item.E_TYPE _Type, int _ItemID)
     {
-        return m_InventoryContainer.FindItemsToID(_ItemID);
+        return m_InventoryContainer.FindItemsToID(_Type, _ItemID);
     }
 
     public void InserItem(Item _Item)
@@ -100,8 +124,8 @@ public class InventoryManager : MonoBehaviour
         m_InventoryContainer.DeleteItem(_Item);
     }
 
-    public void DestroyItem(int _ItemID, int _UniqueID)
+    public void DestroyItem(Item.E_TYPE _Type, int _ItemID, int _UniqueID)
     {
-        m_InventoryContainer.DeleteItem(_ItemID, _UniqueID);
+        m_InventoryContainer.DeleteItem(_Type, _ItemID, _UniqueID);
     }
 }

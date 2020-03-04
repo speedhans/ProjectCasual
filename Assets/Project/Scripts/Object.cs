@@ -48,9 +48,6 @@ public class Object : RootComponent
     public float[] m_AddResistance = new float[(int)E_DAMAGETYPE.MAX];
 
     List<Buff> m_ListBuff = new List<Buff>();
-    List<Object> m_ListLinkedObject = new List<Object>();
-    System.Action m_LinkAction;
-    System.Action m_UnLinkAction;
 
     [SerializeField]
     bool m_HealthZeroIsDestroy = true;
@@ -97,15 +94,6 @@ public class Object : RootComponent
             if (o != null)
             {
                 SetPhysicsMode((E_PHYSICSMODE)o[0], false);
-                if ((int)(o[1]) != -1)
-                {
-                    Attach_RPC((int)(o[1]), (string)(o[2]), Vector3.zero, Quaternion.identity);
-                    ResyncPositionAndRotation();
-                }
-                if ((int)(o[3]) != -1)
-                {
-                    LinkObject_RPC((int)(o[3]));
-                }
             }
         }
     }
@@ -282,18 +270,18 @@ public class Object : RootComponent
 
         if (m_Health <= 0.0f)
         {
-            m_Live = E_LIVE.DEAD;
-            m_DeadEvent?.Invoke();
-            if (m_HealthZeroIsDestroy)
-                ObjectDestroyTimer(m_DestroyDelay);
+            ObjectDestroyWithDelay(m_DestroyDelay);
         }
 
         m_DamageEvent?.Invoke(_Damage, caculratedamages, _DamageType, fulldamage, _Critical, _Attacker);
     }
 
-    public void ObjectDestroyTimer(float _Delay = 2.5f)
+    public void ObjectDestroyWithDelay(float _DestroyDelay = 2.5f)
     {
-        StartCoroutine(C_DestroyTimer(_Delay));
+        m_Live = E_LIVE.DEAD;
+        m_DeadEvent?.Invoke();
+        if (m_HealthZeroIsDestroy)
+            StartCoroutine(C_DestroyTimer(_DestroyDelay));
     }
 
     IEnumerator C_DestroyTimer(float _Timer)
@@ -411,85 +399,6 @@ public class Object : RootComponent
         }
     }
 
-    protected void AddLinkEvent(System.Action _Event)
-    {
-        m_LinkAction += _Event;
-    }
-
-    protected void SubLinkEvent(System.Action _Event)
-    {
-        m_LinkAction -= _Event;
-    }
-
-    protected void AddUnLinkEvent(System.Action _Event)
-    {
-        m_UnLinkAction += _Event;
-    }
-
-    protected void SubUnLinkEvent(System.Action _Event)
-    {
-        m_UnLinkAction -= _Event;
-    }
-
-    public virtual bool TwoWayLinkObject(Object _Object)
-    {
-        LinkObject(_Object.m_PhotonView.ViewID);
-        _Object.LinkObject(m_PhotonView.ViewID);
-        return true;
-    }
-
-    public virtual bool TwoWayUnLinkObject(Object _Object)
-    {
-        UnLinkObject(_Object.m_PhotonView.ViewID);
-        _Object.UnLinkObject(m_PhotonView.ViewID);
-        return true;
-    }
-
-    public virtual void LinkObject(int _TargetPhotonViewID)
-    {
-        m_PhotonView.RPC("LinkObject_RPC", RpcTarget.AllViaServer, _TargetPhotonViewID);
-    }
-
-    [PunRPC]
-    public void LinkObject_RPC(int _TargetPhotonViewID)
-    {
-        Object o = NetworkManager.Instance.RoomController.FindObjectWithPhotonViewID(_TargetPhotonViewID);
-        if (o)
-        {
-            if (m_PhotonView.IsMine)
-                SetPhotonInstantiationData(new int[] { 3 }, new object[] { _TargetPhotonViewID });
-            m_ListLinkedObject.Add(o);
-            m_LinkAction?.Invoke();
-        }
-    }
-
-    public virtual void UnLinkObject(int _TargetPhotonViewID) 
-    {
-        m_PhotonView.RPC("UnLinkObject_RPC", RpcTarget.AllViaServer, _TargetPhotonViewID);
-    }
-
-    [PunRPC]
-    public void UnLinkObject_RPC(int _TargetPhotonViewID)
-    {
-        Object o = NetworkManager.Instance.RoomController.FindObjectWithPhotonViewID(_TargetPhotonViewID);
-        if (o)
-        {
-            if (m_PhotonView.IsMine)
-                SetPhotonInstantiationData(new int[] { 3 }, new object[] { -1 });
-            m_ListLinkedObject.Remove(o);
-            m_UnLinkAction?.Invoke();
-        }
-    }
-
-    public virtual void AllUnLinkObject()
-    {
-        for (int i = 0; i < m_ListLinkedObject.Count; ++i)
-        {
-            m_ListLinkedObject[i].UnLinkObject(m_PhotonView.ViewID);
-        }
-        m_ListLinkedObject.Clear();
-    }
-
     public void AddDeadEvent(System.Action _Action)
     {
         m_DeadEvent += _Action;
@@ -519,63 +428,8 @@ public class Object : RootComponent
 
     protected virtual void OnDestroy()
     {
-        if (m_ListLinkedObject.Count > 0)
-        {
-            for (int i = 0; i < m_ListLinkedObject.Count; ++i)
-            {
-                m_ListLinkedObject[i].UnLinkObject(m_PhotonView.ViewID);
-            }
-        }
-        m_ListLinkedObject.Clear();
-
         if (m_DestoryEffect) Instantiate(m_DestoryEffect, transform.position, transform.rotation);
         m_DestoryEvent?.Invoke();
-    }
-
-    public void Attach(int _TargetPhotonViewID, Transform _TargetTransform, Object _TargetObject)
-    {
-        string path = Common.FindTransformPath(_TargetTransform);
-        SetPhotonInstantiationData(new int[] { 1, 2 }, new object[] { _TargetPhotonViewID, path });
-        m_AttachTarget = _TargetObject;
-        transform.SetParent(_TargetTransform);
-        m_PhotonView.RPC("Attach_RPC", RpcTarget.AllViaServer, _TargetPhotonViewID, path, transform.localPosition, transform.localRotation);
-    }
-
-    public void Attach(int _TargetPhotonViewID, Transform _TargetTransform, Object _TargetObject, Vector3 _LocalPosition, Quaternion _LocalRotation)
-    {
-        string path = Common.FindTransformPath(_TargetTransform);
-        SetPhotonInstantiationData(new int[] { 1, 2 }, new object[] { _TargetPhotonViewID, path });
-        m_AttachTarget = _TargetObject;
-        transform.SetParent(_TargetTransform);
-        transform.localPosition = _LocalPosition;
-        transform.localRotation = _LocalRotation;
-        m_PhotonView.RPC("Attach_RPC", RpcTarget.AllViaServer, _TargetPhotonViewID, path, _LocalPosition, _LocalRotation);
-    }
-
-    [PunRPC]
-    public void Attach_RPC(int _TargetPhotonViewID, string _Path, Vector3 _LocalPosition, Quaternion _LocalRotation)
-    {
-        Object o = NetworkManager.Instance.RoomController.FindObjectWithPhotonViewID(_TargetPhotonViewID);
-        if (o)
-        {
-            m_AttachTarget = o;
-            transform.SetParent(o.transform.Find(_Path));
-
-            transform.localPosition = _LocalPosition;
-            transform.localRotation = _LocalRotation;
-        }
-    }
-
-    public void Dettach()
-    {
-        m_PhotonView.RPC("Dettach_RPC", RpcTarget.AllViaServer);
-    }
-
-    [PunRPC]
-    public void Dettach_RPC()
-    {
-        m_AttachTarget = null;
-        transform.SetParent(null);
     }
 
     public void SetWorldPositionAndRotation(Vector3 _Position, Quaternion _Rotation)

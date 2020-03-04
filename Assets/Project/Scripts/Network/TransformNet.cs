@@ -56,7 +56,7 @@ public class TransformNet : StreamComponent, IPunObservable
 
         float deltatime = Time.deltaTime;
 
-        m_Fraction += deltatime * 7;
+        m_Fraction += deltatime * 9;
         if (m_StreamPosition)
         {
             transform.position = Vector3.Lerp(transform.position, m_FixedPosition, m_Fraction);

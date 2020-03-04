@@ -29,6 +29,12 @@ public class QuestSlot : MonoBehaviour
 
     public void QuestSelect()
     {
+        if (m_QuestData.m_Lock)
+        {
+            MessageBox.CreateOneButtonType("이 퀘스트는 현재 잠겨있습니다");
+            return;
+        }
+
         if (m_QuestData.m_Multiplay)
         {
             //m_LobbyCanvasUI.GetWaitingRoomUI().CreateWaitingRoom(m_QuestData.m_SceneName);

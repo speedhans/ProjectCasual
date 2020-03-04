@@ -27,11 +27,9 @@ public class ASSummonMonster : ActiveSkill
         NetworkManager.Instance.m_MasterClientSwitchedCallback += MasterClientSwitched;
         AddUseAction(UseSkillEvent);
     }
-
     void UseSkillEvent()
     {
-        m_Caster.SetStateAndAnimation(E_ANIMATION.SPECIAL1, 0.25f, 1.0f, 1.5f);
-
+        m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL1, 0.25f, 1.0f, 1.5f);
         if (!m_PhotonView.IsMine) return;
 
         for (int i = 0; i < m_SpawnLocation.Length; ++i)
@@ -58,17 +56,19 @@ public class ASSummonMonster : ActiveSkill
         }
     }
 
-    public override void AutoPlayLogic()
+    public override bool AutoPlayLogic()
     {
-        if (m_HPTrigger.Length < 1) return;
-        if (m_TriggerNumber >= m_Trigger.Length) return;
+        if (m_HPTrigger.Length < 1) return false;
+        if (m_TriggerNumber >= m_Trigger.Length) return false;
 
         if (!m_Trigger[m_TriggerNumber] && m_Caster.m_Health / m_Caster.m_MaxHealth <= m_HPTrigger[m_TriggerNumber] * 0.01f)
         {
             m_Trigger[m_TriggerNumber] = true;
             ++m_TriggerNumber;
-            UseSkill();
+            return UseSkill();
         }
+
+        return false;
     }
 
     void MasterClientSwitched(Player _NewMaster)

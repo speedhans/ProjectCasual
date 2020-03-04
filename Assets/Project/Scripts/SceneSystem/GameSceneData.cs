@@ -13,6 +13,7 @@ public class GameSceneData : ScriptableObject
     public string m_StageName;
     public int m_StaminaValue;
     public List<QuestData.S_DropItemData> m_DropItemList;
+    public bool m_Lock;
 }
 
 //[CustomEditor(typeof(GameSceneData))]

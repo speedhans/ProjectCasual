@@ -185,7 +185,7 @@ public class PlayerCharacter : HumanoidCharacter
         {
             if (m_State != E_STATE.MOVE)
             {
-                SetStateAndAnimation(E_ANIMATION.RUN, 0.25f, 1.0f, 0.0f);
+                SetStateAndAnimationNetwork(E_ANIMATION.RUN, 0.25f, 1.0f, 0.0f);
             }
             MoveToLocation(transform.position + (dir * Time.deltaTime * m_MovePerSpeed * 5.0f));
         }
@@ -216,7 +216,7 @@ public class PlayerCharacter : HumanoidCharacter
 
             transform.forward = m_AttackTarget.m_Character.transform.position - transform.position;
             
-            SetStateAndAnimation(E_ANIMATION.ATTACK, 0.25f, 1.0f, 0.0f);
+            SetStateAndAnimationNetwork(E_ANIMATION.ATTACK, 0.25f, 1.0f, 0.0f);
 
             StartCoroutine(C_AttackStep(_Forward, m_AttackSpeed));
 

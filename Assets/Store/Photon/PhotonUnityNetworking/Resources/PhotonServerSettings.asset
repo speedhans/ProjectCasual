@@ -30,36 +30,35 @@ MonoBehaviour:
   StartInOfflineMode: 0
   RpcList:
   - AddBuff_RPC
-  - Attach_RPC
   - AttachWeapon_RPC
   - BuffDataUpdate_RPC
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
-  - Dettach_RPC
   - Fire
   - GiveToDamage_RPC
   - InsertTimer_RPC
-  - LinkObject_RPC
   - ObjectDestroy_RPC
   - PlayAnimation_RPC
   - ReleaseBuff_RPC
   - RespawnSpaceship
+  - Revive_RPC
   - SetCharacterState_RPC
   - SetCharging_RPC
+  - SetFreeze_RPC
   - SetGameSequence_RPC
   - SetLocalPositionAndRotation_RPC
   - SetManagementTarget_RPC
   - SetPhysicsMode_RPC
+  - SetStats_RPC
+  - SetTimer1_RPC
+  - SetTimer2_RPC
+  - SetTimer3_RPC
   - SetVelocity_RPC
   - SetWorldPositionAndRotation_RPC
   - Skill_Initialize_RPC
-  - UnLinkObject_RPC
   - UseSkill_RPC
-  - WaitingRoomGameStart
+  - WaitingRoomGameStart_RPC
   - WaitingRoomUpdateQuery_RPC
-  - SetStats_RPC
-  - SetFreeze_RPC
-  - Revive_RPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1

@@ -30,9 +30,9 @@ public class ActiveSkill : Skill
         m_ActuationType = E_ACTUATIONTYPE.ACTIVE;
     }
 
-    public override void UseSkill()
+    public override bool UseSkill()
     {
-        base.UseSkill();
+        return base.UseSkill();
     }
 
     public override string GetManualText()

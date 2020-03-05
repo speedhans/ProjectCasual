@@ -8,10 +8,14 @@ public class LoadingManager : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     UnityEngine.UI.Slider m_Slider;
-
+    [SerializeField]
+    TMPro.TMP_Text m_TipText;
     private void Awake()
     {
         SceneManager.Instance.m_LoadingManager = this;
+
+        LoadingTipData data = Resources.Load<LoadingTipData>("LoadingTipData");
+        m_TipText.text = data.m_Tip[Random.Range(0, data.m_Tip.Length - 1)];
     }
 
     public void SetValue(float _Value)

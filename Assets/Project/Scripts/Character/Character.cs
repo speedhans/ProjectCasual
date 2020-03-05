@@ -446,7 +446,7 @@ public class Character : Object
 
     public void SetCharacterState(E_STATE _State, bool _IsCharging, bool _Network = true)
     {
-        if (PhotonNetwork.IsConnectedAndReady && _Network)
+        if (PhotonNetwork.InRoom && _Network)
         {
             if (m_PhotonView.IsMine)
                 m_PhotonView.RPC("SetCharacterState_RPC", RpcTarget.All, (int)_State, _IsCharging);
@@ -464,7 +464,7 @@ public class Character : Object
 
     public void SetCharging(bool _IsCharging)
     {
-        if (PhotonNetwork.IsConnectedAndReady)
+        if (PhotonNetwork.InRoom)
         {
             if (m_PhotonView.IsMine)
                 m_PhotonView.RPC("SetCharging_RPC", RpcTarget.All, _IsCharging);
@@ -478,7 +478,7 @@ public class Character : Object
 
     public void PlayAnimation(E_ANIMATION _ANIMATION, float _Duration, float _Speed, float _FreezeTime, bool _Network = true)
     {
-        if (PhotonNetwork.IsConnectedAndReady && _Network)
+        if (PhotonNetwork.InRoom && _Network)
         {
             if (m_PhotonView.IsMine)
                 m_PhotonView.RPC("PlayAnimation_RPC", RpcTarget.All, (int)_ANIMATION, _Duration, _Speed, _FreezeTime);

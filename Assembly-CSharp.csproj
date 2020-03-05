@@ -150,6 +150,7 @@
     <Compile Include="Assets\Project\Scripts\SceneSystem\GameSceneData.cs" />
     <Compile Include="Assets\Project\Scripts\SceneSystem\IntroManager.cs" />
     <Compile Include="Assets\Project\Scripts\SceneSystem\LoadingManager.cs" />
+    <Compile Include="Assets\Project\Scripts\SceneSystem\LoadingTipData.cs" />
     <Compile Include="Assets\Project\Scripts\SceneSystem\MonsterSpawner.cs" />
     <Compile Include="Assets\Project\Scripts\SceneSystem\SceneManager.cs" />
     <Compile Include="Assets\Project\Scripts\SceneSystem\SpawnManager.cs" />

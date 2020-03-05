@@ -29,6 +29,9 @@ public class ASSummonMonster : ActiveSkill
     }
     void UseSkillEvent()
     {
+        m_Trigger[m_TriggerNumber] = true;
+        ++m_TriggerNumber;
+
         m_Caster.SetStateAndAnimationLocal(E_ANIMATION.SPECIAL1, 0.25f, 1.0f, 1.5f);
         if (!m_PhotonView.IsMine) return;
 
@@ -63,8 +66,6 @@ public class ASSummonMonster : ActiveSkill
 
         if (!m_Trigger[m_TriggerNumber] && m_Caster.m_Health / m_Caster.m_MaxHealth <= m_HPTrigger[m_TriggerNumber] * 0.01f)
         {
-            m_Trigger[m_TriggerNumber] = true;
-            ++m_TriggerNumber;
             return UseSkill();
         }
 

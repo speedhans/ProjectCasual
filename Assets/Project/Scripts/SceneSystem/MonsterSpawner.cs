@@ -56,29 +56,17 @@ public class MonsterSpawner : Spawner
 
         if (m_CurrentSpawnCount < m_SpawnCount && TimerNet.GetTimer(m_TimerKey) <= 0.0f)
         {
-            if (PhotonNetwork.InRoom)
+            if (PhotonNetwork.IsMasterClient)
             {
-                if (PhotonNetwork.IsMasterClient)
+                GameObject g = PhotonNetwork.InstantiateSceneObject(m_FilePath + "/" + m_MonsterPrefab.name, transform.position, Quaternion.Euler(0.0f, 180.0f, 0.0f));
+                if (g)
                 {
-                    GameObject g = PhotonNetwork.InstantiateSceneObject(m_FilePath + "/" + m_MonsterPrefab.name, transform.position, Quaternion.Euler(0.0f, 180.0f, 0.0f));
-                    if (g)
-                    {
-                        PhotonView view = g.GetComponent<PhotonView>();
-                        m_PhotonView.RPC("SetManagementTarget_RPC", RpcTarget.All, view.ViewID);
-                    }
+                    m_ManagementTarget = g.GetComponent<Character>();
+                    PhotonView view = g.GetComponent<PhotonView>();
+                    m_PhotonView.RPC("SetManagementTarget_RPC", RpcTarget.AllViaServer, view.ViewID);
+                    TimerNet.SetTimer_s(m_TimerKey, m_SpawnDelay, true);
                 }
             }
-            else
-            {
-                GameObject g = Instantiate(m_MonsterPrefab, transform.position, Quaternion.Euler(0.0f, 180.0f, 0.0f));
-                Character c = g.GetComponent<Character>();
-                if (c)
-                {
-                    m_ManagementTarget = c;
-                }
-            }
-
-            TimerNet.SetTimer_s(m_TimerKey, m_SpawnDelay, true);
         }
     }
 

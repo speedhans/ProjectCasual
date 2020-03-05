@@ -93,6 +93,8 @@ public class Main_Stage : Main
 
     IEnumerator C_Initialize()
     {
+
+        WaitForSeconds wait = new WaitForSeconds(0.5f);
         if (GameManager.Instance.m_TestMode)
         {
             TestModeDefaultItemSetting list = Resources.Load<TestModeDefaultItemSetting>("TestModeDefaultItemList");
@@ -102,7 +104,10 @@ public class Main_Stage : Main
             while (!PhotonNetwork.InRoom) yield return null;
         }
 
-        yield return new WaitForSeconds(1.0f);
+        NetworkManager.Instance.RoomController.SetLocalPlayerProperties(PlayerCharacter.m_CharacterReadyKey, false);
+        NetworkManager.Instance.RoomController.SetLocalPlayerProperties("InitComp", false);
+
+        yield return wait;
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -111,7 +116,7 @@ public class Main_Stage : Main
             TimerNet.InsertTimer(m_SequenceTimerKey, 0.0f, true);
         }
 
-        yield return null;
+        yield return wait;
 
         GameObject pianoUI = Instantiate(Resources.Load<GameObject>("PianoEffectCanvas"));
         m_PianoEffect = pianoUI.GetComponent<PianoEffectCanvas>();
@@ -148,7 +153,7 @@ public class Main_Stage : Main
 
         NetworkManager.Instance.RoomController.SetLocalPlayerProperties("InitComp", true);
 
-        yield return null;
+        yield return wait;
 
         while (!IsBeginLoadingComplete)
         {
@@ -297,25 +302,26 @@ public class Main_Stage : Main
         }
     }
 
-    void SetNextGameSequence(float _WaitTime = 0.1f)
+    void SetNextGameSequence(float _WaitTime = 0.0f)
     {
         m_SequenceProgress[(int)m_GameSequence] = true;
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && _WaitTime != 0.0f)
             TimerNet.SetTimer_s(m_SequenceTimerKey, _WaitTime);
-        SetGameSequence(m_GameSequence + 1);
+        SetGameSequence(m_GameSequence);
     }
 
-    void SetGameSequence(E_GAMESEQUENCE _Sequence)
+    void SetGameSequence(E_GAMESEQUENCE _CurrentSequence)
     {
         if (PhotonNetwork.IsMasterClient)
-            m_PhotonView.RPC("SetGameSequence_RPC", RpcTarget.AllViaServer, (int)_Sequence);
+            m_PhotonView.RPC("SetGameSequence_RPC", RpcTarget.AllViaServer, (int)_CurrentSequence);
     }
 
     [PunRPC]
-    void SetGameSequence_RPC(int _Sequence)
+    void SetGameSequence_RPC(int _CurrentSequence)
     {
         m_SequenceProgress[(int)m_GameSequence] = true;
-        m_GameSequence = (E_GAMESEQUENCE)_Sequence;
+        m_GameSequence = (E_GAMESEQUENCE)(_CurrentSequence + 1);
+        m_UpdateSequence = false;
         GameSequenceEvent();
     }
 
@@ -335,6 +341,7 @@ public class Main_Stage : Main
 
     public void GameClearUIOpen()
     {
+        m_GameUICanvas.GetDeadUI().Disable();
         m_ControlCanvas.SetActive(false);
         m_SkillUICanvas.SetActive(false);
         GameObject clearui = Instantiate(Resources.Load<GameObject>("GameClearUICanvas"));

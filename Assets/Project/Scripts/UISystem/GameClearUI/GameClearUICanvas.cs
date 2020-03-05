@@ -90,6 +90,7 @@ public class GameClearUICanvas : MonoBehaviour
             list.AddRange(items);
             float cleartime = m_Main.GetGameUICanvas().GetTime();
             int score = (int)(cleartime > 600.0f ? 10000.0f : (600 / cleartime) * 10000.0f);
+            InventoryManager.Instance.InserItem(list);
             m_ResultUI.Initialize(score, list); // db 작업 필요
             m_ResultUI.gameObject.SetActive(true);
             m_ResultUI.StartScoreAnimation();

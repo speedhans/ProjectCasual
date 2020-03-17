@@ -12,6 +12,9 @@ public class LoadingManager : MonoBehaviourPunCallbacks
     TMPro.TMP_Text m_TipText;
     private void Awake()
     {
+        InventoryViewer.ViewerList.Clear();
+        System.GC.Collect();
+
         SceneManager.Instance.m_LoadingManager = this;
 
         LoadingTipData data = Resources.Load<LoadingTipData>("LoadingTipData");

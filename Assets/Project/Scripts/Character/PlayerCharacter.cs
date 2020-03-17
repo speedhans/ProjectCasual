@@ -58,17 +58,25 @@ public class PlayerCharacter : HumanoidCharacter
 
         if (m_PhotonView.IsMine)
         {
+            bool attachweapon = false;
             for (int i = 0; i < 3; ++i)
             {
                 EquipmentItem item = InventoryManager.Instance.GetEquippedItem(i);
-                GameObject weapon = item.GetWeaponModel();
-                if (weapon)
+                if (item)
                 {
-                    m_AttackType = item.m_ItemElement;
-                    AttachWeapon(weapon.name, item.GetWeaponType());
-                    break;
+                    GameObject weapon = item.GetWeaponModel();
+                    if (weapon)
+                    {
+                        attachweapon = true;
+                        m_AttackType = item.m_ItemElement;
+                        AttachWeapon(weapon.name, item.GetWeaponType());
+                        break;
+                    }
                 }
             }
+
+            if (!attachweapon)
+                AttachWeapon("", E_WEAPONTYPE.PUNCH);
 
             for (int i = 0; i < 3; ++i)
             {
@@ -114,33 +122,40 @@ public class PlayerCharacter : HumanoidCharacter
     {
         if (m_RightHandAxis == null) return;
 
-        GameObject weapon = Instantiate(Resources.Load<GameObject>(_WeaponPath));
-        if (weapon)
+        if (_WeaponPath == "")
         {
-            weapon.transform.SetParent(m_RightHandAxis);
-            weapon.transform.localPosition = Vector3.zero;
-            weapon.transform.localRotation = Quaternion.identity;
-            weapon.transform.transform.localScale = Vector3.one;
-            SwitchAnimator((E_WEAPONTYPE)_WeaponType);
-
-            if (PhotonNetwork.InRoom)
+            SwitchAnimator(E_WEAPONTYPE.PUNCH);
+        }
+        else
+        {
+            GameObject weapon = Instantiate(Resources.Load<GameObject>(_WeaponPath));
+            if (weapon)
             {
-                Material mat = null;
-                if (m_PhotonView.IsMine)
-                    mat = ((Main_Stage)GameManager.Instance.m_Main).m_LocalOutLineMaterial;
-                else
-                    mat = ((Main_Stage)GameManager.Instance.m_Main).m_OtherOutLineMaterial;
+                weapon.transform.SetParent(m_RightHandAxis);
+                weapon.transform.localPosition = Vector3.zero;
+                weapon.transform.localRotation = Quaternion.identity;
+                weapon.transform.transform.localScale = Vector3.one;
+                SwitchAnimator((E_WEAPONTYPE)_WeaponType);
 
-                MeshRenderer[] renderers = weapon.GetComponentsInChildren<MeshRenderer>();
-                for (int i = 0; i < renderers.Length; ++i)
+                if (PhotonNetwork.InRoom)
                 {
-                    Material[] newmat = new Material[renderers[i].materials.Length + 1];
-                    for (int j = 0; j < renderers[i].materials.Length; ++j)
+                    Material mat = null;
+                    if (m_PhotonView.IsMine)
+                        mat = ((Main_Stage)GameManager.Instance.m_Main).m_LocalOutLineMaterial;
+                    else
+                        mat = ((Main_Stage)GameManager.Instance.m_Main).m_OtherOutLineMaterial;
+
+                    MeshRenderer[] renderers = weapon.GetComponentsInChildren<MeshRenderer>();
+                    for (int i = 0; i < renderers.Length; ++i)
                     {
-                        newmat[j] = renderers[i].materials[j];
+                        Material[] newmat = new Material[renderers[i].materials.Length + 1];
+                        for (int j = 0; j < renderers[i].materials.Length; ++j)
+                        {
+                            newmat[j] = renderers[i].materials[j];
+                        }
+                        newmat[newmat.Length - 1] = mat;
+                        renderers[i].materials = newmat;
                     }
-                    newmat[newmat.Length - 1] = mat;
-                    renderers[i].materials = newmat;
                 }
             }
         }

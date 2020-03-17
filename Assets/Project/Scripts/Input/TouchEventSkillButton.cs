@@ -26,6 +26,8 @@ public class TouchEventSkillButton : CustomTouchEvent
         {
             if (!GameManager.Instance.m_Main.IsBeginLoadingComplete) return;
             if (!c.m_IsPlayerCharacterInitializeComplete) return;
+            if (c.m_ListActiveSkill == null) return;
+            if (c.m_ListActiveSkill.Count <= m_ButtonNumber) return;
 
             if (c.m_ListActiveSkill[m_ButtonNumber] != null)
             {
@@ -50,6 +52,7 @@ public class TouchEventSkillButton : CustomTouchEvent
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
+        if (!m_TargetSkill) return;
         m_TargetSkill.UseSkill();
     }
 }

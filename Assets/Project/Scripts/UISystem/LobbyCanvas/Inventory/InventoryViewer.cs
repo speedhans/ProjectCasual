@@ -178,9 +178,4 @@ public class InventoryViewer : LobbyUI
             m_ListInventorySlot[i].Refresh();
         }
     }
-
-    private void OnDestroy()
-    {
-        ViewerList.Remove(this);
-    }
 }

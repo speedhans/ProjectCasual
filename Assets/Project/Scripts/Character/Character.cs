@@ -496,7 +496,13 @@ public class Character : Object
         if (!m_Animator) return;
 
         m_Animator.speed = _Speed;
-        switch ((E_ANIMATION)_ANIMATION)
+        E_ANIMATION anim = (E_ANIMATION)_ANIMATION;
+        if (anim != E_ANIMATION.RUN)
+            m_Animator.SetBool("Run", false);
+        else
+            m_Animator.SetBool("Run", true);
+
+        switch (anim)
         {
             case E_ANIMATION.IDLE:
                 m_Animator.CrossFade("Idle", _Duration);

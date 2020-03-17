@@ -178,5 +178,6 @@ public class InventorySlot : MonoBehaviour
         InventoryManager.Instance.DestroyItem(m_Item);
         InventoryViewer.RefreshAllSlots();
         ItemDataViewer.DefaultInstance.Refresh();
+        m_LobbyCanvasUI.GetStatusUI().Refresh();
     }
 }
